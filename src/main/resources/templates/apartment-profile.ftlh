@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Аренда недвижимости</title>
+</head>
+<body>
+<div class="container">
+    <h1>Профиль апартамента</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <img src="#" alt="Фото апартаментов" class="apartment-image">
+        </div>
+        <div class="col-md-6">
+            <h2>Апартамент "София"</h2>
+            <p><strong>Тип:</strong> Квартира</p>
+            <p><strong>Адрес:</strong> ул. Ленина, д. 12, кв. 3</p>
+            <p><strong>Доступность:</strong> <span class="apartment-available">Доступно</span></p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <h3>Характеристики</h3>
+            <ul class="list-unstyled">
+                <li><strong>Площадь:</strong> 60 м²</li>
+                <li><strong>Количество комнат:</strong> 2</li>
+                <li><strong>Ежедневная стоимость:</strong> 2500 руб.</li>
+            </ul>
+        </div>
+<#--        <div class="col-md-8">-->
+<#--            <h3>Описание</h3>-->
+<#--            <p>Привлекательный двухкомнатный апартамент в центре города. Спортивный клуб рядом, магазины и рестораны в шаговой доступности.</p>-->
+<#--        </div>-->
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h3>Дополнительные сервисы</h3>
+            <ul class="list-unstyled">
+                <li>Сплит-система</li>
+                <li>Интернет Wi-Fi</li>
+                <li>Посудомоечная машина</li>
+                <li>Парковка</li>
+            </ul>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary">Забронировать</button>
+    <div>Телефон владельца:</div>
+</div>
+</body>
+</html>
