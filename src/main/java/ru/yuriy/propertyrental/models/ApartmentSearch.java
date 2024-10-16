@@ -4,7 +4,7 @@ import lombok.Getter;
 import ru.yuriy.propertyrental.enums.ApartmentType;
 
 @Getter
-public class ApartmentTemp
+public class ApartmentSearch
 {
     private String address;
 

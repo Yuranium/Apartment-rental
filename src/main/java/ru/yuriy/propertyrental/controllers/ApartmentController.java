@@ -3,7 +3,7 @@ package ru.yuriy.propertyrental.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.yuriy.propertyrental.models.ApartmentTemp;
+import ru.yuriy.propertyrental.models.ApartmentSearch;
 
 
 @Controller
@@ -11,7 +11,7 @@ import ru.yuriy.propertyrental.models.ApartmentTemp;
 public class ApartmentController
 {
     @PostMapping("/search")
-    public String searchApartments(ApartmentTemp apartmentTemp)
+    public String searchApartments(ApartmentSearch apartmentSearch)
     {
         // todo поиск через elasticsearch
         return "apartments";

@@ -48,7 +48,7 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Отправить запрос</button>
+    <button type="submit" class="btn btn-primary">Найти</button>
 </form>
 <hr>
 </body>
