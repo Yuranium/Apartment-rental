@@ -51,8 +51,8 @@ public class Apartment
     private List<Image> images = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "Apartments_Services",
-            joinColumns = @JoinColumn(name = "apartment_id_apartment"),
-            inverseJoinColumns = @JoinColumn(name = "services_id_service"))
+    @JoinTable(name = "apartments_services",
+            joinColumns = @JoinColumn(name = "id_apartment"),
+            inverseJoinColumns = @JoinColumn(name = "id_service"))
     private List<Service> services = new ArrayList<>();
 }

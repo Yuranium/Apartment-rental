@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>RENTAP</h1><hr>
-<span><a href="user/registration">Зарегистрироваться</a></span>
+<span><a href="/registration">Зарегистрироваться</a></span>
 <span><a href="/user/login">Войти</a></span>
 <h2>Привет, пользователь</h2><br>
 <h2>Найти апартаменты сейчас</h2>
