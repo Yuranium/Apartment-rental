@@ -7,8 +7,6 @@
 <h1>RENTAP</h1><hr>
 <span><a href="user/registration">Зарегистрироваться</a></span>
 <span><a href="/user/login">Войти</a></span>
-<span><a href="user/registration">Зарегистрироваться как арендодатель</a></span>
-<span><a href="/user/login">Войти как арендодатель</a></span>
 <h2>Привет, пользователь</h2><br>
 <h2>Найти апартаменты сейчас</h2>
 <hr>
@@ -21,8 +19,8 @@
     </div>
 
     <div class="form-group">
-        <label for="rooms">Количество комнат:</label>
-        <select id="rooms" name="rooms">
+        <label for="countRooms">Количество комнат:</label>
+        <select id="countRooms" name="countRooms">
             <option value="">Выберите количество комнат</option>
             <option value="1">1 комната</option>
             <option value="2">2 комнаты</option>
@@ -38,12 +36,12 @@
     </div>
 
     <div class="form-group">
-        <label for="propertyType">Тип недвижимости:</label>
-        <select id="propertyType" name="propertyType">
+        <label for="apartmentType">Тип недвижимости:</label>
+        <select id="apartmentType" name="apartmentType">
             <option value="">Выберите тип</option>
-            <option value="apartment">Квартира</option>
+            <option value="flat">Квартира</option>
             <option value="hotel">Отель</option>
-            <option value="room">Дом</option>
+            <option value="house">Дом</option>
             <option value="office">Офис</option>
         </select>
     </div>

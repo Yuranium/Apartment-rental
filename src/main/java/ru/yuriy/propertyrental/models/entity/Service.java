@@ -19,7 +19,7 @@ public class Service
     @Column(name = "id_service", nullable = false)
     private Long id;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
     @Column(name = "service_price", columnDefinition = "numeric(10, 3)")
