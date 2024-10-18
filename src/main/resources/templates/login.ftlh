@@ -16,5 +16,10 @@
     <button type="submit">Войти</button>
 </form>
 
+<div>
+    <span>Нет аккаунта?</span>
+    <a href="/registration">Зарегистрироваться!</a>
+</div>
+
 </body>
 </html>

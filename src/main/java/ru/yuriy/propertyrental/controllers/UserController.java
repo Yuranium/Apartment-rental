@@ -1,5 +1,6 @@
 package ru.yuriy.propertyrental.controllers;
 
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -8,9 +9,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.yuriy.propertyrental.models.ConfirmCode;
 import ru.yuriy.propertyrental.models.UserForm;
+import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.UserValidator;
+
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,6 +25,8 @@ public class UserController
     private final UserService userService;
 
     private final UserValidator userValidator;
+
+    private final EmailService emailService;
 
     @GetMapping("/registration")
     public String registration(Model model)
@@ -33,9 +41,32 @@ public class UserController
     {
         userValidator.validate(userForm, result);
         model.addAttribute("errors", result);
-        if (result.hasErrors())
-            return "registration";
+//        if (result.hasErrors())
+//            return "registration";
+        userService.saveUser(userForm);
+        emailService.sendHtmlEmail(userForm.getEmail());
         // else model.addAttribute("userForm", userForm);
-        return "redirect:/";
+        return "redirect:/confirm?email=" + userForm.getEmail();
+    }
+
+    @GetMapping("/confirm")
+    public String confirmRegistration(@RequestParam(name = "repeat", required = false) Boolean repeat,
+                                      @RequestParam(name = "email", required = false) String email)
+    {
+        if (Optional.ofNullable(repeat).isPresent() && email != null)
+            emailService.sendHtmlEmail(email);
+        else System.out.println("отправка не удалась");
+        return "confirm";
+    }
+
+    @PostMapping("/confirm")
+    public String confirmRegistration(@ModelAttribute ConfirmCode code,
+                                      BindingResult result, Model model)
+    {
+        if (code.toString().equals(emailService.getCode())) {
+            System.out.println("коды совпадают"); // todo устанавливать активность через сессии
+            return "redirect:/";
+        }
+        else return "redirect:/registration";
     }
 }

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Email Template</title>
+</head>
+<body>
+<h1 th:text="${subject}"></h1>
+<p th:text="${message}"></p>
+<p>Код подтверждения регистрации</p>
+<div>
+    <span>Код: </span><span th:text="${confirmCode}"></span>
+</div>
+</body>
+</html>

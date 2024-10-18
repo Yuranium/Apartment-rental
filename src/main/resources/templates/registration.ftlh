@@ -51,5 +51,10 @@
 
     <button type="submit">Зарегистрироваться</button>
 </form>
+
+<div>
+    <span>Есть аккаунт?</span>
+    <a href="/login">Войти</a>
+</div>
 </body>
 </html>

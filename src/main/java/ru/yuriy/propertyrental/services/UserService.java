@@ -16,6 +16,10 @@ public class UserService
 {
     private final UserRepository userRepository;
 
+    private final EmailService emailService;
+
+    private String confirmCode;
+
     @Transactional(readOnly = true)
     public List<User> userList()
     {
