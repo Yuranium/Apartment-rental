@@ -7,6 +7,8 @@ import org.springframework.validation.Validator;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.perositories.UserRepository;
 
+import java.util.Date;
+
 @Component
 @RequiredArgsConstructor
 public class UserValidator implements Validator
@@ -28,7 +30,9 @@ public class UserValidator implements Validator
             errors.rejectValue("email", "", "Данный Email уже занят!");
             errors.rejectValue("phone", "", "Данный телефон уже есть в базе!");
         }
-        else if (!user.equalsPassword())
+        if (!user.equalsPassword())
             errors.rejectValue("replayPassword", "", "Пароли не совпадают!");
+        if (new Date(System.currentTimeMillis()).before(user.getBirthday()))
+            errors.rejectValue("birthday", "", "Введённая дата больше текущей!");
     }
 }

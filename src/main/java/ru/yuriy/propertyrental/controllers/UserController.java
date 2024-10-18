@@ -41,8 +41,8 @@ public class UserController
     {
         userValidator.validate(userForm, result);
         model.addAttribute("errors", result);
-//        if (result.hasErrors())
-//            return "registration";
+        if (result.hasErrors())
+            return "registration";
         userService.saveUser(userForm);
         emailService.sendHtmlEmail(userForm.getEmail());
         // else model.addAttribute("userForm", userForm);
