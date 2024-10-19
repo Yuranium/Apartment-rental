@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.entity.User;
+import ru.yuriy.propertyrental.perositories.RoleRepository;
 import ru.yuriy.propertyrental.perositories.UserRepository;
+import ru.yuriy.propertyrental.util.RoleNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +18,7 @@ public class UserService
 {
     private final UserRepository userRepository;
 
-    private final EmailService emailService;
-
-    private String confirmCode;
+    private final RoleRepository roleRepository;
 
     @Transactional(readOnly = true)
     public List<User> userList()
@@ -37,6 +37,8 @@ public class UserService
         user.setPassword(userForm.getPassword());
         user.setBirthday(userForm.getBirthday());
         user.setActive(Boolean.FALSE);
+        user.setRole(roleRepository.findById(2L).orElseThrow(() -> new RoleNotFoundException(
+                "ОШИБКА: Для данного пользователя роль не была установлена")));
         // userRepository.save(user);
     }
 

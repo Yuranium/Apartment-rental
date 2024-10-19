@@ -26,6 +26,8 @@ public class EmailService
     @Value("${spring.mail.username}")
     private String email;
 
+    private String emailTo;
+
     @Autowired
     public EmailService(JavaMailSender mailSender, TemplateEngine engine) {
         this.mailSender = mailSender;
@@ -36,6 +38,7 @@ public class EmailService
     @SneakyThrows
     public void sendHtmlEmail(String to)
     {
+        emailTo = to;
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
@@ -53,6 +56,12 @@ public class EmailService
         helper.setFrom(email);
 
         mailSender.send(mimeMessage);
+    }
+
+    public void repeatSendEmail()
+    {
+        if (emailTo != null && !emailTo.isEmpty())
+            sendHtmlEmail(emailTo);
     }
 
     private String generateConfirmCode()

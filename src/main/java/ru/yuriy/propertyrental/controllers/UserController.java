@@ -45,15 +45,14 @@ public class UserController
         userService.saveUser(userForm);
         emailService.sendHtmlEmail(userForm.getEmail());
         // else model.addAttribute("userForm", userForm);
-        return "redirect:/confirm?email=" + userForm.getEmail();
+        return "redirect:/confirm";
     }
 
     @GetMapping("/confirm")
-    public String confirmRegistration(@RequestParam(name = "repeat", required = false) Boolean repeat,
-                                      @RequestParam(name = "email", required = false) String email)
+    public String confirmRegistration(@RequestParam(name = "repeat", required = false) Boolean repeat)
     {
-        if (Optional.ofNullable(repeat).isPresent() && email != null)
-            emailService.sendHtmlEmail(email);
+        if (Optional.ofNullable(repeat).isPresent())
+            emailService.repeatSendEmail();
         else System.out.println("отправка не удалась");
         return "confirm";
     }
