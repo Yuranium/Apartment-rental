@@ -10,23 +10,23 @@
 
 <form action="/confirm" method="POST">
     <p>Введите код подтверждения:</p>
-    <label for="code">Цифра 1</label>
-    <input type="number" id="code" name="code" maxlength="1" required>
+    <label for="number1">Цифра 1</label>
+    <input type="number" id="number1" name="number1" maxlength="1" required>
 
-    <label for="code">Цифра 2</label>
-    <input type="number" id="code" name="code" maxlength="1" required>
+    <label for="number2">Цифра 2</label>
+    <input type="number" id="number2" name="number2" maxlength="1" required>
 
-    <label for="code">Цифра 3</label>
-    <input type="number" id="code" name="code" maxlength="1" required>
+    <label for="number3">Цифра 3</label>
+    <input type="number" id="number3" name="number3" maxlength="1" required>
 
-    <label for="code">Цифра 4</label>
-    <input type="number" id="code" name="code" maxlength="1" required>
+    <label for="number4">Цифра 4</label>
+    <input type="number" id="number4" name="number4" maxlength="1" required>
 
-    <label for="code">Цифра 5</label>
-    <input type="number" id="code" name="code" maxlength="1" required>
+    <label for="number5">Цифра 5</label>
+    <input type="number" id="number5" name="number5" maxlength="1" required>
 
-    <label for="code">Цифра 6</label>
-    <input type="number" id="code" name="code" maxlength="1" required>
+    <label for="number6">Цифра 6</label>
+    <input type="number" id="number6" name="number6" maxlength="1" required>
 
     <button type="submit">Подтвердить</button>
 </form>

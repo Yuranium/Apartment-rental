@@ -1,9 +1,27 @@
 package ru.yuriy.propertyrental.models;
 
-public record ConfirmCode(
-        Integer number1, Integer number2, Integer number3,
-        Integer number4, Integer number5, Integer number6)
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ConfirmCode
 {
+    private Integer number1;
+
+    private Integer number2;
+
+    private Integer number3;
+
+    private Integer number4;
+
+    private Integer number5;
+
+    private Integer number6;
     public String toString()
     {
         return String.format("%s%s%s%s%s%s", number1, number2, number3, number4, number5, number6);

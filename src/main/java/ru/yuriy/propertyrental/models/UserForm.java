@@ -45,7 +45,7 @@ public class UserForm
 
     private String replayPassword;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     public Boolean equalsPassword()

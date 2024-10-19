@@ -4,6 +4,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class EmailService
 
     @Getter
     private String code;
+
+    @Value("${spring.mail.username}")
+    private String email;
 
     @Autowired
     public EmailService(JavaMailSender mailSender, TemplateEngine engine) {
@@ -46,6 +50,7 @@ public class EmailService
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlBody, true);
+        helper.setFrom(email);
 
         mailSender.send(mimeMessage);
     }

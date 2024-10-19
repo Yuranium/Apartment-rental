@@ -1,6 +1,5 @@
 package ru.yuriy.propertyrental.controllers;
 
-import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
