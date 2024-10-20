@@ -5,12 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.ConfirmCode;
 import ru.yuriy.propertyrental.models.UserForm;
+import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.CodeValidator;
@@ -70,5 +68,17 @@ public class UserController
         if (result.hasErrors())
             return "confirm";
         else return "redirect:/"; // todo устанавливать активность через сессии
+    }
+
+    @GetMapping("profile/{id}")
+    public String userProfile(@PathVariable Long id, Model model)
+    {
+        Optional<User> user = userService.findById(id);
+        if (user.isPresent())
+        {
+            model.addAttribute("profileInfo", user.get());
+            return "userProfile";
+        }
+        else return "404";
     }
 }

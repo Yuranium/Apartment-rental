@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
+</head>
+<body>
+<h1>Профиль пользователя</h1>
+
+<div class="profile-info" th:object="${profileInfo}">
+    <p><strong>Имя:</strong> <span th:text="${profileInfo.name}"></span></p>
+    <p><strong>Фамилия:</strong> <span th:text="${profileInfo.lastName}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${profileInfo.email}"></span></p>
+    <p><strong>Телефон:</strong> <span th:text="${profileInfo.phone}"></span></p>
+    <p><strong>Дата регистрации:</strong> <span th:text="${profileInfo.dateRegistration}"></span></p>
+    <p><strong>День рождения:</strong> <span th:text="${profileInfo.birthday}"></span></p>
+    <p><strong>Активен:</strong> <span th:text="${profileInfo.active ? 'Да' : 'Нет'}"></span></p>
+    <p><strong>Роль:</strong> <span th:text="${profileInfo.role.roleType}"></span></p>
+</div>
+
+<div class="profile-buttons">
+    <a href="#" th:href="@{/deleteProfile(id=${profileInfo.id})}" class="btn btn-danger">Удалить профиль</a>
+    <a href="#" th:href="@{/editProfile(id=${profileInfo.id})}" class="btn btn-warning">Редактировать</a>
+</div>
+</body>
+</html>
