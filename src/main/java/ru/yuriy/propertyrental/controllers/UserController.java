@@ -13,6 +13,7 @@ import ru.yuriy.propertyrental.models.ConfirmCode;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
+import ru.yuriy.propertyrental.util.CodeValidator;
 import ru.yuriy.propertyrental.util.UserValidator;
 
 import java.util.Optional;
@@ -26,6 +27,8 @@ public class UserController
     private final UserValidator userValidator;
 
     private final EmailService emailService;
+
+    private final CodeValidator codeValidator;
 
     @GetMapping("/registration")
     public String registration(Model model)
@@ -49,22 +52,23 @@ public class UserController
     }
 
     @GetMapping("/confirm")
-    public String confirmRegistration(@RequestParam(name = "repeat", required = false) Boolean repeat)
+    public String confirmRegistration(@RequestParam(name = "repeat", required = false) Boolean repeat,
+                                      Model model)
     {
+        model.addAttribute("code", new ConfirmCode());
         if (Optional.ofNullable(repeat).isPresent())
             emailService.repeatSendEmail();
-        else System.out.println("отправка не удалась");
         return "confirm";
     }
 
     @PostMapping("/confirm")
-    public String confirmRegistration(@ModelAttribute ConfirmCode code,
+    public String confirmRegistration(@ModelAttribute @Valid ConfirmCode code,
                                       BindingResult result, Model model)
     {
-        if (code.toString().equals(emailService.getCode())) {
-            System.out.println("коды совпадают"); // todo устанавливать активность через сессии
-            return "redirect:/";
-        }
-        else return "redirect:/registration";
+        codeValidator.validate(code, result);
+        model.addAttribute("codeError", result);
+        if (result.hasErrors())
+            return "confirm";
+        else return "redirect:/"; // todo устанавливать активность через сессии
     }
 }

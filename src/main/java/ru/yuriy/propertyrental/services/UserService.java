@@ -1,6 +1,7 @@
 package ru.yuriy.propertyrental.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.UserForm;
@@ -9,6 +10,8 @@ import ru.yuriy.propertyrental.perositories.RoleRepository;
 import ru.yuriy.propertyrental.perositories.UserRepository;
 import ru.yuriy.propertyrental.util.RoleNotFoundException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,20 +29,23 @@ public class UserService
         return userRepository.findAll();
     }
 
+    @SneakyThrows
     @Transactional(rollbackFor = {RuntimeException.class})
     public void saveUser(UserForm userForm)
     {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         User user = new User();
         user.setName(userForm.getName());
-        user.setLastName(userForm.getLastName());
+        user.setLastName(user.getLastName().isBlank() ? null : userForm.getLastName());
         user.setEmail(userForm.getEmail());
-        user.setPhone(userForm.getPhone());
+        user.setPhone(user.getPhone().isBlank() ? null : userForm.getPhone());
         user.setPassword(userForm.getPassword());
-        user.setBirthday(userForm.getBirthday());
+        user.setBirthday(userForm.getBirthday().isBlank() ? null :
+                dateFormat.parse(userForm.getBirthday()));
         user.setActive(Boolean.FALSE);
         user.setRole(roleRepository.findById(2L).orElseThrow(() -> new RoleNotFoundException(
                 "ОШИБКА: Для данного пользователя роль не была установлена")));
-        // userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Transactional

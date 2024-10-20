@@ -13,7 +13,7 @@
     <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
 
     <label for="lastName">Фамилия:</label>
-    <input type="text" id="lastName" th:field="*{lastName}" required>
+    <input type="text" id="lastName" th:field="*{lastName}">
     <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color:red;"></div>
 
     <label for="email">Адрес электронной почты:</label>
@@ -33,7 +33,7 @@
     <div th:if="${#fields.hasErrors('replayPassword')}" th:errors="*{replayPassword}" style="color:red;"></div>
 
     <label for="birthday">Дата рождения:</label>
-    <input type="date" id="birthday" th:field="*{birthday}">>
+    <input type="date" id="birthday" th:field="*{birthday}">
     <div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" style="color:red;"></div>
 
     <button type="submit">Зарегистрироваться</button>

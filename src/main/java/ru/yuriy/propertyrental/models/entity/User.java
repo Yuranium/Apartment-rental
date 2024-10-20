@@ -38,7 +38,8 @@ public class User
     @Column(name = "date_registration")
     private Timestamp dateRegistration;
 
-    @Column(name = "birthday_date", columnDefinition = "timestamp")
+    @Column(name = "birthday_date")
+    @Temporal(TemporalType.DATE)
     private Date birthday;
 
     @Column(name = "active")

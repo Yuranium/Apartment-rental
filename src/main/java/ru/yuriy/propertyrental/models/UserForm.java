@@ -24,8 +24,6 @@ public class UserForm
     @NotNull(message = "Обязательное поле!")
     private String name;
 
-    @Size(min = 3, max = 50, message = "Фамилия слишком короткая или слишком длинная!")
-    @NotEmpty(message = "Поле пустое!")
     private String lastName;
 
     @Email
@@ -33,9 +31,6 @@ public class UserForm
     @NotNull(message = "Обязательное поле!")
     private String email;
 
-    @Size(min = 10, max = 15, message = "Некорректный телефон!")
-    @NotEmpty(message = "Поле пустое!")
-    @NotNull(message = "Обязательное поле!")
     private String phone;
 
     @Size(min = 7, max = 50, message = "Пароль слишком короткий или слишком длинный!")
@@ -46,7 +41,7 @@ public class UserForm
     private String replayPassword;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthday;
+    private String birthday;
 
     public Boolean equalsPassword()
     {
