@@ -25,6 +25,7 @@ public class Payment
     private Double amountPayment;
 
     @Column(name = "date_payment", columnDefinition = "date")
+    @Temporal(TemporalType.DATE)
     private Date datePayment;
 
     @Column(name = "status_payment", length = 20)

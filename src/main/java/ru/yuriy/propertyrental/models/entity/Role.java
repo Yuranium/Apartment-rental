@@ -27,8 +27,12 @@ public class Role
     private RoleType roleType;
 
     @Column(name = "assignment_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp assignmentDate;
 
-    @OneToMany(mappedBy = "role")
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_role"))
     private List<User> users = new ArrayList<>();
 }

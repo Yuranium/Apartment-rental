@@ -43,8 +43,8 @@ public class UserService
         user.setBirthday(userForm.getBirthday().isBlank() ? null :
                 dateFormat.parse(userForm.getBirthday()));
         user.setActive(Boolean.FALSE);
-        user.setRole(roleRepository.findById(2L).orElseThrow(() -> new RoleNotFoundException(
-                "ОШИБКА: Для данного пользователя роль не была установлена")));
+        user.setRoles(List.of(roleRepository.findById(2L).orElseThrow(() -> new RoleNotFoundException(
+                "ОШИБКА: Для данного пользователя роль не была установлена"))));
         userRepository.save(user);
     }
 

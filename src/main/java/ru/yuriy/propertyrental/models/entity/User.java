@@ -36,6 +36,7 @@ public class User
     private String password;
 
     @Column(name = "date_registration")
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp dateRegistration;
 
     @Column(name = "birthday_date")
@@ -45,9 +46,8 @@ public class User
     @Column(name = "active")
     private Boolean active;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_role")
-    private Role role;
+    @ManyToMany(mappedBy = "users")
+    private List<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<Payment> payments = new LinkedHashSet<>();
