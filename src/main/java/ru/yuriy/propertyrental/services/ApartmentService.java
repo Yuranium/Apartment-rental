@@ -1,8 +1,8 @@
 package ru.yuriy.propertyrental.services;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.yuriy.propertyrental.models.ApartmentForm;
 import ru.yuriy.propertyrental.models.entity.Apartment;
@@ -24,6 +24,7 @@ public class ApartmentService
         return apartmentRepository.findAll();
     }
 
+    @Transactional
     public void saveApartment(ApartmentForm newApartment)
     {
         Apartment apartment = new Apartment();
