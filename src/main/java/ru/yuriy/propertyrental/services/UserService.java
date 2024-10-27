@@ -6,12 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.entity.User;
-import ru.yuriy.propertyrental.perositories.RoleRepository;
-import ru.yuriy.propertyrental.perositories.UserRepository;
+import ru.yuriy.propertyrental.repositories.RoleRepository;
+import ru.yuriy.propertyrental.repositories.UserRepository;
 import ru.yuriy.propertyrental.util.RoleNotFoundException;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

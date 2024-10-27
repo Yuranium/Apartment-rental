@@ -4,16 +4,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
+import ru.yuriy.propertyrental.models.ApartmentForm;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
-import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.services.ApartmentService;
-
-import java.util.List;
+import ru.yuriy.propertyrental.util.ApartmentValidator;
 
 
 @Controller
@@ -22,6 +21,16 @@ import java.util.List;
 public class ApartmentController
 {
     private final ApartmentService apartmentService;
+
+    private final ApartmentValidator apartmentValidator;
+
+    @GetMapping("/all")
+    public String allApartments(Model model)
+    {
+        model.addAttribute("listApartments", apartmentService.apartmentList());
+        return "allApartments";
+    }
+
     @PostMapping("/search")
     public String searchApartments(@ModelAttribute ApartmentSearch apartmentSearch, Model model)
     {
@@ -32,14 +41,20 @@ public class ApartmentController
     }
 
     @GetMapping("/add")
-    public String addApartment()
+    public String addApartment(Model model)
     {
-        return "apartments";
+        model.addAttribute("apartmentForm", new ApartmentForm());
+        return "addApartment";
     }
 
     @PostMapping("/add")
-    public String addApartment(@ModelAttribute @Valid Apartment apartment, List<MultipartFile> files, Model model)
+    public String addApartment(@ModelAttribute @Valid ApartmentForm apartment, BindingResult result, Model model)
     {
-        return "redirect:/";
+        apartmentValidator.validate(apartment, result);
+        model.addAttribute("images", result);
+        if (result.hasErrors())
+            return "addApartment";
+        apartmentService.saveApartment(apartment);
+        return "redirect:/apartments/all";
     }
 }

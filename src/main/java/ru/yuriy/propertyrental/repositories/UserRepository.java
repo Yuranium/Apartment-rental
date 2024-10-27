@@ -1,17 +1,11 @@
-package ru.yuriy.propertyrental.perositories;
+package ru.yuriy.propertyrental.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.entity.User;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Optional;
 
 @Repository

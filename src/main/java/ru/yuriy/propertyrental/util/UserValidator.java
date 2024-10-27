@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.yuriy.propertyrental.models.UserForm;
-import ru.yuriy.propertyrental.perositories.UserRepository;
+import ru.yuriy.propertyrental.repositories.UserRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

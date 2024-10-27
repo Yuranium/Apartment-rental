@@ -1,52 +1,59 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавление апартамента</title>
-    <!-- Здесь будут включаться стили CSS -->
 </head>
 <body>
-<h1>Добавление нового апартамента</h1>
+<div class="container">
+    <h1 class="my-4">Добавление нового апартамента</h1>
 
-<form action="/apartments/add" method="POST" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="square" class="form-label">Площадь:</label>
-        <input type="number" class="form-control" id="square" name="square" required>
-    </div>
+    <form th:action="@{/apartments/add}" th:method="POST" th:object="${apartmentForm}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="square" class="form-label">Площадь:</label>
+            <input type="number" class="form-control" id="square" th:field="*{square}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('square')}" th:errors="*{square}" style="color:red;"></div>
+        </div>
 
-    <div class="mb-3">
-        <label for="roomCount" class="form-label">Количество комнат:</label>
-        <input type="number" class="form-control" id="roomCount" name="roomCount" required>
-    </div>
+        <div class="mb-3">
+            <label for="roomCount" class="form-label">Количество комнат:</label>
+            <input type="number" class="form-control" id="roomCount" th:field="*{roomCount}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('roomCount')}" th:errors="*{roomCount}" style="color:red;"></div>
+        </div>
 
-    <div class="mb-3">
-        <label for="dailyPrice" class="form-label">Ежедневная цена:</label>
-        <input type="number" step="0.01" class="form-control" id="dailyPrice" name="dailyPrice" required>
-    </div>
+        <div class="mb-3">
+            <label for="dailyPrice" class="form-label">Ежедневная цена:</label>
+            <input type="number" step="0.01" class="form-control" id="dailyPrice" th:field="*{dailyPrice}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('dailyPrice')}" th:errors="*{dailyPrice}" style="color:red;"></div>
+        </div>
 
-    <div class="mb-3">
-        <label for="apartmentType">Тип недвижимости:</label>
-        <select id="apartmentType" name="apartmentType">
-            <option value="">Выберите тип</option>
-            <option value="flat">Квартира</option>
-            <option value="hotel">Отель</option>
-            <option value="house">Дом</option>
-            <option value="office">Офис</option>
-        </select>
-    </div>
+        <div class="mb-3">
+            <label for="apartmentType">Тип недвижимости:</label>
+            <select id="apartmentType" class="form-control" th:field="*{type}" required>
+                <option value="">Выберите тип</option>
+                <option value="FLAT">Квартира</option>
+                <option value="HOTEL">Отель</option>
+                <option value="HOUSE">Дом</option>
+                <option value="OFFICE">Офис</option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}" style="color:red;"></div>
+        </div>
 
-    <div class="mb-3">
-        <label for="address" class="form-label">Адрес:</label>
-        <input type="text" class="form-control" id="address" name="address" required>
-    </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Адрес:</label>
+            <input type="text" class="form-control" id="address" th:field="*{address}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red;"></div>
+        </div>
 
-    <div class="mb-3">
-        <label for="photos" class="form-label">Фотографии:</label>
-        <input type="file" class="form-control" id="photos" name="photos" multiple>
-    </div>
+        <div class="mb-3">
+            <label for="photos" class="form-label">Фотографии:</label>
+            <input type="file" class="form-control" id="photos" name="images" multiple>
+            <div class="text-danger" th:if="${#fields.hasErrors('images')}" th:errors="*{images}" style="color:red;"></div>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Добавить апартамент</button>
-</form>
+        <button type="submit" class="btn btn-primary">Добавить апартамент</button>
+    </form>
+</div>
 </body>
 </html>
