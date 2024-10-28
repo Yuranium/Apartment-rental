@@ -15,7 +15,7 @@
     <p><strong>Дата регистрации:</strong> <span th:text="${profileInfo.dateRegistration}"></span></p>
     <p><strong>День рождения:</strong> <span th:text="${profileInfo.birthday}"></span></p>
     <p><strong>Активен:</strong> <span th:text="${profileInfo.active ? 'Да' : 'Нет'}"></span></p>
-    <p><strong>Роль:</strong> <span th:text="${profileInfo.role.roleType}"></span></p>
+    <p><strong>Роль:</strong> <span th:each="role : ${profileInfo.roles}" th:text="${role.roleType}"></span></p>
 </div>
 
 <div class="profile-buttons">

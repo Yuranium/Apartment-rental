@@ -4,6 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Подтверждение регистрации</title>
+  <script>
+    function showNotification(message)
+    {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+
+      const closeButton = document.createElement('button');
+      closeButton.textContent = 'Закрыть';
+      closeButton.onclick = () => notification.remove();
+
+      notification.appendChild(closeButton);
+      document.body.appendChild(notification);
+    }
+    if (location.pathname === '/PropertyRental/src/main/resources/templates/confirm.html')
+      setTimeout(() => showNotification('Введите код, который пришёл на указанную почту для продолжения'), 500);
+
+  </script>
 </head>
 <body>
 <h1>Подтверждение регистрации</h1>

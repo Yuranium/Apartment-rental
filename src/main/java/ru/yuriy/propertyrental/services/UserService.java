@@ -9,7 +9,9 @@ import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.RoleRepository;
 import ru.yuriy.propertyrental.repositories.UserRepository;
 import ru.yuriy.propertyrental.util.RoleNotFoundException;
+import ru.yuriy.propertyrental.util.UserNotFoundException;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
@@ -78,8 +80,33 @@ public class UserService
         }
     }
 
+    @Transactional
     public Optional<User> findById(Long id)
     {
         return userRepository.findById(id);
+    }
+
+    @Transactional
+    public List<User> findAll()
+    {
+        return userRepository.findAll();
+    }
+
+    @Transactional
+    public void banUserById(Long id)
+    {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("Данный пользователь не был найден!"));
+        user.setActive(false);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void unbanUserById(Long id)
+    {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("Данный пользователь не был найден!"));
+        user.setActive(true);
+        userRepository.save(user);
     }
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Все пользователи</title>
+</head>
+<body th:object="${allUsers}">
+<div th:each="user : ${allUsers}">
+    <p><strong>Имя:</strong> <span th:text="${user.name}"></span></p>
+    <p><strong>Фамилия:</strong> <span th:text="${user.lastName}"></span></p>
+    <p><strong>Дата регистрации:</strong> <span th:text="${user.dateRegistration}"></span></p>
+    <p><strong>Активен:</strong> <span th:text="${user.active ? 'Да' : 'Нет'}"></span></p>
+    <p><strong>Роль:</strong> <span th:each="role : ${user.roles}" th:text="${role.roleType}"></span></p>
+</div>
+</body>
+</html>

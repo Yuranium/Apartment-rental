@@ -59,4 +59,11 @@ public class ApartmentService
                 })
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void deleteApartment(Long id)
+    {
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow(null);
+        apartmentRepository.delete(apartment);
+    }
 }
