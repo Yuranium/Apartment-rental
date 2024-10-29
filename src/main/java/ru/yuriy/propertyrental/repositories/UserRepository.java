@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>
 {
     @Transactional(readOnly = true)
-    Optional<User> findByEmailOrPhone(String email, String phone);
+    Optional<User> findByEmail(String email);
 
     @Transactional(readOnly = true)
-    Optional<User> findByPhoneAndEmail(String phone, String email);
+    Optional<User> findByPhone(String phone);
 }

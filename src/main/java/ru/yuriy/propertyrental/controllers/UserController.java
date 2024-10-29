@@ -45,7 +45,6 @@ public class UserController
             return "registration";
         userService.saveUser(userForm);
         emailService.sendHtmlEmail(userForm.getEmail());
-        // else model.addAttribute("userForm", userForm);
         return "redirect:/confirm";
     }
 

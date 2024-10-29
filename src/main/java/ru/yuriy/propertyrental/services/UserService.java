@@ -5,14 +5,15 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.UserForm;
+import ru.yuriy.propertyrental.models.entity.Role;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.RoleRepository;
 import ru.yuriy.propertyrental.repositories.UserRepository;
 import ru.yuriy.propertyrental.util.RoleNotFoundException;
 import ru.yuriy.propertyrental.util.UserNotFoundException;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,28 +32,35 @@ public class UserService
     }
 
     @SneakyThrows
-    @Transactional(rollbackFor = {RuntimeException.class})
+    @Transactional(rollbackFor = {RoleNotFoundException.class})
     public void saveUser(UserForm userForm)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         User user = new User();
+        String lastName = user.getLastName();
+        String phone = user.getPhone();
         user.setName(userForm.getName());
-        user.setLastName(user.getLastName().isBlank() ? null : userForm.getLastName());
+        user.setLastName(lastName == null || lastName.isBlank() ? null : lastName);
         user.setEmail(userForm.getEmail());
-        user.setPhone(user.getPhone().isBlank() ? null : userForm.getPhone());
+        user.setPhone(phone == null || phone.isBlank() ? null : phone);
         user.setPassword(userForm.getPassword());
         user.setBirthday(userForm.getBirthday().isBlank() ? null :
                 dateFormat.parse(userForm.getBirthday()));
-        user.setActive(Boolean.FALSE);
-        user.setRoles(List.of(roleRepository.findById(2L).orElseThrow(() -> new RoleNotFoundException(
-                "ОШИБКА: Для данного пользователя роль не была установлена"))));
+        user.setActive(false);
+        user = userRepository.save(user);
+        Role role = roleRepository.findById(2L).orElseThrow(() -> new RoleNotFoundException(
+                "ОШИБКА: Для данного пользователя роль не была установлена"));
+        user.getRoles().add(role);
+        role.getUsers().add(user);
+
+        roleRepository.save(role);
         userRepository.save(user);
     }
 
     @Transactional
     public boolean updateUser(UserForm userForm)
     {
-        Optional<User> userOpt = userRepository.findByPhoneAndEmail(userForm.getPhone(), userForm.getEmail());
+        Optional<User> userOpt = userRepository.findByEmail(userForm.getEmail());
         if (userOpt.isEmpty())
             return false;
         else
@@ -70,7 +78,7 @@ public class UserService
     @Transactional
     public boolean deleteUser(UserForm deleteUser)
     {
-        Optional<User> userOpt = userRepository.findByPhoneAndEmail(deleteUser.getPhone(), deleteUser.getEmail());
+        Optional<User> userOpt = userRepository.findByEmail(deleteUser.getEmail());
         if (userOpt.isEmpty())
             return false;
         else

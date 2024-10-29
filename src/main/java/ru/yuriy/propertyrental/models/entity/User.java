@@ -46,7 +46,11 @@ public class User
     @Column(name = "active")
     private Boolean active;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_role"))
     private List<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
