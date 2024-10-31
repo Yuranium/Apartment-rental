@@ -18,6 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ApartmentForm
 {
+    @Min(value = 5, message = "Некорректное имя апартамента!")
+    @NotNull(message = "Обязательное поле!")
+    private String name;
+
     @Min(value = 1, message = "Некорректное значение площади!")
     @NotNull(message = "Обязательное поле!")
     private Double square;

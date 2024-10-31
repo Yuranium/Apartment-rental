@@ -20,6 +20,9 @@ public class Apartment
     @Column(name = "id_apartment", nullable = false)
     private Long id;
 
+    @Column(name = "name_apartment", length = 50)
+    private String name;
+
     @Column(name = "square", columnDefinition = "numeric(10, 3)")
     private Double square;
 

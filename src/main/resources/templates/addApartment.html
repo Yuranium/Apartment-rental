@@ -11,6 +11,12 @@
 
     <form th:action="@{/apartments/add}" th:method="POST" th:object="${apartmentForm}" enctype="multipart/form-data">
         <div class="mb-3">
+            <label for="name" class="form-label">Название</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
+        </div>
+
+        <div class="mb-3">
             <label for="square" class="form-label">Площадь:</label>
             <input type="number" class="form-control" id="square" th:field="*{square}" required>
             <div class="text-danger" th:if="${#fields.hasErrors('square')}" th:errors="*{square}" style="color:red;"></div>

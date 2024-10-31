@@ -13,7 +13,6 @@ import ru.yuriy.propertyrental.util.RoleNotFoundException;
 import ru.yuriy.propertyrental.util.UserNotFoundException;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
