@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
-import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.models.entity.ApartmentES;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class ApartmentESService
     private final ElasticsearchClient searchClient;
 
     @SneakyThrows
-    public List<Apartment> getSearchApartments(ApartmentSearch apartmentSearch)
+    public List<ApartmentES> getSearchApartments(ApartmentSearch apartmentSearch)
     {
         MatchQuery nameQuery = MatchQuery.of(m -> m
                 .field("name")
@@ -51,31 +50,7 @@ public class ApartmentESService
                 .query(Query.of(q -> q.bool(boolQuery)))
         );
 
-        SearchResponse<ApartmentES> response = searchClient.search(searchRequest, ApartmentES.class);
-        response.hits().hits().forEach(hit -> System.out.println(hit.source()));
-        return null;
-    }
-    private Supplier<Query> createSupplierAutoSuggest(String partialApartmentName)
-    {
-        return () -> Query.of(q -> q.match(new MatchQuery.Builder()
-                .field("name")
-                .query(partialApartmentName)
-                .analyzer("standard")
-                .fuzziness("AUTO")
-                .build()));
-    }
-
-    @SneakyThrows
-    private SearchResponse<ApartmentES> autoSuggestApartment(String partialApartmentName)
-    {
-        Supplier<Query> supplier = createSupplierAutoSuggest(partialApartmentName);
-        return searchClient.search(s -> s.index("apartment")
-                .query(supplier.get()), ApartmentES.class);
-    }
-
-    public List<ApartmentES> searchApartmentResult(String partialApartmentName)
-    {
-        return autoSuggestApartment(partialApartmentName)
+        return searchClient.search(searchRequest, ApartmentES.class)
                 .hits()
                 .hits()
                 .stream()
