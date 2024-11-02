@@ -6,7 +6,7 @@
 <body>
 <h1>RENTAP</h1><hr>
 <form action="/apartments/sort" method="POST">
-    <input type="checkbox" name="addressSort" id="addressSort"><label for="addressSort">Сортировка по площади</label><br>
+    <input type="checkbox" name="squareSort" id="squareSort"><label for="squareSort">Сортировка по площади</label><br>
     <input type="checkbox" name="roomsSort" id="roomsSort"><label for="roomsSort">Сортировка по количеству комнат</label><br>
     <input type="checkbox" name="priceSort" id="priceSort"><label for="priceSort">Сортировка по цене</label><br>
     <input type="submit" value="Применить">

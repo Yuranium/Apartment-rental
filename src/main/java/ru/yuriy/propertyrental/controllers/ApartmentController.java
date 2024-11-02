@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.yuriy.propertyrental.models.ApartmentForm;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
+import ru.yuriy.propertyrental.services.ApartmentESService;
 import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.util.ApartmentValidator;
 
@@ -21,6 +22,8 @@ import ru.yuriy.propertyrental.util.ApartmentValidator;
 public class ApartmentController
 {
     private final ApartmentService apartmentService;
+
+    private final ApartmentESService apartmentESService;
 
     private final ApartmentValidator apartmentValidator;
 
@@ -34,9 +37,14 @@ public class ApartmentController
     @PostMapping("/search")
     public String searchApartments(@ModelAttribute ApartmentSearch apartmentSearch, Model model)
     {
-        System.out.println(apartmentSearch);
-        // todo поиск через elasticsearch
-        model.addAttribute("list_apart", apartmentService.apartmentList());
+        if (apartmentSearch.isEmptySearch())
+            model.addAttribute("list_apart", apartmentService.apartmentList());
+        else
+        {
+            var query = apartmentESService.getSearchApartments(apartmentSearch);
+            System.out.println(query);
+            model.addAttribute("list_apart", query);
+        }
         return "apartments";
     }
 

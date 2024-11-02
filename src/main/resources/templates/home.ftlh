@@ -14,8 +14,8 @@
     <h2>Аренда недвижимости</h2>
 
     <div class="form-group">
-        <label for="address">Адрес или город:</label>
-        <input type="text" id="address" name="address">
+        <label for="name">Название</label>
+        <input type="text" id="name" name="name">
     </div>
 
     <div class="form-group">
@@ -31,7 +31,7 @@
     </div>
 
     <div class="form-group">
-        <label for="dailyPrice">Цена за день:</label>
+        <label for="dailyPrice">Цена за день: (Верхний интервал)</label>
         <input type="number" id="dailyPrice" name="dailyPrice" min="0" step="0.01">
     </div>
 
