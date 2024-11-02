@@ -1,7 +1,6 @@
 package ru.yuriy.propertyrental.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.MapKeyEnumerated;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -34,7 +33,7 @@ public class ApartmentES
     private Double dailyPrice;
 
     @Field(type = FieldType.Keyword)
-    private ApartmentType type;
+    private ApartmentType apartmentType;
 
     @Field(type = FieldType.Text)
     private String address;
