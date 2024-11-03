@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.yuriy.propertyrental.models.ApartmentForm;
+import ru.yuriy.propertyrental.models.ApartmentSearch;
 import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
@@ -19,6 +20,9 @@ public class ApartmentService
 {
     private final ApartmentRepository apartmentRepository;
 
+    private final ApartmentESService apartmentESService;
+
+    @Transactional(readOnly = true)
     public List<Apartment> apartmentList()
     {
         return apartmentRepository.findAll();
@@ -63,7 +67,15 @@ public class ApartmentService
     @Transactional
     public void deleteApartment(Long id)
     {
-        Apartment apartment = apartmentRepository.findById(id).orElseThrow(null);
-        apartmentRepository.delete(apartment);
+        apartmentRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Apartment> getSearchApartment(ApartmentSearch apartmentSearch)
+    {
+        List<ApartmentSearch> apartmentSearchList = apartmentESService.getSearchApartments(apartmentSearch);
+        return apartmentRepository.findAllById(apartmentSearchList.stream()
+                .map(ApartmentSearch::getId)
+                .collect(Collectors.toList()));
     }
 }

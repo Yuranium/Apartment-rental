@@ -5,15 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.ApartmentForm;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
 import ru.yuriy.propertyrental.services.ApartmentESService;
 import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.util.ApartmentValidator;
+
+import java.util.List;
 
 
 @Controller
@@ -41,7 +40,7 @@ public class ApartmentController
             model.addAttribute("list_apart", apartmentService.apartmentList());
         else
         {
-            var query = apartmentESService.getSearchApartments(apartmentSearch);
+            var query = apartmentService.getSearchApartment(apartmentSearch);
             System.out.println(query);
             model.addAttribute("list_apart", query);
         }
@@ -64,5 +63,12 @@ public class ApartmentController
             return "addApartment";
         apartmentService.saveApartment(apartment);
         return "redirect:/apartments/all";
+    }
+
+    @ResponseBody
+    @GetMapping("/api/autocomplete")
+    public List<String> autocomplete(@RequestParam(name = "q", required = false) String query)
+    {
+        return apartmentESService.autocompleteQuery(query);
     }
 }

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
-import ru.yuriy.propertyrental.models.entity.ApartmentES;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class ApartmentESService
     private final ElasticsearchClient searchClient;
 
     @SneakyThrows
-    public List<ApartmentES> getSearchApartments(ApartmentSearch apartmentSearch)
+    public List<ApartmentSearch> getSearchApartments(ApartmentSearch apartmentSearch)
     {
         List<Query> mustQueries = new ArrayList<>();
 
@@ -42,7 +41,7 @@ public class ApartmentESService
                 .query(Query.of(q -> q.bool(boolQuery)))
         );
 
-        return searchClient.search(searchRequest, ApartmentES.class)
+        return searchClient.search(searchRequest, ApartmentSearch.class)
                 .hits()
                 .hits()
                 .stream()
@@ -82,5 +81,25 @@ public class ApartmentESService
             );
             queries.add(Query.of(q -> q.range(priceQuery)));
         }
+    }
+
+    @SneakyThrows
+    public List<String> autocompleteQuery(String query)
+    {
+        SearchRequest searchRequest = SearchRequest.of(s -> s
+                .index("apartment")
+                .query(q -> q.matchPhrasePrefix(m -> m
+                        .field("name")
+                        .query(query)
+                ))
+                .size(10)
+        );
+
+        return searchClient.search(searchRequest, ApartmentSearch.class)
+                .hits()
+                .hits()
+                .stream()
+                .map(hit -> hit.source().getName())
+                .collect(Collectors.toList());
     }
 }
