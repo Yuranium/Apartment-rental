@@ -9,6 +9,7 @@ import ru.yuriy.propertyrental.models.ApartmentSearch;
 import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
+import ru.yuriy.propertyrental.repositories.ImageRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +23,8 @@ public class ApartmentService
 
     private final ApartmentESService apartmentESService;
 
+    private final ImageRepository imageRepository;
+
     @Transactional(readOnly = true)
     public List<Apartment> apartmentList()
     {
@@ -32,6 +35,7 @@ public class ApartmentService
     public void saveApartment(ApartmentForm newApartment)
     {
         Apartment apartment = new Apartment();
+        apartment.setName(newApartment.getName());
         apartment.setSquare(newApartment.getSquare());
         apartment.setRoomCount(newApartment.getRoomCount());
         apartment.setDailyPrice(newApartment.getDailyPrice());
@@ -40,10 +44,11 @@ public class ApartmentService
         apartment.setRoomAvailable(true);
         if (!newApartment.getImages().isEmpty())
         {
-            apartment.setImages(multipartToImage(newApartment.getImages()));
+            apartment.setImagesToApartment(multipartToImage(newApartment.getImages()));
             apartment.getImages().get(0).setPreviewImage(true);
+            imageRepository.saveAll(apartment.getImages());
         }
-        // apartmentRepository.save(apartment);
+        apartmentRepository.save(apartment);
     }
 
     private List<Image> multipartToImage(List<MultipartFile> files)
@@ -77,5 +82,11 @@ public class ApartmentService
         return apartmentRepository.findAllById(apartmentSearchList.stream()
                 .map(ApartmentSearch::getId)
                 .collect(Collectors.toList()));
+    }
+
+    @Transactional(readOnly = true)
+    public Apartment findApartmentById(Long id)
+    {
+        return apartmentRepository.findById(id).orElseThrow(null);
     }
 }

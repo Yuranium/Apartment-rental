@@ -11,7 +11,7 @@
 <h2>Привет, пользователь</h2><br>
 <h2>Найти апартаменты сейчас</h2>
 <hr>
-<form action="/apartments/search" method="POST">
+<form th:action="@{/apartments/search}" th:method="POST">
     <h2>Аренда недвижимости</h2>
 
     <div class="form-group" style="position: relative;">
@@ -41,10 +41,10 @@
         <label for="apartmentType">Тип недвижимости:</label>
         <select id="apartmentType" name="apartmentType">
             <option value="">Выберите тип</option>
-            <option value="flat">Квартира</option>
-            <option value="hotel">Отель</option>
-            <option value="house">Дом</option>
-            <option value="office">Офис</option>
+            <option value="FLAT">Квартира</option>
+            <option value="HOTEL">Отель</option>
+            <option value="HOUSE">Дом</option>
+            <option value="OFFICE">Офис</option>
         </select>
     </div>
 

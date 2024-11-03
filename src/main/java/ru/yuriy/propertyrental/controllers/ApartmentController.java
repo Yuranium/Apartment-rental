@@ -65,6 +65,13 @@ public class ApartmentController
         return "redirect:/apartments/all";
     }
 
+    @GetMapping("/{id}")
+    public String apartmentProfile(@PathVariable Long id, Model model)
+    {
+        model.addAttribute("apartment", apartmentService.findApartmentById(id));
+        return "apartmentProfile";
+    }
+
     @ResponseBody
     @GetMapping("/api/autocomplete")
     public List<String> autocomplete(@RequestParam(name = "q", required = false) String query)

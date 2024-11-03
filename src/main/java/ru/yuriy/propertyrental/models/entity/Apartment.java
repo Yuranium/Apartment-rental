@@ -2,6 +2,7 @@ package ru.yuriy.propertyrental.models.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import ru.yuriy.propertyrental.enums.ApartmentType;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class Apartment
     @JoinColumn(name = "id_user")
     private User user;
 
+    @BatchSize(size = 5)
     @OneToMany(mappedBy = "apartment", orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
@@ -58,4 +60,13 @@ public class Apartment
             joinColumns = @JoinColumn(name = "id_apartment"),
             inverseJoinColumns = @JoinColumn(name = "id_service"))
     private List<Service> services = new ArrayList<>();
+
+    public void setImagesToApartment(List<Image> images)
+    {
+        for (Image image : images)
+        {
+            image.setApartment(this);
+            this.images.add(image);
+        }
+    }
 }
