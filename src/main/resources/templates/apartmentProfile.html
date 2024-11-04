@@ -27,7 +27,7 @@
             <ul class="list-unstyled">
                 <li><strong>Площадь: </strong> <span th:text="${apartment.getSquare() + ' м²'}">60 м²</span></li>
                 <li><strong>Количество комнат: </strong><span th:text="${apartment.getRoomCount()}"> 2</span></li>
-                <li><strong>Ежедневная стоимость: </strong><span th:text="${apartment.getDailyPrice()}"> 2500 руб.</span></li>
+                <li><strong>Ежедневная стоимость: </strong><span th:text="${apartment.getDailyPrice() + ' руб.'}"> 2500 руб.</span></li>
             </ul>
         </div>
         <div class="col-md-8">

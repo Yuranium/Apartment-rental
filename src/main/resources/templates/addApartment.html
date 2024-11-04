@@ -58,6 +58,18 @@
             <div class="text-danger" th:if="${#fields.hasErrors('images')}" th:errors="*{images}" style="color:red;"></div>
         </div>
 
+        <div>
+            <label for="services">Добавить дополнительный сервис</label>
+            <select id="services" name="services" multiple>
+                <option th:each="service : ${services}" th:value="${service.id}"
+                        th:text="${service.getName() + ' — ' + service.getDescription() + '— Ежедневная цена: ' + service.getServicePrice()}">
+                    Полив участка —
+                    Ежедневный полив участка —
+                    Цена: 100 руб.
+                </option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Добавить апартамент</button>
     </form>
 </div>

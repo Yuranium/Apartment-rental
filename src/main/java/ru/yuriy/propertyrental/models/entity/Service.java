@@ -19,6 +19,9 @@ public class Service
     @Column(name = "id_service", nullable = false)
     private Long id;
 
+    @Column(name = "name", length = 50)
+    private String name;
+
     @Column(name = "description", columnDefinition = "text")
     private String description;
 

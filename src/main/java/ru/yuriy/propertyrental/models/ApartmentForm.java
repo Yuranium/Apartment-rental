@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 import ru.yuriy.propertyrental.enums.ApartmentType;
+import ru.yuriy.propertyrental.models.entity.Service;
 
 import java.util.List;
 
@@ -42,4 +43,6 @@ public class ApartmentForm
     private String address;
 
     private List<MultipartFile> images;
+
+    private List<Service> services;
 }

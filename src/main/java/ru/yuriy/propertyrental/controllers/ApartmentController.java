@@ -10,6 +10,7 @@ import ru.yuriy.propertyrental.models.ApartmentForm;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
 import ru.yuriy.propertyrental.services.ApartmentESService;
 import ru.yuriy.propertyrental.services.ApartmentService;
+import ru.yuriy.propertyrental.services.ServiceApService;
 import ru.yuriy.propertyrental.util.ApartmentValidator;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public class ApartmentController
     private final ApartmentService apartmentService;
 
     private final ApartmentESService apartmentESService;
+
+    private final ServiceApService serviceApService;
 
     private final ApartmentValidator apartmentValidator;
 
@@ -51,6 +54,7 @@ public class ApartmentController
     public String addApartment(Model model)
     {
         model.addAttribute("apartmentForm", new ApartmentForm());
+        model.addAttribute("services", serviceApService.getAllServices());
         return "addApartment";
     }
 
