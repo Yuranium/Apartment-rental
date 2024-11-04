@@ -58,7 +58,7 @@ public class ApartmentService
         return files.stream()
                 .map(file -> {
                     Image image = new Image();
-                    image.setName(file.getName());
+                    image.setName(file.getOriginalFilename());
                     image.setContentType(file.getContentType());
                     image.setSize(file.getSize());
                     try {

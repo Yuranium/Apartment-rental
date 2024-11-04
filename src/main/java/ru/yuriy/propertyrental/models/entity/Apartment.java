@@ -73,6 +73,7 @@ public class Apartment
     public void setServicesToApartment(List<Service> services)
     {
         List<Apartment> apartments = new ArrayList<>(List.of(this));
+        if (services == null) return;
         for (Service service : services)
         {
             service.setApartments(apartments);
