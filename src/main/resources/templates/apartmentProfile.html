@@ -40,10 +40,13 @@
         <div class="col-md-12">
             <h3>Дополнительные сервисы</h3>
             <ul class="list-unstyled">
-                <li>Сплит-система</li>
-                <li>Интернет Wi-Fi</li>
-                <li>Посудомоечная машина</li>
-                <li>Парковка</li>
+                <li th:each="service : ${apartment.getServices()}">
+                    <div>
+                        <strong th:text="${service.name}"></strong>
+                        <p th:text="${service.description}"></p>
+                        <p th:text="${'Цена за услугу: ' + service.servicePrice} + ' руб.'"></p>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>

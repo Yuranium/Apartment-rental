@@ -69,4 +69,14 @@ public class Apartment
             this.images.add(image);
         }
     }
+
+    public void setServicesToApartment(List<Service> services)
+    {
+        List<Apartment> apartments = new ArrayList<>(List.of(this));
+        for (Service service : services)
+        {
+            service.setApartments(apartments);
+            this.services.add(service);
+        }
+    }
 }

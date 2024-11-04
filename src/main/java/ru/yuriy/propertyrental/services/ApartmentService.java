@@ -10,6 +10,7 @@ import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
 import ru.yuriy.propertyrental.repositories.ImageRepository;
+import ru.yuriy.propertyrental.repositories.ServiceRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,6 +43,7 @@ public class ApartmentService
         apartment.setType(newApartment.getType());
         apartment.setAddress(newApartment.getAddress());
         apartment.setRoomAvailable(true);
+        apartment.setServicesToApartment(newApartment.getServices());
         if (!newApartment.getImages().isEmpty())
         {
             apartment.setImagesToApartment(multipartToImage(newApartment.getImages()));
