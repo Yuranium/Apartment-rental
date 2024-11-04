@@ -52,7 +52,7 @@ public class Apartment
     private User user;
 
     @BatchSize(size = 5)
-    @OneToMany(mappedBy = "apartment", orphanRemoval = true)
+    @OneToMany(mappedBy = "apartment", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Image> images = new ArrayList<>();
 
     @ManyToMany

@@ -1,13 +1,17 @@
 package ru.yuriy.propertyrental.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.ApartmentForm;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
+import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.services.ApartmentESService;
 import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.services.ServiceApService;
@@ -32,21 +36,30 @@ public class ApartmentController
     @GetMapping("/all")
     public String allApartments(Model model)
     {
-        model.addAttribute("listApartments", apartmentService.apartmentList());
+        model.addAttribute("allApartments", apartmentService.apartmentList());
         return "allApartments";
     }
 
     @PostMapping("/search")
-    public String searchApartments(@ModelAttribute ApartmentSearch apartmentSearch, Model model)
+    public String searchApartments(@ModelAttribute ApartmentSearch apartmentSearch, HttpSession session, Model model)
     {
+        List<Apartment> apartments;
         if (apartmentSearch.isEmptySearch())
-            model.addAttribute("list_apart", apartmentService.apartmentList());
+            apartments = apartmentService.apartmentList();
         else
         {
-            var query = apartmentService.getSearchApartment(apartmentSearch);
-            System.out.println(query);
-            model.addAttribute("list_apart", query);
+            apartments = apartmentService.getSearchApartment(apartmentSearch);
+            System.out.println(apartments);
         }
+        session.setAttribute("apartmentsSearchResult", apartments);
+        model.addAttribute("list_apart", apartments);
+        return "apartments";
+    }
+
+    @PostMapping("/sort")
+    public String sortApartments(@ModelAttribute Sorting sorting, HttpSession session, Model model)
+    {
+        model.addAttribute("list_apart", apartmentService.sortApartment(sorting, session));
         return "apartments";
     }
 
@@ -81,5 +94,14 @@ public class ApartmentController
     public List<String> autocomplete(@RequestParam(name = "q", required = false) String query)
     {
         return apartmentESService.autocompleteQuery(query);
+    }
+
+    @Getter
+    @Setter
+    public static class Sorting
+    {
+        private boolean squareSort;
+        private boolean roomsSort;
+        private boolean priceSort;
     }
 }

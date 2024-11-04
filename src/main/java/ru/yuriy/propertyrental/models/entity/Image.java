@@ -26,9 +26,8 @@ public class Image
     private Long size;
 
     @Column(name = "preview_image")
-    private Boolean previewImage;
+    private Boolean previewImage = false;
 
-    // @Lob
     @Column(name = "image_bytes", columnDefinition = "bytea")
     private byte[] imageBytes;
 

@@ -1,5 +1,6 @@
 package ru.yuriy.propertyrental.services;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,11 +11,13 @@ import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
 import ru.yuriy.propertyrental.repositories.ImageRepository;
-import ru.yuriy.propertyrental.repositories.ServiceRepository;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.yuriy.propertyrental.controllers.ApartmentController.Sorting;
 
 @Service
 @RequiredArgsConstructor
@@ -84,6 +87,24 @@ public class ApartmentService
         return apartmentRepository.findAllById(apartmentSearchList.stream()
                 .map(ApartmentSearch::getId)
                 .collect(Collectors.toList()));
+    }
+
+    public List<Apartment> sortApartment(Sorting sorting, HttpSession session)
+    {
+        List<Apartment> apartments = (List<Apartment>) session.getAttribute("apartmentsSearchResult");
+        if (sorting.isSquareSort())
+            apartments = apartments.stream()
+                    .sorted(Comparator.comparing(Apartment::getSquare))
+                    .collect(Collectors.toList());
+        if (sorting.isRoomsSort())
+            apartments = apartments.stream()
+                    .sorted(Comparator.comparing(Apartment::getRoomCount))
+                    .collect(Collectors.toList());
+        if (sorting.isPriceSort())
+            apartments = apartments.stream()
+                    .sorted(Comparator.comparing(Apartment::getDailyPrice))
+                    .collect(Collectors.toList());
+        return apartments;
     }
 
     @Transactional(readOnly = true)
