@@ -34,10 +34,12 @@ public class ApartmentController
     private final ApartmentValidator apartmentValidator;
 
     @GetMapping("/all")
-    public String allApartments(Model model)
+    public String allApartments(HttpSession session, Model model)
     {
-        model.addAttribute("allApartments", apartmentService.apartmentList());
-        return "allApartments";
+        List<Apartment> apartments = apartmentService.apartmentList();
+        session.setAttribute("apartmentsSearchResult", apartments);
+        model.addAttribute("list_apart", apartments);
+        return "apartments";
     }
 
     @PostMapping("/search")
