@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.UserNotFoundException;
@@ -21,8 +22,8 @@ public class AdminController
     @GetMapping("/admin/all-users")
     public String allUsers(Model model)
     {
-        model.addAttribute("allUsers", userService.findAll());
-        return "allUsers";
+        model.addAttribute("users", userService.findAll());
+        return "adminPanel";
     }
 
     @GetMapping("/admin/edit/{id}")
@@ -32,14 +33,14 @@ public class AdminController
         return "userProfile";
     }
 
-    @GetMapping("/admin/ban/{id}")
+    @PostMapping("/ban/{id}")
     public String banUser(@PathVariable Long id)
     {
         userService.banUserById(id);
         return "redirect:/admin/all-users";
     }
 
-    @GetMapping("/admin/unban/{id}")
+    @PostMapping("/unban/{id}")
     public String unbanUser(@PathVariable Long id)
     {
         userService.unbanUserById(id);
