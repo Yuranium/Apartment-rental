@@ -24,12 +24,6 @@ public class UserService
 
     private final RoleRepository roleRepository;
 
-    @Transactional(readOnly = true)
-    public List<User> userList()
-    {
-        return userRepository.findAll();
-    }
-
     @SneakyThrows
     @Transactional(rollbackFor = {RoleNotFoundException.class})
     public void saveUser(UserForm userForm)
@@ -57,15 +51,6 @@ public class UserService
     }
 
     @Transactional
-    public void updateUser(UserForm userForm, Long id)
-    {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("Данный пользователь не был найден!\""));
-        user.update(userForm);
-        userRepository.save(user);
-    }
-
-    @Transactional
     public void deleteUser(Long id)
     {
         userRepository.deleteById(id);
@@ -84,20 +69,11 @@ public class UserService
     }
 
     @Transactional
-    public void banUserById(Long id)
+    public void banOrUnbanUser(Long id)
     {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException("Данный пользователь не был найден!"));
-        user.setActive(false);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void unbanUserById(Long id)
-    {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("Данный пользователь не был найден!"));
-        user.setActive(true);
+        user.setActive(!user.getActive());
         userRepository.save(user);
     }
 }

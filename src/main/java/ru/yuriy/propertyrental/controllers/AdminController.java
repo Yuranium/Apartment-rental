@@ -1,6 +1,7 @@
 package ru.yuriy.propertyrental.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +14,7 @@ import ru.yuriy.propertyrental.util.UserNotFoundException;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 public class AdminController
 {
     private final UserService userService;
@@ -36,14 +38,14 @@ public class AdminController
     @PostMapping("/ban/{id}")
     public String banUser(@PathVariable Long id)
     {
-        userService.banUserById(id);
+        userService.banOrUnbanUser(id);
         return "redirect:/admin/all-users";
     }
 
     @PostMapping("/unban/{id}")
     public String unbanUser(@PathVariable Long id)
     {
-        userService.unbanUserById(id);
+        userService.banOrUnbanUser(id);
         return "redirect:/admin/all-users";
     }
 

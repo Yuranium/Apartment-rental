@@ -12,7 +12,6 @@ import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.CodeValidator;
-import ru.yuriy.propertyrental.util.UserNotFoundException;
 import ru.yuriy.propertyrental.util.UserValidator;
 
 import java.util.Optional;
@@ -101,24 +100,27 @@ public class UserController
         else return "404";
     }
 
-    @GetMapping("/editProfile/{user}")
-    public String update(@PathVariable User user, Model model)
-    {
-        model.addAttribute("updateUser", user);
-        return "userUpdate";
-    }
-
-    @PostMapping("/editProfile")
-    public String editUser(@ModelAttribute @Valid UserForm user, BindingResult result, Model model,
-                           @RequestParam(name = "id") Long id)
-    {
-        // userValidator.validate(user, result);
-        model.addAttribute("errors", result);
-        if (result.hasErrors())
-            return "userUpdate";
-        userService.updateUser(user, id);
-        return "redirect:/profile/" + id;
-    }
+//    @GetMapping("/editProfile/{id}")
+//    public String update(@PathVariable Long id, Model model)
+//    {
+//        User user = userService.findById(id).orElseThrow(UserNotFoundException::new);
+//        UserForm userForm = new UserForm(user);
+//        model.addAttribute("updateUser", userForm);
+//        return "userUpdate";
+//    }
+//
+//    @PostMapping("/editProfile")
+//    public String editUser(@ModelAttribute @Valid UserForm user, BindingResult result, Model model,
+//                           @RequestParam(name = "id") Long id)
+//    {
+//        // userValidator.validate(user, result);
+//        model.addAttribute("errors", result);
+//        model.addAttribute("updateUser", user);
+//        if (result.hasFieldErrors("name") || result.hasFieldErrors("password"))
+//            return "userUpdate";
+//        userService.updateUser(user, id);
+//        return "redirect:/profile/" + id;
+//    }
 
     @DeleteMapping("/deleteProfile/{id}")
     public String deleteUser(@PathVariable Long id)

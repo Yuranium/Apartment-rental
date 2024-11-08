@@ -64,13 +64,4 @@ public class User
     {
         dateRegistration = new Timestamp(System.currentTimeMillis());
     }
-
-    public void update(UserForm userForm)
-    {
-        this.name = userForm.getName();
-        this.lastName = userForm.getLastName();
-        this.email = userForm.getEmail();
-        this.phone = userForm.getPhone();
-        this.password = userForm.getPassword();
-    }
 }
