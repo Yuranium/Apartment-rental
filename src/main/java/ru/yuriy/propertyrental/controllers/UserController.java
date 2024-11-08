@@ -48,6 +48,25 @@ public class UserController
         return "redirect:/confirm";
     }
 
+    @GetMapping("/login")
+    public String login(Model model)
+    {
+        model.addAttribute("userForm", new UserForm());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute @Valid UserForm userForm,
+                        BindingResult result, Model model)
+    {
+        userValidator.validate(userForm, result);
+        model.addAttribute("errors", result);
+        if (result.hasErrors())
+            return "login";
+        // todo доделать
+        return "redirect:/home";
+    }
+
     @GetMapping("/confirm")
     public String confirmRegistration(@RequestParam(name = "repeat", required = false) Boolean repeat,
                                       Model model)
@@ -79,5 +98,19 @@ public class UserController
             return "userProfile";
         }
         else return "404";
+    }
+
+    @PatchMapping("/editProfile/{user}")
+    public String editUser(@PathVariable User user)
+    {
+        userService.updateUser(user);
+        return "redirect:/profile?id=" + user.getId();
+    }
+
+    @DeleteMapping("/deleteProfile/{id}")
+    public String deleteUser(@PathVariable Long id)
+    {
+        userService.deleteUser(id);
+        return "redirect:/home";
     }
 }

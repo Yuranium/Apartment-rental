@@ -19,8 +19,12 @@
 </div>
 
 <div class="profile-buttons">
-    <a href="#" th:href="@{/deleteProfile(id=${profileInfo.id})}" class="btn btn-danger">Удалить профиль</a>
-    <a href="#" th:href="@{/editProfile(id=${profileInfo.id})}" class="btn btn-warning">Редактировать</a>
+    <form th:action="@{/deleteProfile/{id}(id=${profileInfo.id})}" th:method="DELETE">
+        <input type="submit" value="Удалить профиль">
+    </form>
+    <form th:action="@{/editProfile/{id}(id=${profileInfo.id})}" th:method="PATCH">
+        <input type="submit" value="Редактировать профиль">
+    </form>
 </div>
 </body>
 </html>

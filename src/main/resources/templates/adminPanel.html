@@ -42,7 +42,7 @@
     <tbody>
     <tr th:each="user : ${users}">
         <td th:text="${user.name}">Имя</td>
-        <td th:text="${user.lastName}">Фамилия</td>
+        <td th:text="${user.lastName == null ? 'Отсутствует' : user.lastName}">Фамилия</td>
         <td th:text="${#dates.format(user.dateRegistration, 'dd.MM.yyyy')}">Дата регистрации</td>
         <td th:text="${#dates.format(user.birthday, 'dd.MM.yyyy')}">День рождения</td>
         <td th:text="${user.getActive() ? 'Да' : 'Нет'}">Активность</td>

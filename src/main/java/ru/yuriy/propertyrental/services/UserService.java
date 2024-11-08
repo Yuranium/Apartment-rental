@@ -36,8 +36,8 @@ public class UserService
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         User user = new User();
-        String lastName = user.getLastName();
-        String phone = user.getPhone();
+        String lastName = userForm.getLastName();
+        String phone = userForm.getPhone();
         user.setName(userForm.getName());
         user.setLastName(lastName == null || lastName.isBlank() ? null : lastName);
         user.setEmail(userForm.getEmail());
@@ -57,34 +57,15 @@ public class UserService
     }
 
     @Transactional
-    public boolean updateUser(UserForm userForm)
+    public void updateUser(User user)
     {
-        Optional<User> userOpt = userRepository.findByEmail(userForm.getEmail());
-        if (userOpt.isEmpty())
-            return false;
-        else
-        {
-            User user1 = userOpt.get();
-            user1.setName(userForm.getName());
-            user1.setLastName(userForm.getLastName());
-            user1.setEmail(userForm.getEmail());
-            user1.setPhone(userForm.getPhone());
-            user1.setPassword(userForm.getPassword());
-            return true;
-        }
+        userRepository.save(user);
     }
 
     @Transactional
-    public boolean deleteUser(UserForm deleteUser)
+    public void deleteUser(Long id)
     {
-        Optional<User> userOpt = userRepository.findByEmail(deleteUser.getEmail());
-        if (userOpt.isEmpty())
-            return false;
-        else
-        {
-            userRepository.deleteById(userOpt.get().getId());
-            return true;
-        }
+        userRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
