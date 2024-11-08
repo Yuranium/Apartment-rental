@@ -44,7 +44,7 @@ public class UserController
         if (result.hasErrors())
             return "registration";
         userService.saveUser(userForm);
-        emailService.sendHtmlEmail(userForm.getEmail());
+        //emailService.sendHtmlEmail(userForm.getEmail());
         return "redirect:/confirm";
     }
 

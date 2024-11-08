@@ -2,6 +2,7 @@ package ru.yuriy.propertyrental.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.UserForm;
@@ -24,6 +25,8 @@ public class UserService
 
     private final RoleRepository roleRepository;
 
+    private final PasswordEncoder encoder;
+
     @SneakyThrows
     @Transactional(rollbackFor = {RoleNotFoundException.class})
     public void saveUser(UserForm userForm)
@@ -36,7 +39,7 @@ public class UserService
         user.setLastName(lastName == null || lastName.isBlank() ? null : lastName);
         user.setEmail(userForm.getEmail());
         user.setPhone(phone == null || phone.isBlank() ? null : phone);
-        user.setPassword(userForm.getPassword());
+        user.setPassword(encoder.encode(userForm.getPassword()));
         user.setBirthday(userForm.getBirthday().isBlank() ? null :
                 dateFormat.parse(userForm.getBirthday()));
         user.setActive(false);

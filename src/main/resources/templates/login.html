@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <title>Аренда недвижимости</title>
+    <meta charset="UTF-8">
+    <title>Войти</title>
 </head>
 <body>
-<form action="/login" method="POST">
+<form th:action="@{/login}" th:method="POST">
     <h2>Логин</h2>
 
     <label for="email">Электронная почта:</label>
@@ -14,12 +15,13 @@
     <input type="password" id="password" name="password" required>
 
     <button type="submit">Войти</button>
+    <div style="color: #941919" th:if="${param.error != null}">
+        <b>Неверное имя или пароль!</b>
+    </div>
 </form>
-
 <div>
     <span>Нет аккаунта?</span>
     <a href="/registration">Зарегистрироваться!</a>
 </div>
-
 </body>
 </html>

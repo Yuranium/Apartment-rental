@@ -1,6 +1,14 @@
 package ru.yuriy.propertyrental.enums;
 
-public enum RoleType
+import org.springframework.security.core.GrantedAuthority;
+
+public enum RoleType implements GrantedAuthority
 {
-    ROLE_GUEST, ROLE_USER, ROLE_OWNER, ROLE_ADMIN
+    ROLE_GUEST, ROLE_USER, ROLE_OWNER, ROLE_ADMIN;
+
+    @Override
+    public String getAuthority()
+    {
+        return name();
+    }
 }
