@@ -12,6 +12,7 @@ import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.CodeValidator;
+import ru.yuriy.propertyrental.util.UserNotFoundException;
 import ru.yuriy.propertyrental.util.UserValidator;
 
 import java.util.Optional;
@@ -100,11 +101,23 @@ public class UserController
         else return "404";
     }
 
-    @PatchMapping("/editProfile/{user}")
-    public String editUser(@PathVariable User user)
+    @GetMapping("/editProfile/{user}")
+    public String update(@PathVariable User user, Model model)
     {
-        userService.updateUser(user);
-        return "redirect:/profile?id=" + user.getId();
+        model.addAttribute("updateUser", user);
+        return "userUpdate";
+    }
+
+    @PostMapping("/editProfile")
+    public String editUser(@ModelAttribute @Valid UserForm user, BindingResult result, Model model,
+                           @RequestParam(name = "id") Long id)
+    {
+        // userValidator.validate(user, result);
+        model.addAttribute("errors", result);
+        if (result.hasErrors())
+            return "userUpdate";
+        userService.updateUser(user, id);
+        return "redirect:/profile/" + id;
     }
 
     @DeleteMapping("/deleteProfile/{id}")

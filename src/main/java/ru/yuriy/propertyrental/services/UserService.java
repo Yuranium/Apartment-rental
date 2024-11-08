@@ -57,8 +57,11 @@ public class UserService
     }
 
     @Transactional
-    public void updateUser(User user)
+    public void updateUser(UserForm userForm, Long id)
     {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("Данный пользователь не был найден!\""));
+        user.update(userForm);
         userRepository.save(user);
     }
 

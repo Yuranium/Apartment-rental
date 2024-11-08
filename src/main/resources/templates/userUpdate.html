@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Обновление профиля</title>
+</head>
+<body th:object="${updateUser}">
+<div class="form">
+    <form th:method="PATCH" th:action="@{/editProfile}">
+        <h2>Обновление профиля</h2>
+        <label for="id"></label>
+        <input id="id" name="id" th:field="*{id}" type="hidden">
+        <div class="group">
+            <div style="color: #941919" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            <label for="name" class="label">Имя пользователя</label>
+            <input id="name" th:field="*{name}" type="text" class="input">
+        </div>
+        <div class="group">
+            <div style="color: #941919" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+            <label for="last_name" class="label">Фамилия пользователя</label>
+            <input id="last_name" th:field="*{lastName}" type="text" class="input">
+        </div>
+<!--        <div class="group">-->
+<!--            <div style="color: #941919" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>-->
+<!--            <label for="email" class="label">Адрес электронной почты</label>-->
+<!--            <input id="email" th:field="*{email}" type="text" class="input">-->
+<!--        </div>-->
+        <div class="group">
+            <div style="color: #941919" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+            <label for="phone" class="label">Телефон</label>
+            <input id="phone" th:field="*{phone}" type="text" class="input">
+        </div>
+        <div class="group">
+            <div style="color: #941919" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            <label for="pass" class="label">Пароль</label>
+            <input id="pass" th:field="*{password}" type="password" class="input" data-type="password">
+        </div>
+        <div class="group">
+            <input type="submit" class="button" value="Изменить">
+        </div>
+    </form>
+    <div class="group">
+        <a th:href="@{/profile/{id}(id=${updateUser.id})}" class="redirect">Отмена</a>
+    </div>
+</div>
+</body>
+</html>
