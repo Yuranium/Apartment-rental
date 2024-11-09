@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yuriy.propertyrental.enums.RoleType;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.entity.Role;
 import ru.yuriy.propertyrental.models.entity.User;
@@ -52,6 +53,12 @@ public class UserService
         roleRepository.save(role);
         userRepository.save(user);
         return user;
+    }
+
+    @Transactional
+    public void setUserRoles(User user, List<RoleType> roles)
+    {
+        userRepository.save(user);
     }
 
     @Transactional

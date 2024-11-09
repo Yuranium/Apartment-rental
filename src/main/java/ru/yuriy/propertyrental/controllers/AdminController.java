@@ -5,9 +5,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.yuriy.propertyrental.enums.RoleType;
+import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.UserNotFoundException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ public class AdminController
     private final UserService userService;
 
     private final ApartmentService apartmentService;
+
 
     @GetMapping("/all-users")
     public String allUsers(Model model)
@@ -52,6 +58,26 @@ public class AdminController
     {
         apartmentService.deleteApartment(id);
         return "redirect:/apartments/all";
+    }
+
+    @GetMapping("/editRoles/{user}")
+    public String editRoles(@PathVariable User user, Model model)
+    {
+        model.addAttribute("editRoleUser", user);
+        model.addAttribute("roles", user.getRoles()
+                .stream()
+                .map(role -> role
+                        .getRoleType()
+                        .name())
+                .collect(Collectors.toList()));
+        return "editRoles";
+    }
+
+    @PostMapping("/editRoles/{user}")
+    public String editRoles(@PathVariable User user, @RequestParam List<RoleType> roleTypes)
+    {
+        userService.setUserRoles(user, roleTypes);
+        return "redirect:/profile/" + user.getId();
     }
 
     @ExceptionHandler(UserNotFoundException.class)
