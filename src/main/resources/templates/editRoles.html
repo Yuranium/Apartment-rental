@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Изменение прав пользователя</title>
+  <meta charset="UTF-8">
+  <title>Изменение прав пользователя</title>
   <style>
     .checkbox-container {
       max-width: 400px;
@@ -71,7 +71,7 @@
   </style>
 </head>
 <body th:object="${editRoleUser}">
-<form th:action="@{/editRoles/${editRoleUser.id}}" th:method="POST" th:object="${roles}">
+<form th:action="@{/admin/editRoles/{id}(id=${editRoleUser.id})}" th:method="POST" th:object="${roles}">
   <div class="checkbox-container">
     <h2>Установка ролей для пользователя: <span th:text="${editRoleUser.email.split('@')[0]}">email</span></h2>
 

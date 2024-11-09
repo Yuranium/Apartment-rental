@@ -62,7 +62,7 @@
                     ROLE_USER
                 </option>
             </select>
-            <a th:href="@{/admin/editRoles/${user.id}}">Редактировать роли</a>
+            <a th:href="@{/admin/editRoles/{id}(id=${user.id})}">Редактировать роли</a>
         </td>
         <td><a th:href="@{/profile/{id}(id=${user.id})}">
             <span>Ссылка</span>

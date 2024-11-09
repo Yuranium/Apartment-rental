@@ -24,7 +24,6 @@ public class AdminController
 
     private final ApartmentService apartmentService;
 
-
     @GetMapping("/all-users")
     public String allUsers(Model model)
     {
@@ -74,7 +73,7 @@ public class AdminController
     }
 
     @PostMapping("/editRoles/{user}")
-    public String editRoles(@PathVariable User user, @RequestParam List<RoleType> roleTypes)
+    public String editRoles(@PathVariable User user, @RequestParam List<String> roleTypes)
     {
         userService.setUserRoles(user, roleTypes);
         return "redirect:/profile/" + user.getId();
