@@ -1,19 +1,19 @@
 package ru.yuriy.propertyrental.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.yuriy.propertyrental.models.ConfirmCode;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
-import ru.yuriy.propertyrental.util.CodeValidator;
 import ru.yuriy.propertyrental.util.UserValidator;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -26,8 +26,6 @@ public class UserController
 
     private final EmailService emailService;
 
-    private final CodeValidator codeValidator;
-
     @GetMapping("/registration")
     public String registration(Model model)
     {
@@ -37,14 +35,14 @@ public class UserController
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute @Valid UserForm userForm,
-                               BindingResult result, Model model)
+                               BindingResult result, Model model, HttpSession session)
     {
         userValidator.validate(userForm, result);
         model.addAttribute("errors", result);
         if (result.hasErrors())
             return "registration";
-        userService.saveUser(userForm);
-        //emailService.sendHtmlEmail(userForm.getEmail());
+        session.setAttribute("user", userService.saveUser(userForm));
+        emailService.sendHtmlEmail(userForm.getEmail());
         return "redirect:/confirm";
     }
 
@@ -63,64 +61,21 @@ public class UserController
         model.addAttribute("errors", result);
         if (result.hasErrors())
             return "login";
-        // todo доделать
         return "redirect:/home";
     }
 
-    @GetMapping("/confirm")
-    public String confirmRegistration(@RequestParam(name = "repeat", required = false) Boolean repeat,
-                                      Model model)
-    {
-        model.addAttribute("code", new ConfirmCode());
-        if (Optional.ofNullable(repeat).isPresent())
-            emailService.repeatSendEmail();
-        return "confirm";
-    }
-
-    @PostMapping("/confirm")
-    public String confirmRegistration(@ModelAttribute @Valid ConfirmCode code,
-                                      BindingResult result, Model model)
-    {
-        codeValidator.validate(code, result);
-        model.addAttribute("codeError", result);
-        if (result.hasErrors())
-            return "confirm";
-        else return "redirect:/"; // todo устанавливать активность через сессии
-    }
-
     @GetMapping("profile/{id}")
-    public String userProfile(@PathVariable Long id, Model model)
+    public String userProfile(@PathVariable Long id, Model model, Principal principal)
     {
         Optional<User> user = userService.findById(id);
         if (user.isPresent())
         {
+            model.addAttribute("principal", principal.getName());
             model.addAttribute("profileInfo", user.get());
             return "userProfile";
         }
         else return "404";
     }
-
-//    @GetMapping("/editProfile/{id}")
-//    public String update(@PathVariable Long id, Model model)
-//    {
-//        User user = userService.findById(id).orElseThrow(UserNotFoundException::new);
-//        UserForm userForm = new UserForm(user);
-//        model.addAttribute("updateUser", userForm);
-//        return "userUpdate";
-//    }
-//
-//    @PostMapping("/editProfile")
-//    public String editUser(@ModelAttribute @Valid UserForm user, BindingResult result, Model model,
-//                           @RequestParam(name = "id") Long id)
-//    {
-//        // userValidator.validate(user, result);
-//        model.addAttribute("errors", result);
-//        model.addAttribute("updateUser", user);
-//        if (result.hasFieldErrors("name") || result.hasFieldErrors("password"))
-//            return "userUpdate";
-//        userService.updateUser(user, id);
-//        return "redirect:/profile/" + id;
-//    }
 
     @DeleteMapping("/deleteProfile/{id}")
     public String deleteUser(@PathVariable Long id)

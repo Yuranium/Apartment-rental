@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.UserRepository;
-import ru.yuriy.propertyrental.util.UserNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -18,7 +17,8 @@ public class MyUserDetailsService implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmail(username).orElseThrow(
+                () -> new UsernameNotFoundException("ОШИБКА: Пользователь не найден!"));
         return new MyUserDetails(user);
     }
 }

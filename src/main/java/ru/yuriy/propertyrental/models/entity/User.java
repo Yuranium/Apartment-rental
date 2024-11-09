@@ -1,8 +1,10 @@
 package ru.yuriy.propertyrental.models.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import ru.yuriy.propertyrental.models.UserForm;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -47,7 +49,7 @@ public class User
     @Column(name = "active")
     private Boolean active;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "id_user"),

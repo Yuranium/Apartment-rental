@@ -83,6 +83,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
             <version>3.3.4</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.flywaydb</groupId>-->
+<!--            <artifactId>flyway-core</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

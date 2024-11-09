@@ -79,7 +79,10 @@ public class ApartmentController
         apartmentValidator.validate(apartment, result);
         model.addAttribute("images", result);
         if (result.hasErrors())
+        {
+            model.addAttribute("services", serviceApService.getAllServices());
             return "addApartment";
+        }
         apartmentService.saveApartment(apartment);
         return "redirect:/apartments/all";
     }

@@ -4,48 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Подтверждение регистрации</title>
-  <script>
-    function showNotification(message)
-    {
-      const notification = document.createElement('div');
-      notification.className = 'notification';
-      notification.textContent = message;
-
-      const closeButton = document.createElement('button');
-      closeButton.textContent = 'Закрыть';
-      closeButton.onclick = () => notification.remove();
-
-      notification.appendChild(closeButton);
-      document.body.appendChild(notification);
-    }
-    if (location.pathname === '/PropertyRental/src/main/resources/templates/confirm.html')
-      setTimeout(() => showNotification('Введите код, который пришёл на указанную почту для продолжения'), 500);
-
-  </script>
 </head>
 <body>
 <h1>Подтверждение регистрации</h1>
 
-<form th:action="@{/confirm}" th:method="POST" th:object="${code}">
+<form th:action="@{/confirm}" th:method="POST" th:object="${confirmCode}">
   <p>Введите код подтверждения:</p>
   <label for="number1">Цифра 1</label>
   <input type="number" id="number1" name="number1" maxlength="1" th:field="*{number1}" required>
   <div th:if="${#fields.hasErrors('number1')}" th:errors="*{number1}" style="color:red;"></div>
 
   <label for="number2">Цифра 2</label>
-  <input type="number" id="number2" name="number2" maxlength="1" required>
+  <input type="number" id="number2" name="number2" maxlength="1" th:field="*{number2}" required>
+  <div th:if="${#fields.hasErrors('number2')}" th:errors="*{number2}" style="color:red;"></div>
 
   <label for="number3">Цифра 3</label>
-  <input type="number" id="number3" name="number3" maxlength="1" required>
+  <input type="number" id="number3" name="number3" maxlength="1" th:field="*{number3}" required>
+  <div th:if="${#fields.hasErrors('number3')}" th:errors="*{number3}" style="color:red;"></div>
 
   <label for="number4">Цифра 4</label>
-  <input type="number" id="number4" name="number4" maxlength="1" required>
+  <input type="number" id="number4" name="number4" maxlength="1" th:field="*{number4}" required>
+  <div th:if="${#fields.hasErrors('number4')}" th:errors="*{number4}" style="color:red;"></div>
 
   <label for="number5">Цифра 5</label>
-  <input type="number" id="number5" name="number5" maxlength="1" required>
+  <input type="number" id="number5" name="number5" maxlength="1" th:field="*{number5}" required>
+  <div th:if="${#fields.hasErrors('number5')}" th:errors="*{number5}" style="color:red;"></div>
 
   <label for="number6">Цифра 6</label>
-  <input type="number" id="number6" name="number6" maxlength="1" required>
+  <input type="number" id="number6" name="number6" maxlength="1" th:field="*{number6}" required>
+  <div th:if="${#fields.hasErrors('number6')}" th:errors="*{number6}" style="color:red;"></div>
 
   <button type="submit">Подтвердить</button>
 </form>

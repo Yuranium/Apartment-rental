@@ -29,7 +29,7 @@ public class UserService
 
     @SneakyThrows
     @Transactional(rollbackFor = {RoleNotFoundException.class})
-    public void saveUser(UserForm userForm)
+    public User saveUser(UserForm userForm)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         User user = new User();
@@ -51,6 +51,7 @@ public class UserService
 
         roleRepository.save(role);
         userRepository.save(user);
+        return user;
     }
 
     @Transactional
@@ -77,6 +78,13 @@ public class UserService
         User user = userRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException("Данный пользователь не был найден!"));
         user.setActive(!user.getActive());
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void setActive(User user)
+    {
+        user.setActive(true);
         userRepository.save(user);
     }
 }

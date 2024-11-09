@@ -33,15 +33,15 @@ public class SecurityConfig
                         .permitAll()
                         .requestMatchers("/apartments/add", "/profile/**", "/deleteProfile/**")
                         .authenticated())
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .userDetailsService(service)
-                .formLogin(form -> form
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/login?error")
-                        .permitAll()
-                        .usernameParameter("email")
-                )
+                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+//                .formLogin(form -> form
+//                        .loginPage("/login").permitAll()
+//                        .defaultSuccessUrl("/", true)
+//                        .failureUrl("/login?error")
+//                        .permitAll()
+//                        .usernameParameter("email")
+//                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
@@ -50,7 +50,7 @@ public class SecurityConfig
                 .build();
     }
 
-    @Bean
+    //@Bean
     public AuthenticationProvider provider()
     {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

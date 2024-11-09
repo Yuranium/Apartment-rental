@@ -18,7 +18,7 @@
     <p><strong>Роли:</strong> <span th:each="role : ${profileInfo.roles}" th:text="${role.roleType}"></span></p>
 </div>
 
-<div class="profile-buttons">
+<div class="profile-buttons" th:if="${profileInfo.email == principal}" th:object="${principal}">
     <form th:action="@{/deleteProfile/{id}(id=${profileInfo.id})}" th:method="DELETE">
         <input type="submit" value="Удалить профиль">
     </form>
