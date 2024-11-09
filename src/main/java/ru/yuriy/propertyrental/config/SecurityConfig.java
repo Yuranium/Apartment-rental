@@ -32,7 +32,9 @@ public class SecurityConfig
                                 "/login", "/confirm", "/image/**")
                         .permitAll()
                         .requestMatchers("/apartments/add", "/profile/**", "/deleteProfile/**")
-                        .authenticated())
+                        .authenticated()
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMIN"))
                 .userDetailsService(service)
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
 //                .formLogin(form -> form

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.UserForm;
+import ru.yuriy.propertyrental.models.entity.Role;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
@@ -15,6 +16,7 @@ import ru.yuriy.propertyrental.util.UserValidator;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -72,6 +74,12 @@ public class UserController
         {
             model.addAttribute("principal", principal.getName());
             model.addAttribute("profileInfo", user.get());
+            model.addAttribute("roles", user.get()
+                    .getRoles().stream()
+                    .map(role -> role
+                            .getRoleType()
+                            .name())
+                    .collect(Collectors.joining(", ")));
             return "userProfile";
         }
         else return "404";

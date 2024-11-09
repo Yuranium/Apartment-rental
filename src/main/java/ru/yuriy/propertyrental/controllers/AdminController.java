@@ -4,16 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.UserNotFoundException;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/admin")
 @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 public class AdminController
 {
@@ -21,14 +19,14 @@ public class AdminController
 
     private final ApartmentService apartmentService;
 
-    @GetMapping("/admin/all-users")
+    @GetMapping("/all-users")
     public String allUsers(Model model)
     {
         model.addAttribute("users", userService.findAll());
         return "adminPanel";
     }
 
-    @GetMapping("/admin/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String editUser(@PathVariable Long id, Model model)
     {
         model.addAttribute("userEdit", userService.findById(id));
@@ -49,7 +47,7 @@ public class AdminController
         return "redirect:/admin/all-users";
     }
 
-    @GetMapping("/admin/delete-ap/{id}")
+    @GetMapping("/delete-ap/{id}")
     public String deleteApartment(@PathVariable Long id)
     {
         apartmentService.deleteApartment(id);
