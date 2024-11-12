@@ -19,6 +19,8 @@ public class MyUserDetailsService implements UserDetailsService
     {
         User user = userRepository.findByEmail(username).orElseThrow(
                 () -> new UsernameNotFoundException("ОШИБКА: Пользователь не найден!"));
+        if (!user.getActive())
+            throw new UsernameNotFoundException("ОШИБКА: Пользователь неактивен");
         return new MyUserDetails(user);
     }
 }

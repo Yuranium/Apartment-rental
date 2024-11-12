@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AdminController
 {
     private final UserService userService;
@@ -72,11 +72,9 @@ public class AdminController
         return "editRoles";
     }
 
-    @PostMapping("/editRoles/{id}")
-    public String editRoles(@PathVariable Long id, @RequestParam List<RoleType> roleTypes)
+    @PostMapping("/editRoles/{user}")
+    public String editRoles(@PathVariable User user, @RequestParam List<RoleType> roleTypes)
     {
-        User user = userService.findById(id).orElseThrow(
-                () -> new UserNotFoundException("Ошибка: Пользователь с id = " + id + " не найден!"));
         userService.setUserRoles(user, roleTypes);
         return "redirect:/profile/" + user.getId();
     }

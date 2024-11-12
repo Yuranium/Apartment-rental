@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -66,6 +67,7 @@ public class ApartmentController
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasAuthority('ROLE_OWNER') && hasAuthority('ROLE_ADMIN')")
     public String addApartment(Model model)
     {
         model.addAttribute("apartmentForm", new ApartmentForm());
@@ -74,6 +76,7 @@ public class ApartmentController
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('ROLE_OWNER') && hasAuthority('ROLE_ADMIN')")
     public String addApartment(@ModelAttribute @Valid ApartmentForm apartment, BindingResult result, Model model)
     {
         apartmentValidator.validate(apartment, result);
