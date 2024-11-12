@@ -77,21 +77,21 @@
 
     <div class="checkbox-group">
       <label class="checkbox-label">
-        <input type="checkbox" id="option1" name="roles" value="ROLE_USER"
+        <input type="checkbox" id="option1" name="roleTypes" value="ROLE_USER"
                th:checked="${roles.contains('ROLE_USER')}" />
         <span class="checkbox-custom"></span>
         <span class="checkbox-text">Роль пользователя (ROLE_USER)</span>
       </label>
 
       <label class="checkbox-label">
-        <input type="checkbox" id="option2" name="roles" value="ROLE_OWNER"
+        <input type="checkbox" id="option2" name="roleTypes" value="ROLE_OWNER"
                th:checked="${roles.contains('ROLE_OWNER')}" />
         <span class="checkbox-custom"></span>
         <span class="checkbox-text">Роль арендодателя (ROLE_OWNER)</span>
       </label>
 
       <label class="checkbox-label">
-        <input type="checkbox" id="option3" name="roles" value="ROLE_ADMIN"
+        <input type="checkbox" id="option3" name="roleTypes" value="ROLE_ADMIN"
                th:checked="${roles.contains('ROLE_ADMIN')}" />
         <span class="checkbox-custom"></span>
         <span class="checkbox-text">Роль админа (ROLE_ADMIN)</span>

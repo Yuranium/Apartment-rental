@@ -72,9 +72,11 @@ public class AdminController
         return "editRoles";
     }
 
-    @PostMapping("/editRoles/{user}")
-    public String editRoles(@PathVariable User user, @RequestParam List<String> roleTypes)
+    @PostMapping("/editRoles/{id}")
+    public String editRoles(@PathVariable Long id, @RequestParam List<RoleType> roleTypes)
     {
+        User user = userService.findById(id).orElseThrow(
+                () -> new UserNotFoundException("Ошибка: Пользователь с id = " + id + " не найден!"));
         userService.setUserRoles(user, roleTypes);
         return "redirect:/profile/" + user.getId();
     }

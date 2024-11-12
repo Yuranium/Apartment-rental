@@ -70,11 +70,13 @@ public class User
     public void setRoles(List<Role> roles)
     {
         List<User> users = new ArrayList<>(List.of(this));
+        List<Role> currentRoles = new ArrayList<>();
         if (roles == null) return;
         for (Role role : roles)
         {
             role.setUsers(users);
-            this.roles.add(role);
+            currentRoles.add(role);
         }
+        this.roles = currentRoles;
     }
 }
