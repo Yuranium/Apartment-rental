@@ -79,4 +79,11 @@ public class User
         }
         this.roles = currentRoles;
     }
+
+    public void setApartments(Apartment apartment)
+    {
+        if (apartment == null) return;
+        apartment.setUser(this);
+        this.apartments.add(apartment);
+    }
 }

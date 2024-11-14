@@ -50,9 +50,13 @@
             </ul>
         </div>
     </div>
-
+    <div>
+        <p>Имя владельца:</p>
+        <span th:text="${apartment.getUser().name}"></span>
+        <p>Телефон владельца:</p>
+        <span th:text="${apartment.getUser().phone}"></span>
+    </div>
     <button type="button" class="btn btn-primary">Забронировать</button>
-    <div>Телефон владельца:</div>
 </div>
 </body>
 </html>

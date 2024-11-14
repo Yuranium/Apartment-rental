@@ -2,6 +2,8 @@ package ru.yuriy.propertyrental.services;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,10 +11,13 @@ import ru.yuriy.propertyrental.models.ApartmentForm;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
 import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.models.entity.Image;
+import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
 import ru.yuriy.propertyrental.repositories.ImageRepository;
+import ru.yuriy.propertyrental.repositories.UserRepository;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +34,8 @@ public class ApartmentService
 
     private final ImageRepository imageRepository;
 
+    private final UserRepository userRepository;
+
     @Transactional(readOnly = true)
     public List<Apartment> apartmentList()
     {
@@ -36,7 +43,7 @@ public class ApartmentService
     }
 
     @Transactional
-    public void saveApartment(ApartmentForm newApartment)
+    public void saveApartment(ApartmentForm newApartment, Principal principal)
     {
         Apartment apartment = new Apartment();
         apartment.setName(newApartment.getName());
@@ -47,6 +54,7 @@ public class ApartmentService
         apartment.setAddress(newApartment.getAddress());
         apartment.setRoomAvailable(true);
         apartment.setServicesToApartment(newApartment.getServices());
+        apartment.setUser(getUserByPrincipal(principal));
         if (!newApartment.getImages().isEmpty())
         {
             apartment.setImagesToApartment(multipartToImage(newApartment.getImages()));
@@ -54,6 +62,13 @@ public class ApartmentService
             imageRepository.saveAll(apartment.getImages());
         }
         apartmentRepository.save(apartment);
+    }
+
+    private User getUserByPrincipal(Principal principal)
+    {
+        if (principal == null) throw new SessionAuthenticationException("Пользователь не аутентифицирован!");
+        return userRepository.findByEmail(principal.getName()).orElseThrow(
+                () -> new UsernameNotFoundException("Данный пользователь не был найден!"));
     }
 
     private List<Image> multipartToImage(List<MultipartFile> files)

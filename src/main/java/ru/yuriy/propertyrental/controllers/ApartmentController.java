@@ -18,6 +18,7 @@ import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.services.ServiceApService;
 import ru.yuriy.propertyrental.util.ApartmentValidator;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -77,7 +78,8 @@ public class ApartmentController
 
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('ROLE_OWNER') && hasAuthority('ROLE_ADMIN')")
-    public String addApartment(@ModelAttribute @Valid ApartmentForm apartment, BindingResult result, Model model)
+    public String addApartment(@ModelAttribute @Valid ApartmentForm apartment, BindingResult result,
+                               Model model, Principal principal)
     {
         apartmentValidator.validate(apartment, result);
         model.addAttribute("images", result);
@@ -86,7 +88,7 @@ public class ApartmentController
             model.addAttribute("services", serviceApService.getAllServices());
             return "addApartment";
         }
-        apartmentService.saveApartment(apartment);
+        apartmentService.saveApartment(apartment, principal);
         return "redirect:/apartments/all";
     }
 
