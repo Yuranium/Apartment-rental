@@ -29,7 +29,7 @@ public class SecurityConfig
         return security.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/", "/apartments/all", "/apartments/search",
                                 "/apartments/sort", "/apartments/api/autocomplete", "/registration",
-                                "/login", "/confirm", "/image/**")
+                                "/login", "/confirm", "/image/**", "/apartments/**")
                         .permitAll()
                         .requestMatchers("/apartments/add", "/profile/**", "/deleteProfile/**")
                         .authenticated()

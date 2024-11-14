@@ -12,6 +12,6 @@ public interface ApartmentRepository extends JpaRepository<Apartment, Long>
 {
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
-            attributePaths = {"images", "services", "apartments"})
+            attributePaths = {"images", "services", "user"})
     Optional<Apartment> findById(Long id);
 }
