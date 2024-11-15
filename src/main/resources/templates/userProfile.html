@@ -21,7 +21,7 @@
 <body>
 <h1>Профиль пользователя</h1>
 <div class="avatar">
-    <img alt="Аватар пользователя" th:src="@{../static/defaultAvatar.png}"/>
+    <img alt="Аватар пользователя" th:src="@{/static/defaultAvatar.png}"/>
 </div>
 <div class="profile-info" th:object="${profileInfo}">
     <p><strong>Имя:</strong> <span th:text="${profileInfo.name}"></span></p>

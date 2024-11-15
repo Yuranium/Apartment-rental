@@ -27,7 +27,7 @@ public class SecurityConfig
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception
     {
         return security.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/", "/apartments/all", "/apartments/search",
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/static/**", "/", "/apartments/all", "/apartments/search",
                                 "/apartments/sort", "/apartments/api/autocomplete", "/registration",
                                 "/login", "/confirm", "/image/**", "/apartments/**")
                         .permitAll()

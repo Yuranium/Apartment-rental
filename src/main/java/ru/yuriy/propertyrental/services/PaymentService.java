@@ -51,12 +51,14 @@ public class PaymentService
                 .sum() + apartment.getDailyPrice();
     }
 
+    @Transactional(readOnly = true)
     public Payment findById(Long id)
     {
         return paymentRepository.findById(id)
                 .orElseThrow(PaymentNotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
     public List<Payment> getAllPaymentsFromUser(Long id)
     {
         User user = userService.findById(id).orElseThrow(
@@ -66,6 +68,7 @@ public class PaymentService
         return paymentRepository.findAllByUser(user);
     }
 
+    @Transactional
     public void payApartment(Long id)
     {
         Payment payment = paymentRepository.findById(id)
@@ -74,11 +77,30 @@ public class PaymentService
         paymentRepository.save(payment);
     }
 
+    @Transactional(readOnly = true)
     public void deleteApartment(Long id, Principal principal)
     {
         User user = userService.getUserByUsername(principal.getName());
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(PaymentNotFoundException::new);
         user.deletePayment(payment);
+        userService.saveUser(user);
+    }
+
+    @Transactional
+    public void checkPaymentStatus(List<Payment> payments)
+    {
+        if (payments == null) throw new PaymentNotFoundException("Платежи отсутствуют!");
+        payments.forEach(pay -> {
+            if (pay.isOverduePayment())
+                pay.setStatus(PaymentStatus.OVERDUE);
+        });
+        paymentRepository.saveAll(payments);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Payment> getPaymentsByUser(User user)
+    {
+        return paymentRepository.findAllByUser(user);
     }
 }

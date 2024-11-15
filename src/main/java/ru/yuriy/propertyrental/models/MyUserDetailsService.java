@@ -12,7 +12,9 @@ import ru.yuriy.propertyrental.repositories.UserRepository;
 @AllArgsConstructor
 public class MyUserDetailsService implements UserDetailsService
 {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    //private final PaymentServiceProxy paymentService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
@@ -21,6 +23,7 @@ public class MyUserDetailsService implements UserDetailsService
                 () -> new UsernameNotFoundException("ОШИБКА: Пользователь не найден!"));
         if (!user.getActive())
             throw new UsernameNotFoundException("ОШИБКА: Пользователь неактивен");
+        //paymentService.checkPaymentStatus(paymentService.getPaymentsByUser(user));
         return new MyUserDetails(user);
     }
 }

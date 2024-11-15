@@ -5,6 +5,9 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import ru.yuriy.propertyrental.enums.PaymentStatus;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -45,6 +48,13 @@ public class Payment
     {
         apartment.setPayment(this);
         this.apartment = apartment;
+    }
+
+    public boolean isOverduePayment()
+    {
+        return LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) >
+                (datePayment.getTime() + LocalDateTime.ofInstant(datePayment.toInstant(), ZoneId.systemDefault())
+                        .toEpochSecond(ZoneOffset.UTC));
     }
 
     @Override
