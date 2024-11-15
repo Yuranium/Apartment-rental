@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.services.ImageService;
-import ru.yuriy.propertyrental.util.ImageErrorResponse;
-import ru.yuriy.propertyrental.util.ImageNotFoundException;
+import ru.yuriy.propertyrental.util.response_body.ImageErrorResponse;
+import ru.yuriy.propertyrental.util.exceptions.ImageNotFoundException;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;

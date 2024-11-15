@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.repositories.ImageRepository;
-import ru.yuriy.propertyrental.util.ImageNotFoundException;
+import ru.yuriy.propertyrental.util.exceptions.ImageNotFoundException;
 
 @RequiredArgsConstructor
 @Service

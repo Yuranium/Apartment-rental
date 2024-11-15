@@ -11,7 +11,7 @@ import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
-import ru.yuriy.propertyrental.util.UserValidator;
+import ru.yuriy.propertyrental.util.validators.UserValidator;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -28,8 +28,9 @@ public class UserController
     private final EmailService emailService;
 
     @GetMapping("/registration")
-    public String registration(Model model)
+    public String registration(Model model, @RequestParam(required = false, defaultValue = "false") boolean noAuth)
     {
+        if (noAuth) model.addAttribute("noAuth", "Для аренды нужно зарегистрироваться!");
         model.addAttribute("userForm", new UserForm());
         return "registration";
     }
@@ -71,7 +72,7 @@ public class UserController
         Optional<User> user = userService.findById(id);
         if (user.isPresent())
         {
-            model.addAttribute("principal", principal.getName());
+            model.addAttribute("username", principal.getName());
             model.addAttribute("profileInfo", user.get());
             model.addAttribute("roles", user.get()
                     .getRoles().stream()

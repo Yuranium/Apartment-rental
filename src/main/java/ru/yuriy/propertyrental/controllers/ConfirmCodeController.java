@@ -14,7 +14,7 @@ import ru.yuriy.propertyrental.models.ConfirmCode;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.EmailService;
 import ru.yuriy.propertyrental.services.UserService;
-import ru.yuriy.propertyrental.util.CodeValidator;
+import ru.yuriy.propertyrental.util.validators.CodeValidator;
 
 import java.util.Optional;
 

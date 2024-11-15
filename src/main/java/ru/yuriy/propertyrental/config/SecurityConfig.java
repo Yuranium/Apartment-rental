@@ -31,7 +31,7 @@ public class SecurityConfig
                                 "/apartments/sort", "/apartments/api/autocomplete", "/registration",
                                 "/login", "/confirm", "/image/**", "/apartments/**")
                         .permitAll()
-                        .requestMatchers("/apartments/add", "/profile/**", "/deleteProfile/**")
+                        .requestMatchers("/apartments/add", "/profile/**", "/deleteProfile/**", "/payment/**")
                         .authenticated()
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN"))

@@ -15,6 +15,7 @@
 <div class="apartment" th:object="${list_apart}">
   <div th:each="apartment : ${list_apart}">
     <img th:src="@{/image/{id}(id=${apartment.getImages().get(0).getId()})}" alt="Фотография апартаментов"  height="20%" width="20%">
+    <span th:text="${apartment.name}">Название</span>
     <span th:text="${'Площадь: ' + apartment.square}">Площадь</span>
     <span th:text="${'Количество комнат: ' + apartment.roomCount}">Количество комнат</span>
     <span th:text="${'Суточная цена аренды: ' + apartment.dailyPrice}">Суточная цена аренды</span>

@@ -51,14 +51,16 @@
         </div>
     </div>
     <div>
-        <strong>Имя владельца:</strong>
+        <p><strong>Имя владельца:</strong></p>
         <span th:text="${apartment.getUser().name}"></span>
-        <strong>Телефон владельца:</strong>
+        <p><strong>Телефон владельца:</strong></p>
         <span th:if="${!apartment.getUser().phone.isEmpty()}" th:text="${apartment.getUser().phone}"></span>
         <span th:unless="${!apartment.getUser().phone.isEmpty()}" th:text="${apartment.getUser().email}"></span>
-        <strong><a th:scr="@{/profile}">Подробнее</a></strong>
+        <strong><a th:href="@{/profile/}">Подробнее</a></strong>
     </div>
-    <a th:href="@{/payment/book/{id}(id=${apartment.id})}">Забронировать</a>
+    <p>
+        <a th:href="@{/payment/book/{id}(id=${apartment.id})}">Забронировать</a>
+    </p>
 </div>
 </body>
 </html>

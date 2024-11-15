@@ -16,7 +16,7 @@ import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.services.ApartmentESService;
 import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.services.ServiceApService;
-import ru.yuriy.propertyrental.util.ApartmentValidator;
+import ru.yuriy.propertyrental.util.validators.ApartmentValidator;
 
 import java.security.Principal;
 import java.util.List;

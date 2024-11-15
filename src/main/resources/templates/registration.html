@@ -6,6 +6,9 @@
 </head>
 <body>
 <h2>Регистрация пользователя</h2>
+<div>
+    <p th:if="${noAuth != null}" th:text="${noAuth}"></p>
+</div>
 <form th:action="@{/registration}" th:method="POST" th:object="${userForm}">
 
     <label for="name">Имя:</label>

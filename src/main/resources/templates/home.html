@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <title>Аренда недвижимости</title>
 </head>
-<body>
+<body th:object="${principal}">
 <h1>RENTAP</h1><hr>
-<span><a href="/registration">Зарегистрироваться</a></span>
-<span><a href="/login">Войти</a></span>
-<h2 th:text="${username}">Привет, пользователь</h2><br>
+
+<span th:if="${principal == null}">
+    <h2>Привет, пользователь</h2>
+    <a href="/registration">Зарегистрироваться</a>
+    <a href="/login">Войти</a>
+  </span>
+
+<h2 th:if="${principal != null}" th:text="${'Привет, ' + principal.getName().split('@')[0]}">
+</h2><br>
+<a href="/logout" th:if="${principal != null}">Выйти из аккаунта</a>
 <h2>Найти апартаменты сейчас</h2>
 <hr>
 <form th:action="@{/apartments/search}" th:method="POST">

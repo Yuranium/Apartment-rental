@@ -1,4 +1,4 @@
-package ru.yuriy.propertyrental.util;
+package ru.yuriy.propertyrental.util.exceptions;
 
 import lombok.experimental.StandardException;
 

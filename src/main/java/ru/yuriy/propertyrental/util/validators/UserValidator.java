@@ -1,4 +1,4 @@
-package ru.yuriy.propertyrental.util;
+package ru.yuriy.propertyrental.util.validators;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

@@ -1,4 +1,4 @@
-package ru.yuriy.propertyrental.util;
+package ru.yuriy.propertyrental.util.validators;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

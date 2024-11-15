@@ -9,7 +9,7 @@ import ru.yuriy.propertyrental.enums.RoleType;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.services.UserService;
-import ru.yuriy.propertyrental.util.UserNotFoundException;
+import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;

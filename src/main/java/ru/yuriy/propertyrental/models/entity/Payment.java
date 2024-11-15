@@ -6,7 +6,9 @@ import org.hibernate.proxy.HibernateProxy;
 import ru.yuriy.propertyrental.enums.PaymentStatus;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -38,6 +40,12 @@ public class Payment
 
     @OneToOne(mappedBy = "payment", orphanRemoval = true)
     private Apartment apartment;
+
+    public void setApartment(Apartment apartment)
+    {
+        apartment.setPayment(this);
+        this.apartment = apartment;
+    }
 
     @Override
     public final boolean equals(Object o)

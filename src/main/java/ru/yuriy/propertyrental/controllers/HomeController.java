@@ -12,11 +12,7 @@ public class HomeController
     @GetMapping
     public String home(Principal principal, Model model)
     {
-        if (principal == null)
-            model.addAttribute("username", "Привет, пользователь");
-        else
-            model.addAttribute("username", "Привет, " + principal
-                    .getName().split("@")[0]);
+        model.addAttribute("principal", principal);
         return "home";
     }
 }

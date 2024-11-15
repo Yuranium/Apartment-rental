@@ -11,8 +11,8 @@ import ru.yuriy.propertyrental.models.entity.Role;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.RoleRepository;
 import ru.yuriy.propertyrental.repositories.UserRepository;
-import ru.yuriy.propertyrental.util.RoleNotFoundException;
-import ru.yuriy.propertyrental.util.UserNotFoundException;
+import ru.yuriy.propertyrental.util.exceptions.RoleNotFoundException;
+import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -56,6 +56,12 @@ public class UserService
     }
 
     @Transactional
+    public void saveUser(User user)
+    {
+        userRepository.save(user);
+    }
+
+    @Transactional
     public void setUserRoles(User user, List<RoleType> roles)
     {
         List<Role> roles1 = roleRepository.findAllByRoleTypeIn(roles);
@@ -95,5 +101,12 @@ public class UserService
     {
         user.setActive(true);
         userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByUsername(String username)
+    {
+        return userRepository.findByEmail(username).orElseThrow(
+                () -> new UserNotFoundException("Данный пользователь не был найден!"));
     }
 }

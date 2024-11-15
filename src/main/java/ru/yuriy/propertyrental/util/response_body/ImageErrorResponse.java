@@ -1,4 +1,4 @@
-package ru.yuriy.propertyrental.util;
+package ru.yuriy.propertyrental.util.response_body;
 
 import lombok.Builder;
 import lombok.Getter;
