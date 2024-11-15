@@ -61,6 +61,7 @@ public class User
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Apartment> apartments = new ArrayList<>();
+
     @PrePersist
     private void currentTimestamp()
     {
@@ -85,5 +86,12 @@ public class User
         if (apartment == null) return;
         apartment.setUser(this);
         this.apartments.add(apartment);
+    }
+
+    public void deletePayment(Payment payment)
+    {
+        for (Payment pay : this.payments)
+            if (pay.getId().longValue() == payment.getId().longValue())
+                this.payments.remove(payment);
     }
 }

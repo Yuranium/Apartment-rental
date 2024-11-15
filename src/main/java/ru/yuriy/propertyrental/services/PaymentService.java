@@ -10,8 +10,11 @@ import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
 import ru.yuriy.propertyrental.repositories.PaymentRepository;
 import ru.yuriy.propertyrental.util.exceptions.PaymentNotFoundException;
+import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 
+import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -52,5 +55,30 @@ public class PaymentService
     {
         return paymentRepository.findById(id)
                 .orElseThrow(PaymentNotFoundException::new);
+    }
+
+    public List<Payment> getAllPaymentsFromUser(Long id)
+    {
+        User user = userService.findById(id).orElseThrow(
+                () -> new UserNotFoundException(
+                        "Пользователь с id=" + id + " не найден!")
+        );
+        return paymentRepository.findAllByUser(user);
+    }
+
+    public void payApartment(Long id)
+    {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(PaymentNotFoundException::new);
+        payment.setStatus(PaymentStatus.PAID);
+        paymentRepository.save(payment);
+    }
+
+    public void deleteApartment(Long id, Principal principal)
+    {
+        User user = userService.getUserByUsername(principal.getName());
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(PaymentNotFoundException::new);
+        user.deletePayment(payment);
     }
 }

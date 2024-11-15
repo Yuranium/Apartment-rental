@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Платежи за аренду</title>
+</head>
+<body>
+<table id="usersTable" th:object="${userPayments}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Ежемесячная плата</th>
+        <th>Дата платежа</th>
+        <th>Статус платежа</th>
+        <th>Название апартаментов</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="payment : ${userPayments}">
+        <td th:text="${payment.id}">Id</td>
+        <td th:text="${payment.amountPayment}">Ежемесячная плата</td>
+        <td th:text="${#dates.format(payment.datePayment, 'dd.MM.yyyy')}">Дата платежа</td>
+        <td th:text="${payment.status.getStatus()}">Статус платежа</td>
+        <td th:text="${payment.getApartment().name}">Название апартаментов</td>
+        <td>
+            <a th:src="@{/payment/pay/{id}(id=${payment.id})}">Оплатить</a>
+            <a th:src="@{/payment/delete/{id}(id=${payment.id})}">Удалить</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

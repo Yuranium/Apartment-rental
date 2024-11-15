@@ -56,12 +56,6 @@ public class UserService
     }
 
     @Transactional
-    public void saveUser(User user)
-    {
-        userRepository.save(user);
-    }
-
-    @Transactional
     public void setUserRoles(User user, List<RoleType> roles)
     {
         List<Role> roles1 = roleRepository.findAllByRoleTypeIn(roles);
