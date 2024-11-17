@@ -38,15 +38,8 @@ public class AdminController
         return "userProfile";
     }
 
-    @PostMapping("/ban/{id}")
-    public String banUser(@PathVariable Long id)
-    {
-        userService.banOrUnbanUser(id);
-        return "redirect:/admin/all-users";
-    }
-
-    @PostMapping("/unban/{id}")
-    public String unbanUser(@PathVariable Long id)
+    @PostMapping("/actions/{id}")
+    public String banOrUnbanUser(@PathVariable Long id)
     {
         userService.banOrUnbanUser(id);
         return "redirect:/admin/all-users";

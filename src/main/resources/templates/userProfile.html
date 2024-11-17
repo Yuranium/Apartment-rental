@@ -42,5 +42,17 @@
         <button>Редактировать профиль</button>
     </a>
 </div>
+<div th:if="${roles.contains('ROLE_OWNER') || roles.contains('ROLE_ADMIN')}">
+    <h2>Другие товары пользователя</h2>
+<!--    <div class="apartment">-->
+<!--        <div th:each="apartment : ${profileInfo.getApartments()}">-->
+<!--            <img th:src="@{/image/{id}(id=${apartment.getImages().get(0).getId()})}" alt="Фотография апартаментов"  height="20%" width="20%">-->
+<!--            <span th:text="${apartment.name}">Название</span>-->
+<!--            <span th:text="${'Площадь: ' + apartment.square}">Площадь</span>-->
+<!--            <span th:text="${'Количество комнат: ' + apartment.roomCount}">Количество комнат</span>-->
+<!--            <span th:text="${'Суточная цена аренды: ' + apartment.dailyPrice}">Суточная цена аренды</span>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
 </body>
 </html>

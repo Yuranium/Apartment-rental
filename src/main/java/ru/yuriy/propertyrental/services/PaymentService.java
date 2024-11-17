@@ -41,7 +41,11 @@ public class PaymentService
         user.getPayments().add(payment);
         payment.setUser(user);
 
+        payment.setApartment(apartment);
+        apartment.setPayment(payment);
+
         paymentRepository.save(payment);
+        apartmentRepository.save(apartment);
     }
 
     public Double calculateTotalPayment(Apartment apartment)

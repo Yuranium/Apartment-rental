@@ -9,7 +9,6 @@ import ru.yuriy.propertyrental.enums.RoleType;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.entity.Role;
 import ru.yuriy.propertyrental.models.entity.User;
-import ru.yuriy.propertyrental.repositories.RoleRepository;
 import ru.yuriy.propertyrental.repositories.UserRepository;
 import ru.yuriy.propertyrental.util.exceptions.RoleNotFoundException;
 import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
@@ -24,7 +23,7 @@ public class UserService
 {
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     private final PasswordEncoder encoder;
 
@@ -45,12 +44,11 @@ public class UserService
                 dateFormat.parse(userForm.getBirthday()));
         user.setActive(false);
         user = userRepository.save(user);
-        Role role = roleRepository.findById(2L).orElseThrow(() -> new RoleNotFoundException(
-                "ОШИБКА: Для данного пользователя роль не была установлена"));
+        Role role = roleService.getRoleById(2L);
         user.getRoles().add(role);
         role.getUsers().add(user);
 
-        roleRepository.save(role);
+        roleService.saveRole(role);
         userRepository.save(user);
         return user;
     }
@@ -64,7 +62,7 @@ public class UserService
     @Transactional
     public void setUserRoles(User user, List<RoleType> roles)
     {
-        List<Role> roles1 = roleRepository.findAllByRoleTypeIn(roles);
+        List<Role> roles1 = roleService.getRoleByRoleType(roles);
         user.setRoles(roles1);
         userRepository.save(user);
     }

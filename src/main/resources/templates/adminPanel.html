@@ -48,11 +48,8 @@
         <td th:text="${#dates.format(user.birthday, 'dd.MM.yyyy')}">День рождения</td>
         <td th:text="${user.getActive() ? 'Да' : 'Нет'}">Активность</td>
         <td>
-            <form th:action="@{/admin/ban/{id}(id=${user.id})}" th:method="POST">
-                <input type="submit" value="Забанить" class="btn btn-danger">
-            </form>
-            <form th:action="@{/admin/unban/{id}(id=${user.id})}" th:method="POST">
-                <input type="submit" value="Разбанить" class="btn btn-danger">
+            <form th:action="@{/admin/actions/{id}(id=${user.id})}" th:method="POST">
+                <input type="submit" th:value="${user.getActive() ? 'Забанить' : 'Разбанить'}" class="btn btn-danger">
             </form>
         </td>
         <td>

@@ -23,7 +23,10 @@
         <td th:text="${payment.amountPayment}">Ежемесячная плата</td>
         <td th:text="${#dates.format(payment.datePayment, 'dd.MM.yyyy')}">Дата платежа</td>
         <td th:text="${payment.status.getStatus()}">Статус платежа</td>
-        <!--<td th:text="${payment.getApartment().name}">Название апартаментов</td>-->
+        <td>
+            <a th:href="@{/apartments/{id}(id=${payment.getApartment().id})}"
+               th:text="${payment.getApartment().name}">Название апартаментов</a>
+        </td>
         <td>
             <a th:href="@{/payment/pay/{id}(id=${payment.id})}">Оплатить</a>
             <a th:href="@{/payment/delete/{id}(id=${payment.id})}">Удалить</a>

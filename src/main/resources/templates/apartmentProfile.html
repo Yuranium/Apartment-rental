@@ -56,7 +56,7 @@
         <p><strong>Телефон владельца:</strong></p>
         <span th:if="${!apartment.getUser().phone.isEmpty()}" th:text="${apartment.getUser().phone}"></span>
         <span th:unless="${!apartment.getUser().phone.isEmpty()}" th:text="${apartment.getUser().email}"></span>
-        <strong><a th:href="@{/profile/}">Подробнее</a></strong>
+        <strong><a th:href="@{/profile/{id}(id=${apartment.getUser().id})}">Подробнее</a></strong>
     </div>
     <p>
         <a th:href="@{/payment/book/{id}(id=${apartment.id})}">Забронировать</a>
