@@ -24,6 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long>
     Optional<User> findById(Long id);
 
     @Transactional(readOnly = true)
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {"roles"})
     Optional<User> findByEmail(String email);
 
     @Transactional(readOnly = true)

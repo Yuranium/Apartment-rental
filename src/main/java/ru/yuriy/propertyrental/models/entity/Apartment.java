@@ -3,6 +3,8 @@ package ru.yuriy.propertyrental.models.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import ru.yuriy.propertyrental.enums.ApartmentType;
 
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class Apartment
     private User user;
 
     @BatchSize(size = 5)
-    @OneToMany(mappedBy = "apartment", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "apartment", orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     @ManyToMany

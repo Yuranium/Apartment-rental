@@ -31,7 +31,7 @@ public class Image
     @Column(name = "image_bytes", columnDefinition = "bytea")
     private byte[] imageBytes;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_apartment")
     private Apartment apartment;
 }

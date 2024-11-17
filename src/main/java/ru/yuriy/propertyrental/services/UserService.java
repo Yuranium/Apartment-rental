@@ -107,6 +107,7 @@ public class UserService
     public User getUserByUsername(String username)
     {
         return userRepository.findByEmail(username).orElseThrow(
-                () -> new UserNotFoundException("Данный пользователь не был найден!"));
+                () -> new UserNotFoundException(
+                        "Пользователь с email=" + username + " не найден!"));
     }
 }

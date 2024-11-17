@@ -68,7 +68,7 @@ public class ApartmentController
     }
 
     @GetMapping("/add")
-    @PreAuthorize("hasAuthority('ROLE_OWNER') && hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_OWNER') || hasAuthority('ROLE_ADMIN')")
     public String addApartment(Model model)
     {
         model.addAttribute("apartmentForm", new ApartmentForm());
@@ -77,7 +77,7 @@ public class ApartmentController
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasAuthority('ROLE_OWNER') && hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_OWNER') || hasAuthority('ROLE_ADMIN')")
     public String addApartment(@ModelAttribute @Valid ApartmentForm apartment, BindingResult result,
                                Model model, Principal principal)
     {

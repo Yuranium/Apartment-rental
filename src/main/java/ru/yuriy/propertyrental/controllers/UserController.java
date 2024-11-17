@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.services.EmailService;
+import ru.yuriy.propertyrental.services.RoleService;
 import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.validators.UserValidator;
 
@@ -26,6 +27,8 @@ public class UserController
     private final UserValidator userValidator;
 
     private final EmailService emailService;
+
+    private final RoleService roleService;
 
     @GetMapping("/registration")
     public String registration(Model model, @RequestParam(required = false, defaultValue = "false") boolean noAuth)
@@ -74,12 +77,7 @@ public class UserController
         {
             model.addAttribute("username", principal.getName());
             model.addAttribute("profileInfo", user.get());
-            model.addAttribute("roles", user.get()
-                    .getRoles().stream()
-                    .map(role -> role
-                            .getRoleType()
-                            .name())
-                    .collect(Collectors.joining(", ")));
+            model.addAttribute("roles", roleService.rolesEntityToString(user.get().getRoles()));
             return "userProfile";
         }
         else return "404";
