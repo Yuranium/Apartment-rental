@@ -24,9 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long>
             attributePaths = {"roles"})
     Optional<User> findById(Long id);
 
-    @Query("SELECT u FROM User u JOIN FETCH u.apartments WHERE u.id = :id")
-    Optional<User> findByIdTogetherApartment(Long id);
-
     @Transactional(readOnly = true)
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,

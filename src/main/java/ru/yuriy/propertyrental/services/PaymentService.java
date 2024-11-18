@@ -10,11 +10,11 @@ import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
 import ru.yuriy.propertyrental.repositories.PaymentRepository;
 import ru.yuriy.propertyrental.util.exceptions.PaymentNotFoundException;
-import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @RequiredArgsConstructor
 @Service
@@ -56,39 +56,60 @@ public class PaymentService
     }
 
     @Transactional(readOnly = true)
-    public Payment findById(Long id)
+    public Payment getById(Long id)
     {
         return paymentRepository.findById(id)
                 .orElseThrow(PaymentNotFoundException::new);
     }
 
     @Transactional(readOnly = true)
-    public List<Payment> getAllPaymentsFromUser(Long id)
+    public List<Payment> getAllPaymentsFromUser(Principal principal)
     {
-        User user = userService.findById(id).orElseThrow(
-                () -> new UserNotFoundException(
-                        "Пользователь с id=" + id + " не найден!")
-        );
+        User user = userService.getUserByUsername(principal.getName());
         return paymentRepository.findAllByUser(user);
     }
 
     @Transactional
-    public void payApartment(Long id)
+    public void payApartment(Long id, Principal principal)
     {
-        Payment payment = paymentRepository.findById(id)
-                .orElseThrow(PaymentNotFoundException::new);
-        payment.setStatus(PaymentStatus.PAID);
-        paymentRepository.save(payment);
+        User user = userService.getUserByUsername(principal.getName());
+        AtomicBoolean flag = new AtomicBoolean(false);
+        user.getPayments().forEach(
+                (payment) -> {
+                    if (payment.getId().longValue() == id.longValue())
+                    {
+                        flag.set(true);
+                        if (!payment.getStatus().name().equals(PaymentStatus.PAID.name()))
+                        {
+                            payment.setStatus(PaymentStatus.PAID);
+                            paymentRepository.save(payment);
+                        }
+                    }
+                }
+        );
+
+        if (!flag.get())
+            throw new PaymentNotFoundException(
+                    String.format("Платёж с id=%d для пользователя с id=%d не найден", id, user.getId()));
     }
 
     @Transactional(readOnly = true)
     public void deleteApartment(Long id, Principal principal)
     {
         User user = userService.getUserByUsername(principal.getName());
-        Payment payment = paymentRepository.findById(id)
-                .orElseThrow(PaymentNotFoundException::new);
-        user.deletePayment(payment);
-        userService.saveUser(user);
+        AtomicBoolean flag = new AtomicBoolean(false);
+        user.getPayments().forEach(
+                (payment) -> {
+                    if (payment.getId().longValue() == id.longValue())
+                    {
+                        flag.set(true);
+                        paymentRepository.delete(payment);
+                    }
+                }
+        );
+        if (!flag.get())
+            throw new PaymentNotFoundException(
+                    String.format("Платёж с id=%d для пользователя с id=%d не найден", id, user.getId()));
     }
 
     @Transactional

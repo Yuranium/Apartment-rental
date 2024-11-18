@@ -27,24 +27,24 @@ public class PaymentController
         return "redirect:/";
     }
 
-    @GetMapping("/user/{id}")
-    public String userPayments(@PathVariable Long id, Model model)
+    @GetMapping("/user")
+    public String userPayments(Model model, Principal principal)
     {
-        model.addAttribute("userPayments", paymentService.getAllPaymentsFromUser(id));
+        model.addAttribute("userPayments", paymentService.getAllPaymentsFromUser(principal));
         return "userPayments";
     }
 
     @GetMapping("/pay/{id}")
-    public String payApartment(@PathVariable Long id) // todo добавить проверку по аккаунту для оплаты
+    public String payApartment(@PathVariable Long id, Principal principal)
     {
-        paymentService.payApartment(id);
-        return "redirect:/user" + id;
+        paymentService.payApartment(id, principal);
+        return "redirect:/payment/user";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteApartment(@PathVariable Long id, Principal principal)
     {
         paymentService.deleteApartment(id, principal);
-        return "redirect:/user" + id;
+        return "redirect:/payment/user";
     }
 }

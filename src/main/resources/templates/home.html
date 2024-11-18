@@ -19,7 +19,7 @@
 <span>
     <a href="/apartments/all">Все доступные апартаменты</a>
     <a th:if="${currentUser != null}" th:text="${'Посмотреть собственные платежи'}"
-       th:href="@{/payment/user/{id}(id=${currentUser.id})}">Посмотреть собственные платежи</a>
+       th:href="@{/payment/user}">Посмотреть собственные платежи</a>
     <a th:if="${roles != null && roles.contains('ROLE_ADMIN')}" th:text="${'Пользователи'}" href="/admin/all-users"></a>
 </span>
 
