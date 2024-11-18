@@ -1,10 +1,11 @@
 package ru.yuriy.propertyrental.models.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import ru.yuriy.propertyrental.enums.ApartmentType;
 
 import java.util.ArrayList;
@@ -16,6 +17,12 @@ import java.util.List;
 @Table(name = "apartments")
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedEntityGraph(
+        name = "apartment-image-graph",
+        attributeNodes = {
+                @NamedAttributeNode("images")
+        }
+)
 public class Apartment
 {
     @Id
@@ -45,11 +52,11 @@ public class Apartment
     @Column(name = "room_available")
     private Boolean roomAvailable;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_payment", referencedColumnName = "id_payment")
     private Payment payment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     private User user;
 

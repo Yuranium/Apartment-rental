@@ -69,7 +69,7 @@ public class AdminController
     public String editRoles(@PathVariable User user, @RequestParam List<RoleType> roleTypes)
     {
         userService.setUserRoles(user, roleTypes);
-        return "redirect:/profile/" + user.getId();
+        return "redirect:/admin/all-users";
     }
 
     @ExceptionHandler(UserNotFoundException.class)
