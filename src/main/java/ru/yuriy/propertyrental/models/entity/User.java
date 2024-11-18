@@ -87,11 +87,4 @@ public class User
         apartment.setUser(this);
         this.apartments.add(apartment);
     }
-
-    public void deletePayment(Payment payment)
-    {
-        for (Payment pay : this.payments)
-            if (pay.getId().longValue() == payment.getId().longValue())
-                this.payments.remove(payment);
-    }
 }
