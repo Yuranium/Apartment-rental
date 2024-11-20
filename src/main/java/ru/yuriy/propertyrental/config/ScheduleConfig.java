@@ -35,7 +35,7 @@ public class ScheduleConfig
                             apartment.setName(ap.getName());
                             apartment.setRoomCount(ap.getRoomCount());
                             apartment.setDailyPrice(ap.getDailyPrice());
-                            apartment.setApartmentType(apartment.getApartmentType());
+                            apartment.setApartmentType(ap.getType().name());
                             return apartment;
                         })
                         .collect(Collectors.toList())

@@ -20,4 +20,7 @@ public interface ApartmentRepository extends JpaRepository<Apartment, Long>
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {"images"})
     List<Apartment> findAll();
+
+    @EntityGraph(value = "apartment-image-graph")
+    List<Apartment> findAllById(Iterable<Long> ids);
 }

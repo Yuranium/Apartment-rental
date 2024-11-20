@@ -28,7 +28,7 @@ public class ApartmentSearch
     @Field(type = FieldType.Double)
     private Double dailyPrice;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String apartmentType;
 
     public boolean isEmptySearch()
