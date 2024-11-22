@@ -23,19 +23,11 @@ services:
     depends_on:
       - elasticsearch
 
-#  logstash:
-#    image: docker.elastic.co/logstash/logstash:7.17.10
-#    container_name: logstash
-#    volumes:
-#      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-#      - ./postgresql-42.7.4.jar:/usr/share/logstash/postgresql-42.7.4.jar
-#    ports:
-#      - "5044:5044"
-#    environment:
-#      - xpack.monitoring.elasticsearch.hosts=http://elasticsearch:9200
-#    depends_on:
-#      - elasticsearch
-
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
 volumes:
   es_data:
 
