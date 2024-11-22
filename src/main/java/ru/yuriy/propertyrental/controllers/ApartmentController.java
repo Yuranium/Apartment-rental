@@ -93,9 +93,12 @@ public class ApartmentController
     }
 
     @GetMapping("/{id}")
-    public String apartmentProfile(@PathVariable Long id, Model model)
+    public String apartmentProfile(@PathVariable Long id, Model model, Principal principal)
     {
-        model.addAttribute("apartment", apartmentService.findApartmentById(id));
+        Apartment apartment = apartmentService.findApartmentById(id);
+        model.addAttribute("apartment", apartment);
+        model.addAttribute("isAlreadyHere",
+                apartmentService.isApartmentBooked(apartment.getId(), principal));
         return "apartmentProfile";
     }
 

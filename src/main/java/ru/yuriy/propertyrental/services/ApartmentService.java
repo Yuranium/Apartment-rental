@@ -15,6 +15,7 @@ import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
 import ru.yuriy.propertyrental.repositories.ImageRepository;
 import ru.yuriy.propertyrental.repositories.UserRepository;
+import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -64,7 +65,8 @@ public class ApartmentService
         apartmentRepository.save(apartment);
     }
 
-    private User getUserByPrincipal(Principal principal)
+    @Transactional(readOnly = true)
+    public User getUserByPrincipal(Principal principal)
     {
         if (principal == null) throw new SessionAuthenticationException("Пользователь не аутентифицирован!");
         return userRepository.findByEmail(principal.getName()).orElseThrow(
@@ -125,6 +127,23 @@ public class ApartmentService
     @Transactional(readOnly = true)
     public Apartment findApartmentById(Long id)
     {
-        return apartmentRepository.findById(id).orElseThrow(null);
+        return apartmentRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("Пользователь с id=" + id + " не был найден")
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean isApartmentBooked(Long apartmentID, Principal principal)
+    {
+        try
+        {
+            User user = getUserByPrincipal(principal);
+            return user.getPayments().stream()
+                    .anyMatch(pay -> pay.getApartment()
+                            .getId().longValue() != apartmentID);
+        } catch (SessionAuthenticationException exc)
+        {
+            return false;
+        }
     }
 }

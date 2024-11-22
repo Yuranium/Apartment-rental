@@ -1,4 +1,5 @@
 PUT https://localhost:9200/apartment
+Content-Type: application/json
 
 {
   "settings": {
