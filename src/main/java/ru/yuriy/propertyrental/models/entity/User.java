@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -50,6 +51,7 @@ public class User
     private Boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @BatchSize(size = 5)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "id_user"),

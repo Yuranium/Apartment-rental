@@ -1,7 +1,8 @@
 package ru.yuriy.propertyrental.repositories;
 
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,22 +21,19 @@ public interface UserRepository extends JpaRepository<User, Long>
             attributePaths = {"roles"})
     List<User> findAll();
 
-    @EntityGraph(
-            type = EntityGraph.EntityGraphType.FETCH,
-            attributePaths = {"roles"})
-    List<User> findAll(PageRequest pageRequest);
+    Page<User> findAll(Pageable pageable);
 
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {"roles"})
     Optional<User> findById(Long id);
 
-    @Transactional(readOnly = true)
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {"roles"})
     Optional<User> findByEmail(String email);
 
     @Transactional(readOnly = true)
+    @Query("FROM User u WHERE u.phone IS NOT NULL AND u.phone = :phone")
     Optional<User> findByPhone(String phone);
 }

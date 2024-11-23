@@ -3,6 +3,7 @@ package ru.yuriy.propertyrental.services.rest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.dto.UserDTO;
 import ru.yuriy.propertyrental.repositories.UserRepository;
 import ru.yuriy.propertyrental.util.UserMapper;
@@ -19,6 +20,7 @@ public class UserRestService
 
     private final UserMapper userMapper;
 
+    @Transactional(readOnly = true)
     public List<UserDTO> listUsers(PageRequest pageRequest)
     {
         return userRepository.findAll(pageRequest).stream()
@@ -26,6 +28,7 @@ public class UserRestService
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public UserDTO getById(Long id)
     {
         return userMapper.toDTO(userRepository.findById(id)

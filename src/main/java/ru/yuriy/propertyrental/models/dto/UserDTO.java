@@ -25,7 +25,8 @@ public class UserDTO
 
     private String phone;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,
+            pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC")
     private Timestamp dateRegistration;
 
     private Boolean active;

@@ -6,19 +6,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
 @Builder
-public class ErrorResponse
+public class ValidResponse
 {
     private String status;
 
     private Integer code;
 
-    private String errorMessage;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING,
             pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
     private Timestamp timestamp;
+
+    private Map<String, List<String>> errorMessages;
 }

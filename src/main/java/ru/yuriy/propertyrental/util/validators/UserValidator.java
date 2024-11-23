@@ -38,7 +38,7 @@ public class UserValidator implements Validator
             errors.rejectValue("phone", "", "Данный телефон уже есть в базе!");
         if (!user.equalsPassword())
             errors.rejectValue("replayPassword", "", "Пароли не совпадают!");
-        if (!user.getBirthday().isEmpty() && new Date(System.currentTimeMillis()).before(
+        if (user.getBirthday() != null && !user.getBirthday().isEmpty() && new Date(System.currentTimeMillis()).before(
                 new SimpleDateFormat("yyyy-MM-dd").parse(user.getBirthday())))
             errors.rejectValue("birthday", "", "Введённая дата больше текущей!");
     }
