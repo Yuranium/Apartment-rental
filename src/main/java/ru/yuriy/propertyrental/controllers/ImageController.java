@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.services.ImageService;
-import ru.yuriy.propertyrental.util.response_body.ImageErrorResponse;
+import ru.yuriy.propertyrental.util.response_body.ErrorResponse;
 import ru.yuriy.propertyrental.util.exceptions.ImageNotFoundException;
 
 import java.io.ByteArrayInputStream;
@@ -33,9 +33,9 @@ public class ImageController
     }
 
     @ExceptionHandler(ImageNotFoundException.class)
-    public ResponseEntity<?> imageHandler(ImageNotFoundException exc)
+    public ResponseEntity<ErrorResponse> imageHandler(ImageNotFoundException exc)
     {
-        return new ResponseEntity<>(ImageErrorResponse.builder()
+        return new ResponseEntity<>(ErrorResponse.builder()
                 .status(HttpStatus.NOT_FOUND.getReasonPhrase())
                 .code(HttpStatus.NOT_FOUND.value())
                 .errorMessage(exc.getMessage())

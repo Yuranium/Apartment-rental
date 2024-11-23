@@ -32,4 +32,10 @@ public class Role
 
     @ManyToMany(mappedBy = "roles")
     private List<User> users = new ArrayList<>();
+
+    @PrePersist
+    private void currentTimestamp()
+    {
+        this.assignmentDate = new Timestamp(System.currentTimeMillis());
+    }
 }

@@ -1,6 +1,7 @@
 package ru.yuriy.propertyrental.repositories;
 
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,11 @@ public interface UserRepository extends JpaRepository<User, Long>
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {"roles"})
     List<User> findAll();
+
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {"roles"})
+    List<User> findAll(PageRequest pageRequest);
 
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,
