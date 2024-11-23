@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.dto.UserDTO;
@@ -43,7 +45,7 @@ public class UserRestController
                             .errorMessages(result.getFieldErrors().stream()
                                     .collect(Collectors.groupingBy(
                                             FieldError::getField,
-                                            Collectors.mapping(FieldError::getDefaultMessage,Collectors.toList())
+                                            Collectors.mapping(FieldError::getDefaultMessage, Collectors.toList())
                                     )))
                             .build(),
                     HttpStatus.BAD_REQUEST
@@ -69,6 +71,13 @@ public class UserRestController
         );
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id, @RequestParam String email)
+    {
+        userService.deleteUser(id, email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     private ResponseEntity<ErrorResponse> exceptionHandle(UserNotFoundException exc)
     {
@@ -78,5 +87,27 @@ public class UserRestController
                 .errorMessage(exc.getMessage())
                 .timestamp(new Timestamp(System.currentTimeMillis()))
                 .build(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    private ResponseEntity<ErrorResponse> exceptionHandle(AccessDeniedException exc)
+    {
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .status(HttpStatus.FORBIDDEN.getReasonPhrase())
+                .code(HttpStatus.FORBIDDEN.value())
+                .errorMessage(exc.getMessage())
+                .timestamp(new Timestamp(System.currentTimeMillis()))
+                .build(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    private ResponseEntity<ErrorResponse> exceptionHandle(MissingServletRequestParameterException exc)
+    {
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .errorMessage(exc.getMessage())
+                .timestamp(new Timestamp(System.currentTimeMillis()))
+                .build(), HttpStatus.BAD_REQUEST);
     }
 }

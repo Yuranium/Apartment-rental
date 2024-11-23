@@ -1,22 +1,16 @@
 package ru.yuriy.propertyrental.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import ru.yuriy.propertyrental.models.entity.Role;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class RoleDTO
-{
-    private String roleType;
+/**
+ * DTO for {@link Role}
+ */
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING,
-            pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
-    private Timestamp assignmentDate;
-}
+public record RoleDTO(String roleType,
+                      @JsonFormat(shape = JsonFormat.Shape.STRING,
+                              pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
+                      Timestamp assignmentDate) implements Serializable {}

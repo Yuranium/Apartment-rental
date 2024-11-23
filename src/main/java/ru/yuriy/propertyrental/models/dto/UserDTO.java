@@ -2,34 +2,19 @@ package ru.yuriy.propertyrental.models.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import ru.yuriy.propertyrental.models.entity.User;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserDTO
-{
-    private Long id;
+/**
+ * DTO for {@link User}
+ */
 
-    private String name;
+public record UserDTO(Long id, String name, String email,
 
-    private String email;
+        String phone, @JsonFormat(shape = JsonFormat.Shape.STRING,
+                      pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC") Timestamp dateRegistration,
 
-    private String phone;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING,
-            pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC")
-    private Timestamp dateRegistration;
-
-    private Boolean active;
-
-    private List<RoleDTO> roles = new ArrayList<>();
-}
+        Boolean active, List<RoleDTO> roles) implements Serializable {}
