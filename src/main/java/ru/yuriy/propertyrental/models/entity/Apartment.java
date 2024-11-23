@@ -65,6 +65,7 @@ public class Apartment
     private List<Image> images = new ArrayList<>();
 
     @ManyToMany
+    @BatchSize(size = 5)
     @JoinTable(name = "apartments_services",
             joinColumns = @JoinColumn(name = "id_apartment"),
             inverseJoinColumns = @JoinColumn(name = "id_service"))
