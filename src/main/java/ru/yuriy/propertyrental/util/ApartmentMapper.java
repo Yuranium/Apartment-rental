@@ -14,4 +14,6 @@ public interface ApartmentMapper
     ApartmentDTO toDTO(Apartment apartment);
 
     List<ApartmentDTO> toDTOList(List<Apartment> apartments);
+
+    Apartment toEntity(ApartmentDTO apartmentDTO);
 }

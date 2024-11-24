@@ -81,33 +81,31 @@ public class UserRestController
     @ExceptionHandler(UserNotFoundException.class)
     private ResponseEntity<ErrorResponse> exceptionHandle(UserNotFoundException exc)
     {
-        return new ResponseEntity<>(ErrorResponse.builder()
-                .status(HttpStatus.NOT_FOUND.getReasonPhrase())
-                .code(HttpStatus.NOT_FOUND.value())
-                .errorMessage(exc.getMessage())
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(createMessage(HttpStatus.NOT_FOUND, exc),
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     private ResponseEntity<ErrorResponse> exceptionHandle(AccessDeniedException exc)
     {
-        return new ResponseEntity<>(ErrorResponse.builder()
-                .status(HttpStatus.FORBIDDEN.getReasonPhrase())
-                .code(HttpStatus.FORBIDDEN.value())
-                .errorMessage(exc.getMessage())
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(createMessage(HttpStatus.FORBIDDEN, exc),
+                HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<ErrorResponse> exceptionHandle(MissingServletRequestParameterException exc)
     {
-        return new ResponseEntity<>(ErrorResponse.builder()
-                .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .code(HttpStatus.BAD_REQUEST.value())
-                .errorMessage(exc.getMessage())
+        return new ResponseEntity<>(createMessage(HttpStatus.BAD_REQUEST, exc),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    private ErrorResponse createMessage(HttpStatus status, Throwable throwable)
+    {
+        return ErrorResponse.builder()
+                .status(status.getReasonPhrase())
+                .code(status.value())
+                .errorMessage(throwable.getMessage())
                 .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build(), HttpStatus.BAD_REQUEST);
+                .build();
     }
 }
