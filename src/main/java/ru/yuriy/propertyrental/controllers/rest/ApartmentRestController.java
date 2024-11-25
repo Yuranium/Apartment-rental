@@ -10,6 +10,7 @@ import ru.yuriy.propertyrental.services.rest.ApartmentRestService;
 import ru.yuriy.propertyrental.util.exceptions.ApartmentNotFoundException;
 import ru.yuriy.propertyrental.util.response_body.ErrorResponse;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 @RestController
@@ -43,11 +44,26 @@ public class ApartmentRestController
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<?> updateApartment(@RequestBody ApartmentDTO apartment,
+                                             @PathVariable Long id)
+    {
+        apartmentService.updateApartment(apartment, id);
+        return new ResponseEntity<>("Обновлён только апартамент", HttpStatus.OK);
+    }
+
     @ExceptionHandler(ApartmentNotFoundException.class)
     private ResponseEntity<ErrorResponse> exceptionHandle(ApartmentNotFoundException exc)
     {
         return new ResponseEntity<>(createMessage(HttpStatus.NOT_FOUND, exc),
                 HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<ErrorResponse> sqlExceptionHandle(SQLException exc)
+    {
+        return new ResponseEntity<>(createMessage(HttpStatus.BAD_REQUEST, exc),
+                HttpStatus.BAD_REQUEST);
     }
 
     private ErrorResponse createMessage(HttpStatus status, Throwable throwable)

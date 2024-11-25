@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.dto.ApartmentDTO;
+import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
 import ru.yuriy.propertyrental.util.ApartmentMapper;
 import ru.yuriy.propertyrental.util.exceptions.ApartmentNotFoundException;
@@ -41,5 +42,21 @@ public class ApartmentRestService
     {
         apartmentRepository.save(
                 apartmentMapper.toEntity(apartment));
+    }
+
+    @Transactional
+    public void updateApartment(ApartmentDTO apartment, Long id)
+    {
+        Apartment ap = apartmentRepository.findById(id)
+                .orElseThrow(() -> new ApartmentNotFoundException(
+                        String.format("Апартамент с id=%d не найден", id)));
+        ap.setName(apartment.name());
+        ap.setSquare(apartment.square());
+        ap.setRoomCount(apartment.roomCount());
+        ap.setDailyPrice(apartment.dailyPrice());
+        ap.setType(apartment.type());
+        ap.setAddress(apartment.address());
+        ap.setRoomAvailable(apartment.roomAvailable());
+        apartmentRepository.save(ap);
     }
 }
