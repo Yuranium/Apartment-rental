@@ -1,4 +1,4 @@
-package ru.yuriy.propertyrental.util;
+package ru.yuriy.propertyrental.util.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

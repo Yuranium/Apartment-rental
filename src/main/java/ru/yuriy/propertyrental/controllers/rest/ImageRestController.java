@@ -1,23 +1,22 @@
-package ru.yuriy.propertyrental.controllers;
+package ru.yuriy.propertyrental.controllers.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.services.ImageService;
-import ru.yuriy.propertyrental.util.response_body.ErrorResponse;
-import ru.yuriy.propertyrental.util.exceptions.ImageNotFoundException;
 
 import java.io.ByteArrayInputStream;
-import java.sql.Timestamp;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/image")
-public class ImageController
+public class ImageRestController
 {
     private final ImageService imageService;
 
@@ -30,16 +29,5 @@ public class ImageController
                 .contentType(MediaType.parseMediaType(image.getContentType()))
                 .contentLength(image.getSize())
                 .body(new InputStreamResource(new ByteArrayInputStream(image.getImageBytes())));
-    }
-
-    @ExceptionHandler(ImageNotFoundException.class)
-    public ResponseEntity<ErrorResponse> imageHandler(ImageNotFoundException exc)
-    {
-        return new ResponseEntity<>(ErrorResponse.builder()
-                .status(HttpStatus.NOT_FOUND.getReasonPhrase())
-                .code(HttpStatus.NOT_FOUND.value())
-                .errorMessage(exc.getMessage())
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build(), HttpStatus.NOT_FOUND);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.dto.UserDTO;
 import ru.yuriy.propertyrental.repositories.UserRepository;
-import ru.yuriy.propertyrental.util.UserMapper;
+import ru.yuriy.propertyrental.util.mappers.UserMapper;
 import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 
 import java.util.List;

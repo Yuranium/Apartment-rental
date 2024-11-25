@@ -71,10 +71,4 @@ public class AdminController
         userService.setUserRoles(user, roleTypes);
         return "redirect:/admin/all-users";
     }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public String userNotFound(UserNotFoundException exc)
-    {
-        return "404";
-    }
 }

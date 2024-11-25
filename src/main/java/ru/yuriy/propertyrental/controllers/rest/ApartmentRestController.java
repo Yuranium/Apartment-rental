@@ -7,11 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.dto.ApartmentDTO;
 import ru.yuriy.propertyrental.services.rest.ApartmentRestService;
-import ru.yuriy.propertyrental.util.exceptions.ApartmentNotFoundException;
+import ru.yuriy.propertyrental.util.RestErrorHandler;
 import ru.yuriy.propertyrental.util.response_body.ErrorResponse;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 @RestController
 @RequestMapping("/api/apartments")
@@ -52,27 +51,10 @@ public class ApartmentRestController
         return new ResponseEntity<>("Обновлён только апартамент", HttpStatus.OK);
     }
 
-    @ExceptionHandler(ApartmentNotFoundException.class)
-    private ResponseEntity<ErrorResponse> exceptionHandle(ApartmentNotFoundException exc)
-    {
-        return new ResponseEntity<>(createMessage(HttpStatus.NOT_FOUND, exc),
-                HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<ErrorResponse> sqlExceptionHandle(SQLException exc)
     {
-        return new ResponseEntity<>(createMessage(HttpStatus.BAD_REQUEST, exc),
+        return new ResponseEntity<>(RestErrorHandler.createMessage(HttpStatus.BAD_REQUEST, exc),
                 HttpStatus.BAD_REQUEST);
-    }
-
-    private ErrorResponse createMessage(HttpStatus status, Throwable throwable)
-    {
-        return ErrorResponse.builder()
-                .status(status.getReasonPhrase())
-                .code(status.value())
-                .errorMessage(throwable.getMessage())
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build();
     }
 }

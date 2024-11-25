@@ -3,4 +3,4 @@ package ru.yuriy.propertyrental.util.exceptions;
 import lombok.experimental.StandardException;
 
 @StandardException
-public class ImageNotFoundException extends NotFoundException {}
+public abstract class NotFoundException extends RuntimeException {}

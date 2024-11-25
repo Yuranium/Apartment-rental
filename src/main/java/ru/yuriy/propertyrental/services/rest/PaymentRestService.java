@@ -7,7 +7,7 @@ import ru.yuriy.propertyrental.models.dto.PaymentDTO;
 import ru.yuriy.propertyrental.models.entity.Payment;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.UserRepository;
-import ru.yuriy.propertyrental.util.PaymentMapper;
+import ru.yuriy.propertyrental.util.mappers.PaymentMapper;
 import ru.yuriy.propertyrental.util.exceptions.PaymentNotFoundException;
 import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 

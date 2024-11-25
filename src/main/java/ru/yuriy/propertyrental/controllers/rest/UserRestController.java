@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.dto.UserDTO;
 import ru.yuriy.propertyrental.services.rest.UserRestService;
+import ru.yuriy.propertyrental.util.RestErrorHandler;
 import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 import ru.yuriy.propertyrental.util.response_body.ErrorResponse;
 import ru.yuriy.propertyrental.util.response_body.ValidResponse;
@@ -78,34 +79,10 @@ public class UserRestController
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    private ResponseEntity<ErrorResponse> exceptionHandle(UserNotFoundException exc)
-    {
-        return new ResponseEntity<>(createMessage(HttpStatus.NOT_FOUND, exc),
-                HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(AccessDeniedException.class)
     private ResponseEntity<ErrorResponse> exceptionHandle(AccessDeniedException exc)
     {
-        return new ResponseEntity<>(createMessage(HttpStatus.FORBIDDEN, exc),
+        return new ResponseEntity<>(RestErrorHandler.createMessage(HttpStatus.FORBIDDEN, exc),
                 HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    private ResponseEntity<ErrorResponse> exceptionHandle(MissingServletRequestParameterException exc)
-    {
-        return new ResponseEntity<>(createMessage(HttpStatus.BAD_REQUEST, exc),
-                HttpStatus.BAD_REQUEST);
-    }
-
-    private ErrorResponse createMessage(HttpStatus status, Throwable throwable)
-    {
-        return ErrorResponse.builder()
-                .status(status.getReasonPhrase())
-                .code(status.value())
-                .errorMessage(throwable.getMessage())
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build();
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.dto.ApartmentDTO;
 import ru.yuriy.propertyrental.models.entity.Apartment;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
-import ru.yuriy.propertyrental.util.ApartmentMapper;
+import ru.yuriy.propertyrental.util.mappers.ApartmentMapper;
 import ru.yuriy.propertyrental.util.exceptions.ApartmentNotFoundException;
 
 import java.util.List;
