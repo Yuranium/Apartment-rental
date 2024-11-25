@@ -59,4 +59,10 @@ public class ApartmentRestService
         ap.setRoomAvailable(apartment.roomAvailable());
         apartmentRepository.save(ap);
     }
+
+    @Transactional
+    public void deleteApartment(Long id)
+    {
+        apartmentRepository.deleteById(id);
+    }
 }

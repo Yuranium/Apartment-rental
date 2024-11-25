@@ -51,6 +51,13 @@ public class ApartmentRestController
         return new ResponseEntity<>("Обновлён только апартамент", HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteApartment(@PathVariable Long id)
+    {
+        apartmentService.deleteApartment(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<ErrorResponse> sqlExceptionHandle(SQLException exc)
     {

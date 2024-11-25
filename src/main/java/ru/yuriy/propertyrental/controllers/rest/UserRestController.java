@@ -9,13 +9,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.dto.UserDTO;
 import ru.yuriy.propertyrental.services.rest.UserRestService;
 import ru.yuriy.propertyrental.util.RestErrorHandler;
-import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 import ru.yuriy.propertyrental.util.response_body.ErrorResponse;
 import ru.yuriy.propertyrental.util.response_body.ValidResponse;
 import ru.yuriy.propertyrental.util.validators.UserValidator;
@@ -70,6 +68,13 @@ public class UserRestController
         return new ResponseEntity<>(
                 userService.getById(id), HttpStatus.OK
         );
+    }
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDTO user)
+    {
+        userService.updateUser(user, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -6,9 +6,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.dto.UserDTO;
+import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.UserRepository;
-import ru.yuriy.propertyrental.util.mappers.UserMapper;
 import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
+import ru.yuriy.propertyrental.util.mappers.UserMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,5 +44,17 @@ public class UserRestService
         UserDTO user = getById(id);
         if (!user.email().equals(email))
             throw new AccessDeniedException("Пользователь не имеет прав на выполнение данного действия");
+    }
+
+    public void updateUser(UserDTO user, Long id)
+    {
+        User u = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(
+                        String.format("Пользователь с id=%d не найден", id)));
+        u.setName(user.name());
+        u.setEmail(user.email());
+        u.setPhone(user.phone());
+        u.setActive(user.active());
+        userRepository.save(u);
     }
 }
