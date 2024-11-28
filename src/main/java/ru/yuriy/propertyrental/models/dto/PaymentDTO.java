@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import ru.yuriy.propertyrental.enums.PaymentStatus;
 import ru.yuriy.propertyrental.models.entity.Payment;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,4 +13,4 @@ import java.util.Date;
 
 public record PaymentDTO(Double amountPayment, @JsonFormat(shape = JsonFormat.Shape.STRING,
         pattern = "yyyy-MM-dd", timezone = "UTC") Date datePayment,
-                         PaymentStatus status) {}
+                         PaymentStatus status) implements Serializable {}
