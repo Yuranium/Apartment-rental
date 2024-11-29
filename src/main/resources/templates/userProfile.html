@@ -34,8 +34,8 @@
     <p><strong>Роли:</strong> <span th:text="${roles}" th:object="${roles}"></span></p>
 </div>
 
-<img th:src="@{'data:image/png;base64,' + ${dataGraph}}" alt="График платежей">
 <div class="profile-buttons" th:if="${profileInfo.email == username}" th:object="${username}">
+    <img th:src="@{'data:image/png;base64,' + ${dataGraph}}" alt="График платежей">
     <form th:action="@{/deleteProfile/{id}(id=${profileInfo.id})}" th:method="DELETE">
         <input type="submit" value="Удалить профиль">
     </form>

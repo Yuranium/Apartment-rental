@@ -14,12 +14,14 @@ import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.PaymentRepository;
 import ru.yuriy.propertyrental.util.exceptions.ImageNotFoundException;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@Setter
 @RequiredArgsConstructor
 public class RabbitService
 {
@@ -29,12 +31,15 @@ public class RabbitService
 
     private final RestTemplate restTemplate;
 
+    @Setter
     @Value("${queue.java-to-python.name}")
     private String javaPythonQueue;
 
+    @Setter
     @Value("${queue.python-to-java.name}")
     private String pythonJavaQueue;
 
+    @Setter
     @Value("${python.django.url}")
     private String pythonUrl;
 
@@ -43,6 +48,8 @@ public class RabbitService
     public byte[] compilingDataGraph(User user)
     {
         List<Object[]> results = paymentRepository.findAllByUserGrouping(user);
+        if (results.isEmpty())
+            return new byte[] {};
         Map<String, Integer> groupedPayments = results.stream()
                 .collect(Collectors.toMap(
                         result -> result[0].toString(),
@@ -51,7 +58,12 @@ public class RabbitService
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonMessage = objectMapper.writeValueAsString(groupedPayments);
         template.convertAndSend(javaPythonQueue, jsonMessage);
-        restTemplate.getForObject(pythonUrl, String.class);
+        try {
+            restTemplate.getForObject(pythonUrl, String.class);
+        } catch (Exception exc) { // ConnectException catching - connection refused
+            System.out.println(exc);
+            return new byte[] {};
+        }
 
         Message response = template.receive(pythonJavaQueue, 5000);
         if (response != null && response.getBody().length != 0)
