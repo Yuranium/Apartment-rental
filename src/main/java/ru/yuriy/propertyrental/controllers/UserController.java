@@ -15,6 +15,7 @@ import ru.yuriy.propertyrental.services.UserService;
 import ru.yuriy.propertyrental.util.validators.UserValidator;
 
 import java.security.Principal;
+import java.util.Base64;
 import java.util.Optional;
 
 @Controller
@@ -74,6 +75,9 @@ public class UserController
         Optional<User> user = userService.findById(id);
         if (user.isPresent())
         {
+            model.addAttribute("dataGraph", Base64.getEncoder().encodeToString(
+                    userService.compilingDataGraph(user.get())
+            ));
             model.addAttribute("username", principal.getName());
             model.addAttribute("profileInfo", user.get());
             model.addAttribute("roles", roleService.rolesEntityToString(user.get().getRoles()));

@@ -25,6 +25,8 @@ public class UserService
 
     private final RoleService roleService;
 
+    private final RabbitService rabbitService;
+
     private final PasswordEncoder encoder;
 
     @SneakyThrows
@@ -101,5 +103,10 @@ public class UserService
         return userRepository.findByEmail(username).orElseThrow(
                 () -> new UserNotFoundException(
                         "Пользователь с email=" + username + " не найден!"));
+    }
+
+    public byte[] compilingDataGraph(User user)
+    {
+        return rabbitService.compilingDataGraph(user);
     }
 }

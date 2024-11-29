@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.yuriy.propertyrental.models.entity.Payment;
 import ru.yuriy.propertyrental.models.entity.User;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,6 +17,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long>
             attributePaths = {"apartment"})
     List<Payment> findAllByUser(User user);
 
-    @Query("SELECT COUNT(*) FROM Payment p WHERE p.datePayment = :date AND p.user = :user")
-    Integer getCountPayment(Date date, User user);
+    @Query("SELECT p.datePayment, COUNT(*) FROM Payment p WHERE p.user = :user GROUP BY p.datePayment")
+    List<Object[]> findAllByUserGrouping(User user);
 }
