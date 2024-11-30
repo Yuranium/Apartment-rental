@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import ru.yuriy.propertyrental.models.dto.RoleDTO;
 import ru.yuriy.propertyrental.models.entity.Role;
+import ru.yuriy.propertyrental.models.graphql.input.RoleInput;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public interface RoleMapper
 {
     RoleDTO toDTO(Role role);
+
+    Role toEntity(RoleInput role);
 
     List<RoleDTO> listToDTO(List<Role> roles);
 }

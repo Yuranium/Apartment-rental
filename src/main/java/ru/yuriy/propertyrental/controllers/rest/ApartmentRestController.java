@@ -2,15 +2,22 @@ package ru.yuriy.propertyrental.controllers.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.dto.ApartmentDTO;
+import ru.yuriy.propertyrental.models.graphql.input.ApartmentInput;
 import ru.yuriy.propertyrental.services.rest.ApartmentRestService;
 import ru.yuriy.propertyrental.util.RestErrorHandler;
 import ru.yuriy.propertyrental.util.response_body.ErrorResponse;
+import ru.yuriy.propertyrental.util.response_body.Message;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/apartments")
@@ -52,7 +59,7 @@ public class ApartmentRestController
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteApartment(@PathVariable Long id)
+    public ResponseEntity<?> deleteApartmentById(@PathVariable Long id)
     {
         apartmentService.deleteApartment(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -63,5 +70,39 @@ public class ApartmentRestController
     {
         return new ResponseEntity<>(RestErrorHandler.createMessage(HttpStatus.BAD_REQUEST, exc),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @QueryMapping
+    public List<ApartmentDTO> apartments(@Argument(name = "page") Integer page,
+                                    @Argument(name = "size") Integer size)
+    {
+        return apartmentService.listApartments(PageRequest.of(page, size));
+    }
+
+    @QueryMapping
+    public ApartmentDTO apartmentById(@Argument Long id)
+    {
+        return apartmentService.getApartment(id);
+    }
+
+    @MutationMapping
+    public ApartmentDTO addApartment(@Argument ApartmentInput apartment)
+    {
+        return apartmentService.saveApartment(apartment);
+    }
+
+    @MutationMapping
+    public ApartmentDTO updateApartment(@Argument ApartmentInput apartment,
+                                        @Argument Long id)
+    {
+        return apartmentService.updateApartment(apartment, id);
+    }
+
+    @MutationMapping
+    public Message deleteApartment(@Argument Long id)
+    {
+        apartmentService.deleteApartment(id);
+        return new Message("Апартамент успешно удалён", 200,
+                new Timestamp(System.currentTimeMillis()));
     }
 }
