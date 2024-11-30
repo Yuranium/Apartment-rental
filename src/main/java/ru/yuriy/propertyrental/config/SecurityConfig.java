@@ -27,11 +27,11 @@ public class SecurityConfig
         return security.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/static/**", "/", "/apartments/all", "/apartments/search",
                                 "/apartments/sort", "/apartments/api/autocomplete", "/registration",
-                                "/login", "/confirm", "/image/**", "/apartments/**", "/api/**", "/graphiql/**")
+                                "/login", "/confirm", "/image/**", "/apartments/**", "/api/**")
                         .permitAll()
                         .requestMatchers("/apartments/add", "/profile/**", "/deleteProfile/**", "/payment/**")
                         .authenticated()
-                        .requestMatchers("/admin/**")
+                        .requestMatchers("/admin/**", "/graphiql/**", "/graphql/**")
                         .hasRole("ADMIN"))
                 .userDetailsService(service)
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
