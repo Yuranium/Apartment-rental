@@ -14,9 +14,6 @@ import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.PaymentRepository;
 import ru.yuriy.propertyrental.util.exceptions.ImageNotFoundException;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

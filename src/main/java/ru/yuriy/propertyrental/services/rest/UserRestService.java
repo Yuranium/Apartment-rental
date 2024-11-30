@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.dto.UserDTO;
 import ru.yuriy.propertyrental.models.entity.User;
+import ru.yuriy.propertyrental.models.graphql.input.UserInput;
 import ru.yuriy.propertyrental.repositories.UserRepository;
 import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 import ru.yuriy.propertyrental.util.mappers.UserMapper;
+import ru.yuriy.propertyrental.util.response_body.Message;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,5 +58,27 @@ public class UserRestService
         u.setPhone(user.phone());
         u.setActive(user.active());
         userRepository.save(u);
+    }
+
+    public UserDTO saveUser(UserInput user)
+    {
+        return userMapper.toDTO(
+                userRepository.save(
+                        userMapper.toEntity(user)
+                ));
+    }
+
+    public UserDTO updateUser(UserInput user)
+    {
+        return userMapper.toDTO(
+                userRepository.save(
+                        userMapper.toEntity(user)
+                )
+        );
+    }
+
+    public void deleteUser(Long id)
+    {
+        userRepository.deleteById(id);
     }
 }

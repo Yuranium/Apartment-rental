@@ -3,6 +3,9 @@ package ru.yuriy.propertyrental.controllers.rest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,9 +15,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.yuriy.propertyrental.models.UserForm;
 import ru.yuriy.propertyrental.models.dto.UserDTO;
+import ru.yuriy.propertyrental.models.graphql.input.UserInput;
 import ru.yuriy.propertyrental.services.rest.UserRestService;
 import ru.yuriy.propertyrental.util.RestErrorHandler;
 import ru.yuriy.propertyrental.util.response_body.ErrorResponse;
+import ru.yuriy.propertyrental.util.response_body.Message;
 import ru.yuriy.propertyrental.util.response_body.ValidResponse;
 import ru.yuriy.propertyrental.util.validators.UserValidator;
 
@@ -89,5 +94,41 @@ public class UserRestController
     {
         return new ResponseEntity<>(RestErrorHandler.createMessage(HttpStatus.FORBIDDEN, exc),
                 HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * GraphQL methods
+    */
+    @QueryMapping
+    public List<UserDTO> users(@Argument(name = "page") Integer page,
+                               @Argument(name = "size") Integer size)
+    {
+        return userService.listUsers(PageRequest.of(page, size));
+    }
+
+    @QueryMapping
+    public UserDTO userById(@Argument(name = "id") Long id)
+    {
+        return userService.getById(id);
+    }
+
+    @MutationMapping
+    public UserDTO addUser(@Argument UserInput user)
+    {
+        return userService.saveUser(user);
+    }
+
+    @MutationMapping
+    public UserDTO updateUser(@Argument UserInput user)
+    {
+        return userService.updateUser(user);
+    }
+
+    @MutationMapping
+    public Message deleteUser(@Argument Long id)
+    {
+        userService.deleteUser(id);
+        return new Message("Пользователь с id=" + id + " удалён",
+                200, new Timestamp(System.currentTimeMillis()));
     }
 }
