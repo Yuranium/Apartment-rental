@@ -35,13 +35,13 @@ public class SecurityConfig
                         .hasRole("ADMIN"))
                 .userDetailsService(service)
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-//                .formLogin(form -> form
-//                        .loginPage("/login").permitAll()
-//                        .defaultSuccessUrl("/", true)
-//                        .failureUrl("/login?error")
-//                        .permitAll()
-//                        .usernameParameter("email")
-//                )
+                .formLogin(form -> form
+                        .loginPage("/login").permitAll()
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/login?error")
+                        .permitAll()
+                        .usernameParameter("email")
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")

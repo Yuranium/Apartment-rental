@@ -1,6 +1,7 @@
 package ru.yuriy.propertyrental.models;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class ApartmentForm
 {
     @Size(min = 5, max = 50, message = "Некорректное имя апартамента!")
     @NotNull(message = "Обязательное поле!")
+    @NotBlank(message = "Обязательное поле!")
     private String name;
 
     @Min(value = 1, message = "Некорректное значение площади!")
@@ -29,6 +31,7 @@ public class ApartmentForm
 
     @Min(value = 1, message = "Количество комнат должно быть больше 0!")
     @NotNull(message = "Обязательное поле!")
+    @NotBlank(message = "Обязательное поле!")
     private Integer roomCount;
 
     @Min(value = 0, message = "Некорректная цена!")
@@ -40,6 +43,7 @@ public class ApartmentForm
 
     @Size(min = 5, max = 100, message = "Адрес слишком короткий или слишком длинный!")
     @NotNull(message = "Обязательное поле!")
+    @NotBlank(message = "Обязательное поле!")
     private String address;
 
     private List<MultipartFile> images;

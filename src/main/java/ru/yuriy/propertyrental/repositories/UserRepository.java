@@ -34,6 +34,6 @@ public interface UserRepository extends JpaRepository<User, Long>
     Optional<User> findByEmail(String email);
 
     @Transactional(readOnly = true)
-    @Query("FROM User u WHERE u.phone IS NOT NULL AND u.phone = :phone")
+    @Query("FROM User u WHERE length(:phone) <> 0 AND u.phone = :phone")
     Optional<User> findByPhone(String phone);
 }
