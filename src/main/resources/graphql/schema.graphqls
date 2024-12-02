@@ -1,0 +1,147 @@
+scalar Date
+scalar Timestamp
+
+type Query
+{
+    users(page: Int! = 0, size: Int! = 10): [User!]
+    userById(id: ID!): User
+    roles: [Role!]
+    roleById(id: ID!): Role
+    apartments(page: Int! = 0, size: Int! = 10): [Apartment!]
+    apartmentById(id: ID!): Apartment
+    allPaymentsByUserId(userId: ID!): [Payment!]
+    paymentById(userId: ID!, paymentId: ID!): Payment
+    services(page: Int! = 0, size: Int! = 10): [Service!]
+    serviceById(id: ID!): Service
+}
+
+type Mutation
+{
+    addUser(user: UserInput!): User
+    addRole(role: RoleInput!): Role
+    addApartment(apartment: ApartmentInput!): Apartment
+    addService(service: ServiceInput!): Service
+    updateUser(user: UserInput!): User
+    updateApartment(apartment: ApartmentInput!, id: ID!): Apartment
+    updatePayment(payment: PaymentInput!, id: ID!): Payment
+    updateService(service: ServiceInput!, id: ID!): Service
+    deleteUser(id: ID!): Message
+    deleteRole(id: ID!): Message
+    deleteApartment(id: ID!): Message
+    deleteService(id: ID!): Message
+}
+
+type User
+{
+    id: ID!
+    name: String!
+    email: String!
+    dateRegistration: Timestamp
+    active: Boolean
+    roles: [Role!]!
+}
+
+type Role
+{
+    roleType: RoleType!
+    assignmentDate: String!
+}
+
+enum RoleType
+{
+    ROLE_GUEST
+    ROLE_USER
+    ROLE_OWNER
+    ROLE_ADMIN
+}
+
+type Apartment
+{
+    name: String!
+    square: Float!
+    roomCount: Int!
+    dailyPrice: Float!
+    type: ApartmentType!
+    address: String!
+    roomAvailable: Boolean
+    user: User!
+    services: [Service!]!
+}
+
+enum ApartmentType
+{
+    FLAT
+    HOTEL
+    HOUSE
+    OFFICE
+}
+
+type Payment
+{
+    amountPayment: Float!
+    datePayment: Date!
+    status: PaymentStatus!
+}
+
+enum PaymentStatus
+{
+    NOT_PAID
+    PAID
+    OVERDUE
+}
+
+type Service
+{
+    name: String!
+    description: String
+    servicePrice: Float!
+}
+
+type Message
+{
+    message: String!
+    code: Int!
+    timestamp: Timestamp!
+}
+
+input UserInput
+{
+    id: ID!
+    name: String!
+    lastName: String
+    email: String!
+    phone: String
+    password: String!
+    birthday: Date
+}
+
+input RoleInput
+{
+    roleType: RoleType!
+}
+
+input ApartmentInput
+{
+    name: String!
+    square: Float!
+    roomCount: Int!
+    dailyPrice: Float!
+    type: ApartmentType!
+    address: String!
+    roomAvailable: Boolean
+    services: [ServiceInput!]!
+}
+
+input ServiceInput
+{
+    name: String!
+    description: String
+    servicePrice: Float!
+}
+
+input PaymentInput
+{
+    amountPayment: Float!
+    datePayment: Date!
+    status: PaymentStatus!
+}

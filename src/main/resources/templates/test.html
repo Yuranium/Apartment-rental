@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+  <title>Аренда недвижимости</title>
+  <style>
+    .custom-select-container {
+      position: relative;
+      width: 300px;
+    }
+
+    .select-button {
+      width: 100%;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .options-container {
+      display: none;
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      background-color: white;
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .option-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+
+    .option-item:last-child {
+      border-bottom: none;
+    }
+
+    .option-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .option-item .title {
+      font-weight: bold;
+    }
+
+    .selected-services {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .selected-service {
+      background-color: #d1e7dd;
+      border: 1px solid #badbcc;
+      padding: 5px 10px;
+      margin: 5px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <label for="services">Добавить дополнительный сервис</label>
+  <div id="custom-select-container" class="custom-select-container">
+    <div id="selected-services" class="selected-services"></div>
+    <button type="button" id="select-button" class="select-button">Выбрать сервисы</button>
+    <div id="options-container" class="options-container">
+      <!-- Элементы будут добавляться через JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Поле для отправки выбранных сервисов на сервер -->
+<input type="hidden" id="selected-service-ids" name="serviceIds">
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const services = [
+      { id: 1, name: "Сервис 1", description: "Описание сервиса 1", dailyPrice: "100 руб" },
+      { id: 2, name: "Сервис 2", description: "Описание сервиса 2", dailyPrice: "200 руб" },
+      { id: 3, name: "Сервис 3", description: "Описание сервиса 3", dailyPrice: "300 руб" },
+      // Добавьте больше сервисов по мере необходимости
+    ];
+
+    const selectButton = document.getElementById("select-button");
+    const optionsContainer = document.getElementById("options-container");
+    const selectedServicesContainer = document.getElementById("selected-services");
+    const selectedServiceIds = document.getElementById("selected-service-ids");
+
+    // Открытие и закрытие списка
+    selectButton.addEventListener("click", () => {
+      optionsContainer.style.display = optionsContainer.style.display === "block" ? "none" : "block";
+    });
+
+    // Закрытие списка при клике вне него
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest("#custom-select-container")) {
+        optionsContainer.style.display = "none";
+      }
+    });
+
+    // Функция для отображения всех опций
+    function renderOptions() {
+      optionsContainer.innerHTML = "";
+      services.forEach(service => {
+        const option = document.createElement("div");
+        option.classList.add("option-item");
+        option.dataset.id = service.id;
+
+        option.innerHTML = `
+                <div class="title">Название: ${service.name}</div>
+                <div>Описание: ${service.description}</div>
+                <div>Ежедневная цена: ${service.dailyPrice}</div>
+            `;
+
+        option.addEventListener("click", () => toggleServiceSelection(service));
+        optionsContainer.appendChild(option);
+      });
+    }
+
+    // Функция для переключения выбора сервиса
+    function toggleServiceSelection(service) {
+      const isSelected = selectedServiceIds.value.split(",").includes(String(service.id));
+
+      if (isSelected) {
+        // Если уже выбран, удаляем
+        removeService(service);
+      } else {
+        // Если не выбран, добавляем
+        addService(service);
+      }
+    }
+
+    // Добавление сервиса в выбранные
+    function addService(service) {
+      const selectedService = document.createElement("div");
+      selectedService.classList.add("selected-service");
+      selectedService.textContent = `${service.name}`;
+      selectedService.dataset.id = service.id;
+      selectedServicesContainer.appendChild(selectedService);
+
+      // Обновляем скрытое поле с ID
+      updateSelectedServiceIds();
+    }
+
+    // Удаление сервиса из выбранных
+    function removeService(service) {
+      const selectedService = selectedServicesContainer.querySelector(`.selected-service[data-id="${service.id}"]`);
+      if (selectedService) {
+        selectedServicesContainer.removeChild(selectedService);
+      }
+
+      // Обновляем скрытое поле с ID
+      updateSelectedServiceIds();
+    }
+
+    // Обновление скрытого поля с ID выбранных сервисов
+    function updateSelectedServiceIds() {
+      const selectedIds = Array.from(selectedServicesContainer.querySelectorAll(".selected-service"))
+              .map(service => service.dataset.id);
+      selectedServiceIds.value = selectedIds.join(",");
+    }
+
+    // Инициализация опций при загрузке страницы
+    renderOptions();
+  });
+
+</script>
+</html>

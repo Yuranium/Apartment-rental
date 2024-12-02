@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Аренда недвижимости</title>
+</head>
+<body>
+<h1>RENTAP</h1><hr>
+<form th:action="@{/apartments/sort}" th:method="POST">
+  <input type="checkbox" name="squareSort" id="squareSort"><label for="squareSort">Сортировка по площади</label><br>
+  <input type="checkbox" name="roomsSort" id="roomsSort"><label for="roomsSort">Сортировка по количеству комнат</label><br>
+  <input type="checkbox" name="priceSort" id="priceSort"><label for="priceSort">Сортировка по цене</label><br>
+  <input type="submit" value="Применить">
+</form>
+<div class="apartment" th:object="${list_apart}">
+  <div th:each="apartment : ${list_apart}">
+    <img th:src="@{/image/{id}(id=${apartment.getImages().get(0).getId()})}" alt="Фотография апартаментов"  height="20%" width="20%">
+    <span th:text="${apartment.name}">Название</span>
+    <span th:text="${'Площадь: ' + apartment.square}">Площадь</span>
+    <span th:text="${'Количество комнат: ' + apartment.roomCount}">Количество комнат</span>
+    <span th:text="${'Суточная цена аренды: ' + apartment.dailyPrice}">Суточная цена аренды</span>
+   <!--<span th:text="${'Номер телефона арендодателя: ' + apartment.getUser().phone}">Номер телефона</span>-->
+  </div>
+</div>
+</body>
+</html>

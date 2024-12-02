@@ -1,0 +1,474 @@
+openapi: 3.0.3
+info:
+  title: Аренда недвижимости
+  description: |-
+    Данное приложение представляет веб-интерфейс и REST часть для работы с пользователями, их ролями, апартаментами и так далее. Реализован доступ к контрольным точкам по определённым ролям пользователей. Существует админ-панель для редактирования ролей пользователя, баном и разбаном соответственно. У админа есть доступ ко все компонентам системы для контроля
+    
+    Ссылки:
+    - [Репозиторий проекта RentalProperty](https://github.com/Yuranuim)
+  version: 1.0.11
+tags:
+  - name: apartment
+    description: Информация о недвижимости
+  - name: user
+    description: Информация о пользователях
+  - name: payment
+    description: Информация о платежах пользователей
+  - name: image
+    description: Отображение загруженных фотографий
+paths:
+  /api/apartments/all:
+    get:
+      tags:
+        - apartment
+      summary: Получение всех доступных апартаментов
+      description: Получение всех доступных апартаментов из базы данных, загрузка постраничная. В базовом случае загружаются по 10 апартаментов.
+      operationId: updatePet
+      parameters:
+        - in: query
+          name: page
+          required: false
+          description: Параметр для отображения номера страницы данных
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - in: query
+          name: size
+          required: false
+          description: Параметр для отображения количества апартаментов на одной странице
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: Успешная операция
+
+  /api/apartments/{id}:
+    get:
+      tags:
+        - apartment
+      summary: Получение профиля апартамента.
+      description: Получение профиля апартамента по его ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор апартамента
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешная операция
+        '404':
+          description: Апартамент не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/apartments/create:
+    post:
+      tags:
+        - apartment
+      summary: Добавление нового апартамента
+      description: Добавление нового апартамента вместе с арендодателем и дополнительными сервисами, если нужно.
+      responses:
+        '201':
+          description: Апартамент успешно добавлен
+      security:
+        - auth: [ROLE_OWNER, ROLE_ADMIN]
+
+  /api/apartments/update/{id}:
+    patch:
+      tags:
+        - apartment
+      summary: Изменение текущего апартамента
+      description: Изменение текущего апартамента по его ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор апартамента
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Апартамент успешно добавлен
+        '400':
+          description: Данные никак не изменены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Апартамент не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - auth: [ROLE_OWNER, ROLE_ADMIN]
+
+  /api/apartments/delete/{id}:
+    delete:
+      tags:
+        - apartment
+      summary: Удаление апартамента
+      description: Удаление апартамента по его ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор апартамента
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Апартамент успешно удалён
+        '404':
+          description: Апартамент не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - auth: [ROLE_OWNER, ROLE_ADMIN]
+
+
+
+  /api/user/registration:
+    post:
+      tags:
+        - user
+      summary: Регистрация нового пользователя
+      description: ''
+      responses:
+        '201':
+          description: Пользователь успешно зарегистрирован
+        '400':
+          description: Введённые данные невалидны
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidResponse'
+
+  /api/user/all:
+    get:
+      tags:
+        - user
+      summary: Получение всех пользователей.
+      description: Получение всех пользователей из базы данных.
+      parameters:
+        - in: query
+          name: page
+          required: false
+          description: Параметр для отображения номера страницы данных
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - in: query
+          name: size
+          required: false
+          description: Параметр для отображения количества апартаментов на одной странице
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: Успешная операция
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - auth: [ROLE_ADMIN]
+
+  /api/user/{id}:
+    get:
+      tags:
+        - user
+      summary: Получение профиля пользователя.
+      description: Получение профиля пользователя по его ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешная операция
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Пользователь не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - auth: [ROLE_USER, ROLE_OWNER, ROLE_ADMIN]
+
+  /api/user/update/{id}:
+    patch:
+      tags:
+        - user
+      summary: Изменение данных текущего пользователя
+      description: Изменение данных текущего пользователя по его ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+        - name: email
+          in: query
+          required: true
+          description: Параметр для подтверждения доступа к изменению пользователя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Пользователь успешно обновлён
+        '400':
+          description: Обязательный параметр email не был обнаружен в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Пользователь не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - auth: [ROLE_USER, ROLE_OWNER, ROLE_ADMIN]
+
+  /api/user/delete/{id}:
+    delete:
+      tags:
+        - user
+      summary: Удаление пользователя
+      description: Удаление пользователя по его ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Пользователь успешно удалён
+        '404':
+          description: Пользователь не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - auth: [ROLE_USER, ROLE_OWNER, ROLE_ADMIN]
+
+
+
+  /api/payment/all:
+    get:
+      tags:
+        - payment
+      summary: Получение всех платежей пользователя.
+      description: Получение всех платежей у пользователя по его ID из базы данных.
+      parameters:
+        - in: query
+          name: page
+          required: false
+          description: Параметр для отображения номера страницы данных
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - in: query
+          name: size
+          required: false
+          description: Параметр для отображения количества апартаментов на одной странице
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: userId
+          in: query
+          required: true
+          description: ID пользователя, для которого нужно узнать его платежи
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешная операция
+        '400':
+          description: Обязательный параметр userId не был обнаружен в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Пользователь не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - auth: [ROLE_USER, ROLE_OWNER, ROLE_ADMIN]
+
+  /api/payment/{id}:
+    get:
+      tags:
+        - payment
+      summary: Конкретный платёж пользователя
+      description: Конкретный платёж пользователя по его ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+        - name: userId
+          in: query
+          required: true
+          description: ID пользователя, для которого нужно узнать платёж
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Платёж для пользователя найден
+        '400':
+          description: Обязательный параметр userId не был обнаружен в запросе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Пользователь не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - auth: [ROLE_USER, ROLE_OWNER, ROLE_ADMIN]
+
+
+
+  /image/{id}:
+    get:
+      tags:
+        - image
+      summary: Отображение фотографии
+      description: Отображение фотографии из базы данных. Данный URL представляет собой ссылку на фотографию в БД, по которой она преобразуется в картинку из массива байт
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Уникальный идентификатор фотографии
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Фотография успешно отображена
+        '404':
+          description: Фотография не была найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status code
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        errorMessage:
+          type: string
+          description: Detailed error message
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the error occurrence
+      required:
+        - status
+        - code
+        - errorMessage
+    ValidResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status code
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the error occurrence
+        errorMessages:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Name of the field with error
+              message:
+                type: string
+                description: Error message for the field
+          required:
+            - status
+            - code
+            - errorMessages
+  securitySchemes:
+    auth:
+      type: http
