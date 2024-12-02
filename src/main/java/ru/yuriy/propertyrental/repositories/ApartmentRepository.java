@@ -27,6 +27,12 @@ public interface ApartmentRepository extends JpaRepository<Apartment, Long>
 
     Page<Apartment> findAll(Pageable pageable);
 
+    @Query("FROM Apartment a " +
+            "LEFT JOIN a.images i " +
+            "LEFT JOIN a.services s")
+    List<Apartment> findAllForHomePage();
+
+
     @EntityGraph(value = "apartment-image-graph")
     List<Apartment> findAllById(Iterable<Long> ids);
 }

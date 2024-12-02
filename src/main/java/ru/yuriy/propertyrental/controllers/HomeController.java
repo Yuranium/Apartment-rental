@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.yuriy.propertyrental.models.entity.User;
+import ru.yuriy.propertyrental.services.ApartmentService;
 import ru.yuriy.propertyrental.services.RoleService;
 import ru.yuriy.propertyrental.services.UserService;
 
@@ -18,9 +19,12 @@ public class HomeController
 
     private final RoleService roleService;
 
+    private final ApartmentService apartmentService;
+
     @GetMapping
     public String home(Principal principal, Model model)
     {
+        model.addAttribute("apartments", apartmentService.getApartments());
         if (principal != null)
         {
             User user = userService.getUserByUsername(principal.getName());

@@ -146,4 +146,15 @@ public class ApartmentService
             return false;
         }
     }
+
+    @Transactional(readOnly = true)
+    public List<Apartment> getApartments()
+    {
+        List<Apartment> apartments = apartmentRepository.findAllForHomePage();
+        apartments.forEach(apartment -> {
+            apartment.getImages().size();
+            apartment.getServices().size();
+        });
+        return apartments;
+    }
 }
