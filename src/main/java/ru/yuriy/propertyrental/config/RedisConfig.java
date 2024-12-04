@@ -17,7 +17,7 @@ public class RedisConfig
     public RedisCacheConfiguration cacheConfig()
     {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(60))
+                .entryTtl(Duration.ofMinutes(15))
                 .disableCachingNullValues()
                 .serializeValuesWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(

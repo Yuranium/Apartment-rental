@@ -18,6 +18,7 @@ import ru.yuriy.propertyrental.util.response_body.Message;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/apartments")
@@ -63,6 +64,13 @@ public class ApartmentRestController
     {
         apartmentService.deleteApartment(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/test/cache")
+    public ResponseEntity<ApartmentDTO> testCache()
+    {
+        return new ResponseEntity<>(apartmentService.cache(new Random()
+                .nextLong(1, 10)), HttpStatus.OK);
     }
 
     @ExceptionHandler(SQLException.class)

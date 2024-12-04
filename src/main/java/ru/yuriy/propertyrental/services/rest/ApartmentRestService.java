@@ -1,6 +1,9 @@
 package ru.yuriy.propertyrental.services.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,8 @@ public class ApartmentRestService
     private final ApartmentRepository apartmentRepository;
 
     private final ApartmentMapper apartmentMapper;
+
+    private final ApplicationContext applicationContext;
 
     @Transactional(readOnly = true)
     public List<ApartmentDTO> listApartments(PageRequest pageRequest)
@@ -88,5 +93,16 @@ public class ApartmentRestService
         }
         else throw new ApartmentNotFoundException(
                 String.format("Апартамент с id=%d не найден", id));
+    }
+
+    @CachePut(value = "apartment", key = "#id", unless = "#result == null")
+    @Transactional(readOnly = true)
+    public ApartmentDTO cache(Long id)
+    {
+        CacheManager cacheManager = (CacheManager) applicationContext.getBean("cacheManager");
+        return apartmentMapper.toDTO(
+                apartmentRepository.findById(id)
+                        .orElseThrow(ApartmentNotFoundException::new)
+        );
     }
 }

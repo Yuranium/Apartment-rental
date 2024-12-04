@@ -583,7 +583,10 @@
             <section class="flex flex-col gap-2">
                 <h2 class="text-xl font-title text-neutral-950">Владелец</h2>
                 <p class="text-neutral-950">Имя: <span th:text="${apartment.user.name}">Игорь Иванов</span></p>
-                <p class="text-neutral-950">Телефон: <span th:text="${apartment.user.phone}">+7 900 123-45-67</span></p>
+                <p class="text-neutral-950" th:if="${apartment.user.phone != null}" th:text="${'Телефон: ' + apartment.user.phone}">
+                    Телефон: <span>+7 900 123-45-67</span></p>
+                <p class="text-neutral-950" th:if="${apartment.user.phone == null}" th:text="${'Почта: ' + apartment.user.email}">
+                    Почта: <span>example@example.ru</span></p>
                 <a th:href="@{/profile/{id}(id=${apartment.user.id})}" class="text-primary-500 underline">Профиль владельца</a>
             </section>
             <!-- Кнопка бронирования -->

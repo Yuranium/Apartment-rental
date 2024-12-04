@@ -37,7 +37,7 @@ public class SecurityConfig
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .formLogin(form -> form
                         .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/", false)
                         .failureUrl("/login?error")
                         .permitAll()
                         .usernameParameter("email")

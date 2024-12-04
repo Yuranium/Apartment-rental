@@ -65,6 +65,7 @@ public class RabbitService
         Message response = template.receive(pythonJavaQueue, 5000);
         if (response != null && response.getBody().length != 0)
             return response.getBody();
-        else throw new ImageNotFoundException("Не удалось получить график платежей");
+        else System.out.printf("Не удалось составить график платежей пользователя %d%n", user.getId());
+        return new byte[] {};
     }
 }
