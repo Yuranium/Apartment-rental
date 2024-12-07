@@ -11,8 +11,8 @@ import ru.yuriy.propertyrental.util.exceptions.RoleNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class RoleService
 {
     private final RoleRepository roleRepository;
@@ -30,7 +30,7 @@ public class RoleService
                 "ОШИБКА: Для данного пользователя роль не была установлена"));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Role> getRoleByRoleType(List<RoleType> roles)
     {
         return roleRepository.findAllByRoleTypeIn(roles);
