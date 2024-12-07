@@ -1,6 +1,10 @@
 package ru.yuriy.propertyrental.services.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -11,19 +15,20 @@ import ru.yuriy.propertyrental.models.graphql.input.UserInput;
 import ru.yuriy.propertyrental.repositories.UserRepository;
 import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 import ru.yuriy.propertyrental.util.mappers.UserMapper;
-import ru.yuriy.propertyrental.util.response_body.Message;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "user_rest")
 public class UserRestService
 {
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
 
+    @Cacheable
     @Transactional(readOnly = true)
     public List<UserDTO> listUsers(PageRequest pageRequest)
     {
@@ -40,14 +45,17 @@ public class UserRestService
                         String.format("Пользователь с id=%d не был найден", id))));
     }
 
+    @CacheEvict(key = "#id")
     @Transactional(readOnly = true)
     public void deleteUser(Long id, String email)
     {
         UserDTO user = getById(id);
         if (!user.email().equals(email))
             throw new AccessDeniedException("Пользователь не имеет прав на выполнение данного действия");
+        else userRepository.deleteById(id);
     }
 
+    @CachePut(key = "#id")
     public void updateUser(UserDTO user, Long id)
     {
         User u = userRepository.findById(id)
@@ -60,6 +68,7 @@ public class UserRestService
         userRepository.save(u);
     }
 
+    @CachePut(key = "#user.id()")
     public UserDTO saveUser(UserInput user)
     {
         return userMapper.toDTO(
@@ -68,6 +77,7 @@ public class UserRestService
                 ));
     }
 
+    @CachePut(key = "#user.id()")
     public UserDTO updateUser(UserInput user)
     {
         return userMapper.toDTO(
@@ -77,6 +87,7 @@ public class UserRestService
         );
     }
 
+    @CacheEvict(key = "#id")
     public void deleteUser(Long id)
     {
         userRepository.deleteById(id);

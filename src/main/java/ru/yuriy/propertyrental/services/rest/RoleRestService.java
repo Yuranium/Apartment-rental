@@ -1,6 +1,10 @@
 package ru.yuriy.propertyrental.services.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.yuriy.propertyrental.models.dto.RoleDTO;
 import ru.yuriy.propertyrental.models.graphql.input.RoleInput;
@@ -12,12 +16,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "role_rest")
 public class RoleRestService
 {
     private final RoleRepository roleRepository;
 
     private final RoleMapper roleMapper;
 
+    @Cacheable
     public List<RoleDTO> listRoles()
     {
         return roleMapper.listToDTO(
@@ -25,6 +31,7 @@ public class RoleRestService
         );
     }
 
+    @CachePut(key = "#id")
     public RoleDTO getById(Long id)
     {
         return roleMapper.toDTO(
@@ -42,6 +49,7 @@ public class RoleRestService
         ));
     }
 
+    @CacheEvict(key = "#id")
     public void deleteRole(Long id)
     {
         roleRepository.deleteById(id);

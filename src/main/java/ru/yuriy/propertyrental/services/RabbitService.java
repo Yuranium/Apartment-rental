@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.PaymentRepository;
-import ru.yuriy.propertyrental.util.exceptions.ImageNotFoundException;
 
 import java.util.List;
 import java.util.Map;

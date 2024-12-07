@@ -1,7 +1,5 @@
 package ru.yuriy.propertyrental.repositories;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,8 +22,6 @@ public interface ApartmentRepository extends JpaRepository<Apartment, Long>
             attributePaths = {"images"})
     @Query("FROM Apartment a WHERE a.roomAvailable IS TRUE")
     List<Apartment> findAll();
-
-    Page<Apartment> findAll(Pageable pageable);
 
     @Query("FROM Apartment a " +
             "LEFT JOIN a.images i " +

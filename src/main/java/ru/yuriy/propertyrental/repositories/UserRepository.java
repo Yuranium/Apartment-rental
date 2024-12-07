@@ -1,8 +1,6 @@
 package ru.yuriy.propertyrental.repositories;
 
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,8 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long>
             type = EntityGraph.EntityGraphType.FETCH,
             attributePaths = {"roles"})
     List<User> findAll();
-
-    Page<User> findAll(Pageable pageable);
 
     @EntityGraph(
             type = EntityGraph.EntityGraphType.FETCH,

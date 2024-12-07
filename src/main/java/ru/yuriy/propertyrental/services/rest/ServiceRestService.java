@@ -1,6 +1,10 @@
 package ru.yuriy.propertyrental.services.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.yuriy.propertyrental.models.dto.ServiceDTO;
@@ -13,12 +17,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "service_rest")
 public class ServiceRestService
 {
     private final ServiceRepository serviceRepository;
 
     private final ServiceMapper serviceMapper;
 
+    @Cacheable
     public List<ServiceDTO> listServices(Pageable pageable)
     {
         return serviceMapper.toDTOList(
@@ -26,6 +32,7 @@ public class ServiceRestService
         );
     }
 
+    @CachePut(key = "#id")
     public ServiceDTO getServiceById(Long id)
     {
         return serviceMapper.toDTO(
@@ -45,6 +52,7 @@ public class ServiceRestService
         );
     }
 
+    @CachePut(key = "#id")
     public ServiceDTO updateService(ServiceInput service, Long id)
     {
         if (serviceRepository.findById(id).isPresent())
@@ -59,6 +67,7 @@ public class ServiceRestService
                 String.format("Сервис с id=%d не найден", id));
     }
 
+    @CacheEvict(key = "#id")
     public void deleteService(Long id)
     {
         serviceRepository.deleteById(id);

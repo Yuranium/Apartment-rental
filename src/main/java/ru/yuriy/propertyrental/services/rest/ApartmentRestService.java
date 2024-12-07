@@ -2,7 +2,10 @@ package ru.yuriy.propertyrental.services.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,9 @@ import ru.yuriy.propertyrental.util.mappers.ApartmentMapper;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
+@CacheConfig(cacheNames = "apartment_rest")
 public class ApartmentRestService
 {
     private final ApartmentRepository apartmentRepository;
@@ -34,6 +38,7 @@ public class ApartmentRestService
                 .getContent());
     }
 
+    @Cacheable(key = "#id")
     @Transactional(readOnly = true)
     public ApartmentDTO getApartment(Long id)
     {
@@ -51,6 +56,7 @@ public class ApartmentRestService
     }
 
     @Transactional
+    @CachePut(key = "#id")
     public void updateApartment(ApartmentDTO apartment, Long id)
     {
         Apartment ap = apartmentRepository.findById(id)
@@ -67,6 +73,7 @@ public class ApartmentRestService
     }
 
     @Transactional
+    @CacheEvict(key = "#id")
     public void deleteApartment(Long id)
     {
         apartmentRepository.deleteById(id);
@@ -81,6 +88,8 @@ public class ApartmentRestService
         );
     }
 
+    @Transactional
+    @CachePut(key = "#id")
     public ApartmentDTO updateApartment(ApartmentInput apartment, Long id)
     {
         if (apartmentRepository.findById(id).isPresent())
@@ -95,7 +104,7 @@ public class ApartmentRestService
                 String.format("Апартамент с id=%d не найден", id));
     }
 
-    @CachePut(value = "apartment", key = "#id", unless = "#result == null")
+    @CachePut(key = "#id", unless = "#result == null")
     @Transactional(readOnly = true)
     public ApartmentDTO cache(Long id)
     {

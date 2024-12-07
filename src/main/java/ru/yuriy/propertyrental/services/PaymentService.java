@@ -48,7 +48,7 @@ public class PaymentService
         apartmentRepository.save(apartment);
     }
 
-    public Double calculateTotalPayment(Apartment apartment)
+    private Double calculateTotalPayment(Apartment apartment)
     {
         return apartment.getServices().stream()
                 .mapToDouble(ru.yuriy.propertyrental.models.entity.Service::getServicePrice)

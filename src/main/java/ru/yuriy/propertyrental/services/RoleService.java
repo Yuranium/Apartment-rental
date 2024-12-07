@@ -18,17 +18,19 @@ public class RoleService
     private final RoleRepository roleRepository;
 
     @Transactional
-    public Role saveRole(Role role)
+    public void saveRole(Role role)
     {
-        return roleRepository.save(role);
+        roleRepository.save(role);
     }
 
+    @Transactional(readOnly = true)
     public Role getRoleById(Long id)
     {
         return roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(
                 "ОШИБКА: Для данного пользователя роль не была установлена"));
     }
 
+    @Transactional
     public List<Role> getRoleByRoleType(List<RoleType> roles)
     {
         return roleRepository.findAllByRoleTypeIn(roles);

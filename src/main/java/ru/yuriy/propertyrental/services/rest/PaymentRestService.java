@@ -1,6 +1,9 @@
 package ru.yuriy.propertyrental.services.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yuriy.propertyrental.models.dto.PaymentDTO;
@@ -17,6 +20,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "payment_rest")
 public class PaymentRestService
 {
     private final UserRepository userRepository;
@@ -25,6 +29,7 @@ public class PaymentRestService
 
     private final PaymentMapper paymentMapper;
 
+    @Cacheable(cacheNames = "payment_list")
     @Transactional(readOnly = true)
     public Set<PaymentDTO> allPayments(Long userId)
     {
@@ -34,6 +39,7 @@ public class PaymentRestService
                 .getPayments());
     }
 
+    @Cacheable(key = "#id")
     @Transactional(readOnly = true)
     public PaymentDTO getPaymentByUser(Long userId, Long id)
     {
@@ -49,6 +55,8 @@ public class PaymentRestService
         );
     }
 
+    @Transactional
+    @CachePut(key = "#id")
     public PaymentDTO updatePayment(PaymentInput payment, Long id)
     {
         if (paymentRepository.findById(id).isPresent())
