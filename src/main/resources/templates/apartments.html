@@ -3,6 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Аренда недвижимости</title>
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css}" rel="stylesheet">
+  <style>
+    a {
+      color: inherit;
+      text-decoration: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    a > * {
+      text-decoration: none;
+    }
+
+    * + a {
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
 <h1>RENTAP</h1><hr>
@@ -12,15 +29,37 @@
   <input type="checkbox" name="priceSort" id="priceSort"><label for="priceSort">Сортировка по цене</label><br>
   <input type="submit" value="Применить">
 </form>
-<div class="apartment" th:object="${list_apart}">
-  <div th:each="apartment : ${list_apart}">
-    <img th:src="@{/image/{id}(id=${apartment.getImages().get(0).getId()})}" alt="Фотография апартаментов"  height="20%" width="20%">
-    <span th:text="${apartment.name}">Название</span>
-    <span th:text="${'Площадь: ' + apartment.square}">Площадь</span>
-    <span th:text="${'Количество комнат: ' + apartment.roomCount}">Количество комнат</span>
-    <span th:text="${'Суточная цена аренды: ' + apartment.dailyPrice}">Суточная цена аренды</span>
-   <!--<span th:text="${'Номер телефона арендодателя: ' + apartment.getUser().phone}">Номер телефона</span>-->
+<!--<div class="apartment" th:object="${list_apart}">-->
+<!--  <div th:each="apartment : ${list_apart}">-->
+<!--    <img th:src="@{/image/{id}(id=${apartment.getImages().get(0).getId()})}" alt="Фотография апартаментов" height="20%" width="20%">-->
+<!--    <span th:text="${apartment.name}">Название</span>-->
+<!--    <span th:text="${'Площадь: ' + apartment.square}">Площадь</span>-->
+<!--    <span th:text="${'Количество комнат: ' + apartment.roomCount}">Количество комнат</span>-->
+<!--    <span th:text="${'Суточная цена аренды: ' + apartment.dailyPrice}">Суточная цена аренды</span>-->
+<!--   &lt;!&ndash;<span th:text="${'Номер телефона арендодателя: ' + apartment.getUser().phone}">Номер телефона</span>&ndash;&gt;-->
+<!--  </div>-->
+<!--</div>-->
+
+<div class="card mb-3" style="max-width: 540px;" th:each="apartment : ${list_apart}">
+  <a th:href="@{/apartments/{id}(id=${apartment.id})}">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img th:src="@{/image/{id}(id=${apartment.getImages().get(0).getId()})}" class="img-fluid rounded-start"
+           alt="Фотография апартаментов">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 th:text="${apartment.name}" class="card-title">Заголовок карточки</h5>
+        <p th:text="${'Площадь: ' + apartment.square}" class="card-text"></p>
+        <p th:text="${'Количество комнат: ' + apartment.roomCount}" class="card-text"></p>
+        <p th:text="${'Суточная цена аренды: ' + apartment.dailyPrice}" class="card-text"></p>
+        <p class="card-text">
+          <small th:text="${'Доступность: ' + apartment.roomAvailable}" class="text-body-secondary"></small>
+        </p>
+      </div>
+    </div>
   </div>
+  </a>
 </div>
 </body>
 </html>

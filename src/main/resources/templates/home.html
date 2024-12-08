@@ -311,46 +311,60 @@
 
         function showSuggestions(suggestions) {
             suggestionsBox.innerHTML = "";
-            const list = document.createElement("ul");
+            const rect = inputField.getBoundingClientRect();
+            suggestionsBox.style.position = "absolute";
+            suggestionsBox.style.top = `${rect.bottom + window.scrollY}px`;
+            suggestionsBox.style.left = `${rect.left + window.scrollX}px`;
+            suggestionsBox.style.backgroundColor = "#fff";
+            suggestionsBox.style.border = "1px solid #ccc";
+            suggestionsBox.style.width = `${rect.width}px`;
+            suggestionsBox.style.zIndex = "1000";
 
             suggestions.forEach(suggestion => {
-                const listItem = document.createElement("li");
+                const listItem = document.createElement("div");
                 listItem.textContent = suggestion;
+                listItem.style.padding = "8px";
+                listItem.style.cursor = "pointer";
+                listItem.style.borderBottom = "1px solid #eee";
+
+                listItem.addEventListener("mouseenter", function() {
+                    listItem.style.backgroundColor = "#f0f0f0";
+                });
+
+                listItem.addEventListener("mouseleave", function() {
+                    listItem.style.backgroundColor = "#fff";
+                });
 
                 listItem.addEventListener("click", function() {
                     inputField.value = suggestion;
                     suggestionsBox.innerHTML = "";
                 });
 
-                list.appendChild(listItem);
+                suggestionsBox.appendChild(listItem);
             });
-
-            suggestionsBox.appendChild(list);
         }
 
         inputField.addEventListener("input", function() {
-            const query = inputField.value;
+            const query = inputField.value.trim();
             if (query.length < 2) {
                 suggestionsBox.innerHTML = "";
                 return;
             }
+
             fetch(`http://localhost:8080/apartments/api/autocomplete?q=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.length > 0) {
+                    if (data.length > 0)
                         showSuggestions(data);
-                    } else {
-                        suggestionsBox.innerHTML = "<p>Нет предложений</p>";
-                    }
                 })
                 .catch(error => {
                     console.error("Ошибка автодополнения:", error);
-                    suggestionsBox.innerHTML = "<p>Ошибка загрузки данных</p>";
+                    suggestionsBox.innerHTML = "<div class='error-message' style='padding: 8px; color: red;'>Ошибка загрузки данных</div>";
                 });
         });
 
         document.addEventListener("click", function(event) {
-            if (event.target !== inputField) {
+            if (!suggestionsBox.contains(event.target) && event.target !== inputField) {
                 suggestionsBox.innerHTML = "";
             }
         });

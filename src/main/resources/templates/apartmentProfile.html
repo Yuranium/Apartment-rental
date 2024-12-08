@@ -595,5 +595,35 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const images = document.querySelectorAll("section.relative > div > img");
+        const buttons = document.querySelectorAll("section.relative .material-symbols-outlined");
+
+        const prevButton = buttons[0].parentElement;
+        const nextButton = buttons[1].parentElement;
+
+        let currentIndex = 0;
+
+        function updateImageDisplay() {
+            images.forEach((img, index) => {
+                img.parentElement.style.display = index === currentIndex ? "block" : "none";
+            });
+        }
+
+        prevButton.addEventListener("click", function() {
+            currentIndex = (currentIndex === 0) ? images.length - 1 : currentIndex - 1;
+            updateImageDisplay();
+        });
+
+        nextButton.addEventListener("click", function() {
+            currentIndex = (currentIndex === images.length - 1) ? 0 : currentIndex + 1;
+            updateImageDisplay();
+        });
+
+        updateImageDisplay();
+    });
+</script>
 </body>
 </html>
