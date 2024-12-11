@@ -29,11 +29,11 @@ public class EmailService
     private String emailTo;
 
     @Autowired
-    public EmailService(JavaMailSender mailSender, TemplateEngine engine) {
+    public EmailService(JavaMailSender mailSender, TemplateEngine engine)
+    {
         this.mailSender = mailSender;
         this.engine = engine;
     }
-
 
     @SneakyThrows
     public void sendHtmlEmail(String to)
@@ -62,6 +62,27 @@ public class EmailService
     {
         if (emailTo != null && !emailTo.isEmpty())
             sendHtmlEmail(emailTo);
+    }
+
+    @SneakyThrows // todo Добавить конкретную информацию о стоимости платежа и по какому апартаменту в письме со ссылкой на апартамент
+    public void sendMessageLatePayment(String to)
+    {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+        Context context = new Context();
+        String subject = "Просрочена оплата услуг";
+        context.setVariable("subject", subject);
+        String message = "Пожалуйста, введите данный код для подтверждения регистрации";
+        context.setVariable("message", message);
+        String htmlBody = engine.process("emailTemplate", context);
+
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlBody, true);
+        helper.setFrom(email);
+
+        mailSender.send(mimeMessage);
     }
 
     private String generateConfirmCode()

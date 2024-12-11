@@ -7,9 +7,10 @@ import ru.yuriy.propertyrental.enums.PaymentStatus;
 import ru.yuriy.propertyrental.models.entity.Payment;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.PaymentRepository;
-import ru.yuriy.propertyrental.util.exceptions.PaymentNotFoundException;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @RequiredArgsConstructor
@@ -17,20 +18,25 @@ public class PaymentServiceProxy
 {
     private final PaymentRepository paymentRepository;
 
+    private final EmailService emailService;
+
     @Transactional
-    public void checkPaymentStatus(List<Payment> payments)
+    public void checkPaymentStatus(User user)
     {
-        if (payments == null) throw new PaymentNotFoundException("Платежи отсутствуют!");
+        AtomicBoolean flag = new AtomicBoolean(false);
+        List<Payment> payments = paymentRepository.findAllByUser(user);
         payments.forEach(pay -> {
             if (pay.isOverduePayment())
+            {
                 pay.setStatus(PaymentStatus.OVERDUE);
+                flag.set(true);
+            }
         });
-        paymentRepository.saveAll(payments);
-    }
 
-    @Transactional(readOnly = true)
-    public List<Payment> getPaymentsByUser(User user)
-    {
-        return paymentRepository.findAllByUser(user);
+        if (flag.get())
+            CompletableFuture.runAsync(
+                    () -> emailService.sendMessageLatePayment(user.getEmail())
+            );
+        paymentRepository.saveAll(payments);
     }
 }

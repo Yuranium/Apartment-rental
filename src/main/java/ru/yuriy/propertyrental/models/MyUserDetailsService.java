@@ -24,7 +24,7 @@ public class MyUserDetailsService implements UserDetailsService
                 () -> new UsernameNotFoundException("ОШИБКА: Пользователь не найден!"));
         if (!user.getActive())
             throw new UsernameNotFoundException("ОШИБКА: Пользователь неактивен");
-        paymentService.checkPaymentStatus(paymentService.getPaymentsByUser(user));
+        paymentService.checkPaymentStatus(user);
         return new MyUserDetails(user);
     }
 }
