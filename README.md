@@ -53,20 +53,23 @@
 4) #### Профиль пользователя с графиком его платежей
 ![user-profile.png](github%2Fuser-profile.png)
 
-5) #### Профиль апартамента с добавленными картинками в БД и доп. сервисами
+5) #### Автодополнение поиска апартамента
+![auto-completion-search.png](github%2Fauto-completion-search.png)
+
+6) #### Профиль апартамента с добавленными картинками в БД и доп. сервисами
 ![apartment-profile.png](github%2Fapartment-profile.png)
 
-6) #### Панель админа для редактирования пользователей
+7) #### Панель админа для редактирования пользователей
 ![admin-panel.png](github%2Fadmin-panel.png)
 
-7) #### Работа через REST в Postman
+8) #### Работа через REST в Postman
 ![payment-rest.png](github%2Fpayment-rest.png)
 
-8) #### Преобразованная фотография из базы данных
+9) #### Преобразованная фотография из базы данных
 ![image-rest.png](github%2Fimage-rest.png)
 
-9) #### Документация проекта в спецификации openAPI
+10) #### Документация проекта в спецификации openAPI
 ![swagger-main.png](github%2Fswagger-main.png)
 
-10) #### Описание отдельного эндпоинта приложения
+11) #### Описание отдельного эндпоинта приложения
 ![swagger-endpoint.png](github%2Fswagger-endpoint.png)
