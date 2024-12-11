@@ -140,6 +140,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Домой</a>
                     </li>
+                    <li th:if="${currentUser != null}" class="nav-item">
+                        <a class="nav-link" th:href="@{/profile/{id}(id=${currentUser.id})}">Профиль</a>
+                    </li>
                     <li th:if="${currentUser == null}" class="nav-item">
                         <a class="nav-link" href="/registration">Зарегистрироваться</a>
                     </li>

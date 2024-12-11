@@ -17,6 +17,7 @@ import ru.yuriy.propertyrental.util.validators.UserValidator;
 import java.security.Principal;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Controller
 @RequiredArgsConstructor
@@ -47,7 +48,11 @@ public class UserController
         if (result.hasErrors())
             return "registration";
         session.setAttribute("user", userService.saveUser(userForm));
-        emailService.sendHtmlEmail(userForm.getEmail());
+        CompletableFuture.runAsync(
+                () -> emailService.sendHtmlEmail(
+                        userForm.getEmail()
+                ));
+        //emailService.sendHtmlEmail(userForm.getEmail());
         return "redirect:/confirm";
     }
 

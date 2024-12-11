@@ -44,7 +44,7 @@ public class PaymentController
     @GetMapping("/delete/{id}")
     public String deleteApartment(@PathVariable Long id, Principal principal)
     {
-        paymentService.deleteApartment(id, principal);
+        paymentService.deletePayment(id, principal);
         return "redirect:/payment/user";
     }
 }

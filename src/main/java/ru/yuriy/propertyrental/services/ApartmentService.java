@@ -150,7 +150,10 @@ public class ApartmentService
     @Transactional(readOnly = true)
     public List<Apartment> getApartments()
     {
-        List<Apartment> apartments = apartmentRepository.findAllForHomePage();
+        List<Apartment> apartments = apartmentRepository.findAllForHomePage()
+                .stream()
+                .limit(6)
+                .toList();
         apartments.forEach(apartment -> {
             apartment.getImages().size();
             apartment.getServices().size();

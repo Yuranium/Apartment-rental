@@ -8,10 +8,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.yuriy.propertyrental.models.MyUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +19,7 @@ import ru.yuriy.propertyrental.models.MyUserDetailsService;
 @AllArgsConstructor
 public class SecurityConfig
 {
-    private final MyUserDetailsService service;
+    private final UserDetailsService service;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception

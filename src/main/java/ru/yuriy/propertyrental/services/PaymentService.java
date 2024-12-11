@@ -94,7 +94,7 @@ public class PaymentService
     }
 
     @Transactional(readOnly = true)
-    public void deleteApartment(Long id, Principal principal)
+    public void deletePayment(Long id, Principal principal)
     {
         User user = userService.getUserByUsername(principal.getName());
         AtomicBoolean flag = new AtomicBoolean(false);
@@ -110,22 +110,5 @@ public class PaymentService
         if (!flag.get())
             throw new PaymentNotFoundException(
                     String.format("Платёж с id=%d для пользователя с id=%d не найден", id, user.getId()));
-    }
-
-    @Transactional
-    public void checkPaymentStatus(List<Payment> payments)
-    {
-        if (payments == null) throw new PaymentNotFoundException("Платежи отсутствуют!");
-        payments.forEach(pay -> {
-            if (pay.isOverduePayment())
-                pay.setStatus(PaymentStatus.OVERDUE);
-        });
-        paymentRepository.saveAll(payments);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Payment> getPaymentsByUser(User user)
-    {
-        return paymentRepository.findAllByUser(user);
     }
 }
