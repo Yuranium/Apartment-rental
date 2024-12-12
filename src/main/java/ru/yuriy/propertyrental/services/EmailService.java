@@ -10,7 +10,15 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import ru.yuriy.propertyrental.models.entity.Apartment;
+import ru.yuriy.propertyrental.models.entity.Payment;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -65,17 +73,18 @@ public class EmailService
     }
 
     @SneakyThrows // todo Добавить конкретную информацию о стоимости платежа и по какому апартаменту в письме со ссылкой на апартамент
-    public void sendMessageLatePayment(String to)
+    public void sendMessageLatePayment(String to, String username, List<Payment> payments)
     {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
         Context context = new Context();
-        String subject = "Просрочена оплата услуг";
-        context.setVariable("subject", subject);
-        String message = "Пожалуйста, введите данный код для подтверждения регистрации";
-        context.setVariable("message", message);
-        String htmlBody = engine.process("emailTemplate", context);
+        String subject = "Уведомление о просрочке платежа";
+        context.setVariable("username", username);
+        context.setVariable("expiredApartments", payments.stream()
+                .map(Payment::getApartment)
+                .toList());
+        String htmlBody = engine.process("latePayment", context);
 
         helper.setTo(to);
         helper.setSubject(subject);
@@ -83,6 +92,23 @@ public class EmailService
         helper.setFrom(email);
 
         mailSender.send(mimeMessage);
+    }
+
+    private List<Pair<Apartment, Long>> createPair(List<Payment> payments)
+    {
+        List<Pair<Apartment, Long>> pairs = new ArrayList<>();
+        for (Payment payment : payments)
+            pairs.add(new Pair<>(payment.getApartment(),
+                    dateDiff(payment.getDatePayment())));
+        return pairs;
+    }
+
+    private Long dateDiff(Date datePayment)
+    {
+        LocalDate paymentDate = datePayment.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        return ChronoUnit.DAYS.between(paymentDate, LocalDate.now());
     }
 
     private String generateConfirmCode()
@@ -93,4 +119,6 @@ public class EmailService
         code = builder.toString();
         return code;
     }
+
+    private record Pair<K, V>(K value1, V value2) {}
 }

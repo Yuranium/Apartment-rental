@@ -35,7 +35,8 @@ public class PaymentServiceProxy
 
         if (flag.get())
             CompletableFuture.runAsync(
-                    () -> emailService.sendMessageLatePayment(user.getEmail())
+                    () -> emailService.sendMessageLatePayment(user.getEmail(), user.getName(),
+                            paymentRepository.findAllByStatusAndUser(PaymentStatus.OVERDUE, user))
             );
         paymentRepository.saveAll(payments);
     }
