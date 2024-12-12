@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ApartmentType
 {
-    FLAT("Квартира"), HOTEL("Отель"), HOUSE("Дом"), OFFICE("Офис");
+    FLAT("Квартира"), FLAT_STUDIO("Квартира-студия"),
+    HOTEL("Отель"), HOUSE("Дом"), OFFICE("Офис");
 
     private final String type;
 }
