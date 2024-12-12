@@ -3,6 +3,7 @@ package ru.yuriy.propertyrental.services;
 import jakarta.mail.internet.MimeMessage;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.antlr.v4.runtime.misc.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,10 +17,10 @@ import ru.yuriy.propertyrental.models.entity.Payment;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class EmailService
@@ -72,38 +73,36 @@ public class EmailService
             sendHtmlEmail(emailTo);
     }
 
-    @SneakyThrows // todo Добавить конкретную информацию о стоимости платежа и по какому апартаменту в письме со ссылкой на апартамент
+    @SneakyThrows
     public void sendMessageLatePayment(String to, String username, List<Payment> payments)
     {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
         Context context = new Context();
-        String subject = "Уведомление о просрочке платежа";
         context.setVariable("username", username);
-        context.setVariable("expiredApartments", payments.stream()
-                .map(Payment::getApartment)
-                .toList());
+        context.setVariable("expiredApartments", createPair(payments));
         String htmlBody = engine.process("latePayment", context);
 
         helper.setTo(to);
-        helper.setSubject(subject);
+        helper.setSubject("Уведомление о просрочке платежа");
         helper.setText(htmlBody, true);
         helper.setFrom(email);
 
         mailSender.send(mimeMessage);
     }
 
-    private List<Pair<Apartment, Long>> createPair(List<Payment> payments)
+    private List<Triple<Apartment, Long, Double>> createPair(List<Payment> payments)
     {
-        List<Pair<Apartment, Long>> pairs = new ArrayList<>();
-        for (Payment payment : payments)
-            pairs.add(new Pair<>(payment.getApartment(),
-                    dateDiff(payment.getDatePayment())));
-        return pairs;
+        return payments.stream()
+                .map(payment ->
+                        new Triple<>(payment.getApartment(),
+                                daysOverdue(payment.getDatePayment()),
+                                payment.getAmountPayment()))
+                .collect(Collectors.toList());
     }
 
-    private Long dateDiff(Date datePayment)
+    private Long daysOverdue(Date datePayment)
     {
         LocalDate paymentDate = datePayment.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -119,6 +118,4 @@ public class EmailService
         code = builder.toString();
         return code;
     }
-
-    private record Pair<K, V>(K value1, V value2) {}
 }
