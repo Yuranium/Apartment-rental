@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.yuriy.propertyrental.models.entity.Image;
+import ru.yuriy.propertyrental.models.dto.ImageDTO;
 import ru.yuriy.propertyrental.services.ImageService;
 
 import java.io.ByteArrayInputStream;
@@ -23,11 +23,11 @@ public class ImageRestController
     @GetMapping("/{id}")
     public ResponseEntity<?> getImage(@PathVariable Long id)
     {
-        Image image = imageService.getImage(id);
+        ImageDTO image = imageService.getImage(id);
         return ResponseEntity.ok()
-                .header("filename", image.getName())
-                .contentType(MediaType.parseMediaType(image.getContentType()))
-                .contentLength(image.getSize())
-                .body(new InputStreamResource(new ByteArrayInputStream(image.getImageBytes())));
+                .header("filename", image.name())
+                .contentType(MediaType.parseMediaType(image.contentType()))
+                .contentLength(image.size())
+                .body(new InputStreamResource(new ByteArrayInputStream(image.imageBytes())));
     }
 }

@@ -2,6 +2,7 @@ package ru.yuriy.propertyrental.services;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Service;
@@ -54,11 +55,11 @@ public class ApartmentService
         apartment.setType(newApartment.getType());
         apartment.setAddress(newApartment.getAddress());
         apartment.setRoomAvailable(true);
-        apartment.setServicesToApartment(newApartment.getServices());
+        apartment.setServices(newApartment.getServices());
         apartment.setUser(getUserByPrincipal(principal));
         if (!newApartment.getImages().isEmpty())
         {
-            apartment.setImagesToApartment(multipartToImage(newApartment.getImages()));
+            apartment.setImages(multipartToImage(newApartment.getImages()));
             apartment.getImages().get(0).setPreviewImage(true);
             imageRepository.saveAll(apartment.getImages());
         }
@@ -150,10 +151,8 @@ public class ApartmentService
     @Transactional(readOnly = true)
     public List<Apartment> getApartments()
     {
-        List<Apartment> apartments = apartmentRepository.findAllForHomePage()
-                .stream()
-                .limit(6)
-                .toList();
+        List<Apartment> apartments = apartmentRepository.findAll(
+                PageRequest.of(0, 6)).getContent();
         apartments.forEach(apartment -> {
             apartment.getImages().size();
             apartment.getServices().size();

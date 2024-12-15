@@ -60,18 +60,18 @@ public class Apartment
     @JoinColumn(name = "id_user")
     private User user;
 
-    @BatchSize(size = 5)
+    @BatchSize(size = 6)
     @OneToMany(mappedBy = "apartment", orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     @ManyToMany
-    @BatchSize(size = 5)
+    @BatchSize(size = 6)
     @JoinTable(name = "apartments_services",
             joinColumns = @JoinColumn(name = "id_apartment"),
             inverseJoinColumns = @JoinColumn(name = "id_service"))
     private List<Service> services = new ArrayList<>();
 
-    public void setImagesToApartment(List<Image> images)
+    public void setImages(List<Image> images)
     {
         for (Image image : images)
         {
@@ -80,7 +80,7 @@ public class Apartment
         }
     }
 
-    public void setServicesToApartment(List<Service> services)
+    public void setServices(List<Service> services)
     {
         List<Apartment> apartments = new ArrayList<>(List.of(this));
         if (services == null) return;
