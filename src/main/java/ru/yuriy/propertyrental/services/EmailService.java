@@ -81,7 +81,7 @@ public class EmailService
 
         Context context = new Context();
         context.setVariable("username", username);
-        context.setVariable("expiredApartments", createPair(payments));
+        context.setVariable("expiredApartments", createTriple(payments));
         String htmlBody = engine.process("latePayment", context);
 
         helper.setTo(to);
@@ -92,9 +92,10 @@ public class EmailService
         mailSender.send(mimeMessage);
     }
 
-    private List<Triple<Apartment, Long, Double>> createPair(List<Payment> payments)
+    private List<Triple<Apartment, Long, Double>> createTriple(List<Payment> payments)
     {
         return payments.stream()
+                .limit(5)
                 .map(payment ->
                         new Triple<>(payment.getApartment(),
                                 daysOverdue(payment.getDatePayment()),
