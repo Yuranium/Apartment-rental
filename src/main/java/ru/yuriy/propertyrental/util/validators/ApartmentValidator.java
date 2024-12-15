@@ -3,9 +3,11 @@ package ru.yuriy.propertyrental.util.validators;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
 import ru.yuriy.propertyrental.models.ApartmentForm;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ApartmentValidator implements Validator
@@ -20,13 +22,24 @@ public class ApartmentValidator implements Validator
     public void validate(Object target, Errors errors)
     {
         ApartmentForm apartmentForm = (ApartmentForm) target;
-        if (apartmentForm.getImages().size() > 5)
+        List<MultipartFile> multipartFiles = apartmentForm.getImages();
+        if (multipartFiles.size() > 5)
             errors.rejectValue("images", "", "Количество файлов должно быть не больше 5!");
-        try {
-            if (apartmentForm.getImages().get(0).getBytes().length == 0)
-                errors.rejectValue("images", "", "Должна присутствовать хотя-бы одна фотография!");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (multipartFiles.get(0).isEmpty())
+            errors.rejectValue("images", "", "Должна присутствовать хотя-бы одна фотография!");
+        else
+        {
+            boolean flag = false;
+            List<String> invalidFileFormats = new ArrayList<>();
+            for (MultipartFile file : multipartFiles)
+                if (!file.getContentType().contains("image"))
+                {
+                    invalidFileFormats.add(file.getOriginalFilename());
+                    flag = true;
+                }
+            if (flag)
+                errors.rejectValue("images", "", "Недопустимый формат файлов: " +
+                        String.join(", ", invalidFileFormats));
         }
     }
 }

@@ -511,7 +511,7 @@
 
             <div>
                 <label for="services" class="block text-sm font-medium text-neutral-950">Дополнительные услуги</label>
-                <select id="services" name="services" th:field="*{services}" class="w-full mt-1 p-2 border rounded-md text-neutral-950" multiple>
+                <select id="services" name="services" class="w-full mt-1 p-2 border rounded-md text-neutral-950" multiple>
                     <option th:each="service : ${services}" th:value="${service.id}"
                             th:text="${service.getName() + ' — ' + service.getDescription() + '— Ежедневная цена: ' + service.getServicePrice()}">
                         Полив участка — Ежедневный полив участка — Цена: 100 руб.
