@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,6 +34,8 @@ public class ImageService
     private final ImageRepository imageRepository;
 
     private final ImageMapper imageMapper;
+
+    private final int MIN_BYTE_SIZE_COMPRESSION = 20_000;
 
     @Cacheable(key = "#id")
     @Transactional(readOnly = true)
@@ -50,21 +53,20 @@ public class ImageService
         imageRepository.saveAll(images);
     }
 
-    public List<Image> multipartToImage(List<MultipartFile> files)
+    public List<Image> multipartToImage(List<MultipartFile> files, Boolean isCompress)
     {
         return files.parallelStream()
                 .map(file -> {
                     Image image = new Image();
                     try {
-                        image.setImageBytes(
-                                compressImage(file.getBytes(), 0.8F)
+                        image.setImageBytes(isCompress ?
+                                compressImage(file.getBytes(), 0.65F) : file.getBytes()
                         );
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                     image.setName(file.getOriginalFilename());
-                    image.setContentType(file.getContentType()); // todo удалить contentType при сохранении сжатия изображения
-                    image.setSize((long) image.getImageBytes().length);
+                    image.setContentType(isCompress ? "image/jpeg" : file.getContentType());
                     return image;
                 })
                 .collect(Collectors.toList());
@@ -73,9 +75,12 @@ public class ImageService
     @SneakyThrows
     public byte[] compressImage(byte[] inputBytes, float quality)
     {
+        if (inputBytes.length < MIN_BYTE_SIZE_COMPRESSION)
+            return inputBytes;
         BufferedImage image = ImageIO.read(new ByteArrayInputStream(inputBytes));
         if (image == null)
             throw new IllegalArgumentException("Некорректное изображение");
+        image = resizeImageWithAspectRatio(image, 1920, 1080);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              ImageOutputStream ios = ImageIO.createImageOutputStream(outputStream))
@@ -91,5 +96,31 @@ public class ImageService
 
             return outputStream.toByteArray();
         }
+    }
+
+    public static BufferedImage resizeImageWithAspectRatio(BufferedImage originalImage, int maxWidth, int maxHeight)
+    {
+        int originalWidth = originalImage.getWidth();
+        int originalHeight = originalImage.getHeight();
+
+        if (originalWidth <= maxWidth && originalHeight <= maxHeight)
+            return originalImage;
+
+        double widthRatio = (double) maxWidth / originalWidth;
+        double heightRatio = (double) maxHeight / originalHeight;
+
+        double scale = Math.min(widthRatio, heightRatio);
+
+        int newWidth = (int) (originalWidth * scale);
+        int newHeight = (int) (originalHeight * scale);
+
+        java.awt.Image resultingImage = originalImage.getScaledInstance(newWidth, newHeight, java.awt.Image.SCALE_SMOOTH);
+        BufferedImage outputImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(resultingImage, 0, 0, null);
+        g2d.dispose();
+
+        return outputImage;
     }
 }

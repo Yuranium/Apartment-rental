@@ -468,7 +468,7 @@
 
             <div>
                 <label for="square" class="block text-sm font-medium text-neutral-950">Площадь (м²)</label>
-                <input type="number" id="square" name="area" th:field="*{square}" class="w-full mt-1 p-2 border rounded-md text-neutral-950" placeholder="Введите площадь" required>
+                <input type="number" id="square" name="area" th:field="*{square}" class="w-full mt-1 p-2 border rounded-md text-neutral-950" placeholder="Введите площадь" step="0.1" required>
                 <div class="text-danger" th:if="${#fields.hasErrors('square')}" th:errors="*{square}" style="color:red;"></div>
             </div>
 
@@ -507,6 +507,13 @@
                 <label for="images" class="block text-sm font-medium text-neutral-950">Фотографии (до 5)</label>
                 <input type="file" id="images" name="images" th:field="*{images}" class="w-full mt-1 p-2 border rounded-md text-neutral-950" multiple accept="image/*">
                 <div class="text-danger" th:if="${#fields.hasErrors('images')}" th:errors="*{images}" style="color:red;"></div>
+            </div>
+
+            <div class="form-check form-switch">
+                <input type="checkbox" role="switch" id="compress" name="isCompress">
+                <label for="compress">Сжать фотографии?
+                    <span style="font-size: smaller; color: #5a5a5a"> (Возможна потеря качества)</span>
+                </label>
             </div>
 
             <div>

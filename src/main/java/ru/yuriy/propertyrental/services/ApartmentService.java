@@ -53,14 +53,12 @@ public class ApartmentService
         apartment.setRoomAvailable(true);
         apartment.setServices(newApartment.getServices());
         apartment.setUser(getUserByPrincipal(principal));
-        if (!newApartment.getImages().isEmpty())
-        {
-            apartment.setImages(
-                    imageService.multipartToImage(newApartment.getImages())
-            );
-            apartment.getImages().get(0).setPreviewImage(true);
-            imageService.saveAll(apartment.getImages());
-        }
+        apartment.setImages(
+                imageService.multipartToImage(newApartment.getImages(),
+                        newApartment.getIsCompress())
+        );
+        apartment.getImages().get(0).setPreviewImage(true);
+        imageService.saveAll(apartment.getImages());
         apartmentRepository.save(apartment);
     }
 

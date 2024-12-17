@@ -37,4 +37,12 @@ public class Image
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_apartment")
     private Apartment apartment;
+
+    @PrePersist
+    private void setSize()
+    {
+        if (imageBytes == null)
+            throw new IllegalStateException("Поле imageBytes является null!");
+        this.size = (long) imageBytes.length;
+    }
 }

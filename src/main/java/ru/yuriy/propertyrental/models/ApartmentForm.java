@@ -48,4 +48,6 @@ public class ApartmentForm
     private List<MultipartFile> images;
 
     private List<Service> services;
+
+    private Boolean isCompress = false;
 }
