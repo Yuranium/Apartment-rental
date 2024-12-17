@@ -7,18 +7,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import ru.yuriy.propertyrental.models.ApartmentForm;
 import ru.yuriy.propertyrental.models.ApartmentSearch;
 import ru.yuriy.propertyrental.models.entity.Apartment;
-import ru.yuriy.propertyrental.models.entity.Image;
 import ru.yuriy.propertyrental.models.entity.User;
 import ru.yuriy.propertyrental.repositories.ApartmentRepository;
-import ru.yuriy.propertyrental.repositories.ImageRepository;
 import ru.yuriy.propertyrental.repositories.UserRepository;
 import ru.yuriy.propertyrental.util.exceptions.UserNotFoundException;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +30,7 @@ public class ApartmentService
 
     private final ApartmentESService apartmentESService;
 
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
     private final UserRepository userRepository;
 
@@ -59,9 +55,11 @@ public class ApartmentService
         apartment.setUser(getUserByPrincipal(principal));
         if (!newApartment.getImages().isEmpty())
         {
-            apartment.setImages(multipartToImage(newApartment.getImages()));
+            apartment.setImages(
+                    imageService.multipartToImage(newApartment.getImages())
+            );
             apartment.getImages().get(0).setPreviewImage(true);
-            imageRepository.saveAll(apartment.getImages());
+            imageService.saveAll(apartment.getImages());
         }
         apartmentRepository.save(apartment);
     }
@@ -72,24 +70,6 @@ public class ApartmentService
         if (principal == null) throw new SessionAuthenticationException("Пользователь не аутентифицирован!");
         return userRepository.findByEmail(principal.getName()).orElseThrow(
                 () -> new UsernameNotFoundException("Данный пользователь не был найден!"));
-    }
-
-    private List<Image> multipartToImage(List<MultipartFile> files)
-    {
-        return files.stream()
-                .map(file -> {
-                    Image image = new Image();
-                    image.setName(file.getOriginalFilename());
-                    image.setContentType(file.getContentType());
-                    image.setSize(file.getSize());
-                    try {
-                        image.setImageBytes(file.getBytes());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return image;
-                })
-                .collect(Collectors.toList());
     }
 
     @Transactional
