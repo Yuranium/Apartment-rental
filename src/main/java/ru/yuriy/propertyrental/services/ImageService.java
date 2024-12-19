@@ -80,7 +80,7 @@ public class ImageService
         BufferedImage image = ImageIO.read(new ByteArrayInputStream(inputBytes));
         if (image == null)
             throw new IllegalArgumentException("Некорректное изображение");
-        image = resizeImageWithAspectRatio(image, 1920, 1080);
+        image = resizeImageWithAspectRatio(image);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              ImageOutputStream ios = ImageIO.createImageOutputStream(outputStream))
@@ -98,16 +98,16 @@ public class ImageService
         }
     }
 
-    public static BufferedImage resizeImageWithAspectRatio(BufferedImage originalImage, int maxWidth, int maxHeight)
+    private BufferedImage resizeImageWithAspectRatio(BufferedImage originalImage)
     {
         int originalWidth = originalImage.getWidth();
         int originalHeight = originalImage.getHeight();
 
-        if (originalWidth <= maxWidth && originalHeight <= maxHeight)
+        if (originalWidth <= 1920 && originalHeight <= 1080)
             return originalImage;
 
-        double widthRatio = (double) maxWidth / originalWidth;
-        double heightRatio = (double) maxHeight / originalHeight;
+        double widthRatio = (double) 1920 / originalWidth;
+        double heightRatio = (double) 1080 / originalHeight;
 
         double scale = Math.min(widthRatio, heightRatio);
 

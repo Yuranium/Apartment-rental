@@ -12,9 +12,14 @@ import java.util.List;
  * DTO for {@link User}
  */
 
-public record UserDTO(Long id, String name, String email,
-
-        String phone, @JsonFormat(shape = JsonFormat.Shape.STRING,
-                      pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC") Timestamp dateRegistration,
-
-        Boolean active, List<RoleDTO> roles) implements Serializable {}
+public record UserDTO(
+        Long id,
+        String name,
+        String email,
+        String phone,
+        @JsonFormat(shape = JsonFormat.Shape.STRING,
+                pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC")
+        Timestamp dateRegistration,
+        Boolean active,
+        List<RoleDTO> roles
+) implements Serializable {}

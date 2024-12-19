@@ -4,4 +4,6 @@ import ru.yuriy.propertyrental.enums.RoleType;
 
 import java.io.Serializable;
 
-public record RoleInput(RoleType roleType) implements Serializable {}
+public record RoleInput(
+        RoleType roleType
+) implements Serializable {}

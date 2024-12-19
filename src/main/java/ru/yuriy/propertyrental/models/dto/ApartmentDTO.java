@@ -10,6 +10,14 @@ import java.util.List;
  * DTO for {@link Apartment}
  */
 
-public record ApartmentDTO(String name, Double square, Integer roomCount, Double dailyPrice, ApartmentType type,
-                           String address, Boolean roomAvailable, UserDTO user,
-                           List<ServiceDTO> services) implements Serializable {}
+public record ApartmentDTO(
+        String name,
+        Double square,
+        Integer roomCount,
+        Double dailyPrice,
+        ApartmentType type,
+        String address,
+        Boolean roomAvailable,
+        UserDTO user,
+        List<ServiceDTO> services
+) implements Serializable {}

@@ -11,6 +11,10 @@ import java.util.Date;
  * DTO for {@link Payment}
  */
 
-public record PaymentDTO(Double amountPayment, @JsonFormat(shape = JsonFormat.Shape.STRING,
-        pattern = "yyyy-MM-dd", timezone = "UTC") Date datePayment,
-                         PaymentStatus status) implements Serializable {}
+public record PaymentDTO(
+        Double amountPayment,
+        @JsonFormat(shape = JsonFormat.Shape.STRING,
+                pattern = "yyyy-MM-dd", timezone = "UTC")
+        Date datePayment,
+        PaymentStatus status
+) implements Serializable {}

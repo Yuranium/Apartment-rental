@@ -10,7 +10,9 @@ import java.sql.Timestamp;
  * DTO for {@link Role}
  */
 
-public record RoleDTO(String roleType,
-                      @JsonFormat(shape = JsonFormat.Shape.STRING,
-                              pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
-                      Timestamp assignmentDate) implements Serializable {}
+public record RoleDTO(
+        String roleType,
+        @JsonFormat(shape = JsonFormat.Shape.STRING,
+                pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
+        Timestamp assignmentDate
+) implements Serializable {}
