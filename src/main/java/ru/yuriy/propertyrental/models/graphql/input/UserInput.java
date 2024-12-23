@@ -9,10 +9,17 @@ import java.util.Date;
 
 public record UserInput(
         Long id,
+
         String name,
+
         String lastName,
+
         String email,
+
         String phone,
+
         String password,
+
         Date birthday
+
 ) implements Serializable {}

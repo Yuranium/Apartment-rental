@@ -10,6 +10,9 @@ import java.io.Serializable;
 
 public record ServiceDTO(
         String name,
+
         String description,
+
         Double servicePrice
+
 ) implements Serializable {}

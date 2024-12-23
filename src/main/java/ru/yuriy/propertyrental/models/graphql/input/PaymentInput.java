@@ -7,6 +7,9 @@ import java.util.Date;
 
 public record PaymentInput(
         Double amountPayment,
+
         Date datePayment,
+
         PaymentStatus status
+
 ) implements Serializable {}

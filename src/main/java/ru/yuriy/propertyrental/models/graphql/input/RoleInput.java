@@ -6,4 +6,5 @@ import java.io.Serializable;
 
 public record RoleInput(
         RoleType roleType
+
 ) implements Serializable {}

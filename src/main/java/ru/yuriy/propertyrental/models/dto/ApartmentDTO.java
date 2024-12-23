@@ -12,12 +12,21 @@ import java.util.List;
 
 public record ApartmentDTO(
         String name,
+
         Double square,
+
         Integer roomCount,
+
         Double dailyPrice,
+
         ApartmentType type,
+
         String address,
+
         Boolean roomAvailable,
+
         UserDTO user,
+
         List<ServiceDTO> services
+
 ) implements Serializable {}

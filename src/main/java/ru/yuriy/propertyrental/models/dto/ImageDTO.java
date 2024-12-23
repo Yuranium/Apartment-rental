@@ -9,8 +9,13 @@ import ru.yuriy.propertyrental.models.entity.Image;
 
 public record ImageDTO(
         Long id,
+
         String name,
+
         String contentType,
+
         Long size,
+
         byte[] imageBytes
+
 ) implements Serializable {}

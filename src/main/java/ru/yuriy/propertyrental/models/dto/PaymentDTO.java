@@ -13,8 +13,11 @@ import java.util.Date;
 
 public record PaymentDTO(
         Double amountPayment,
+
         @JsonFormat(shape = JsonFormat.Shape.STRING,
                 pattern = "yyyy-MM-dd", timezone = "UTC")
         Date datePayment,
+
         PaymentStatus status
+
 ) implements Serializable {}

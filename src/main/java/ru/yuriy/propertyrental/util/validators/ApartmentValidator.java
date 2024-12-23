@@ -32,7 +32,7 @@ public class ApartmentValidator implements Validator
             boolean flag = false;
             List<String> invalidFileFormats = new ArrayList<>();
             for (MultipartFile file : multipartFiles)
-                if (!file.getContentType().contains("image"))
+                if (!file.getContentType().startsWith("image"))
                 {
                     invalidFileFormats.add(file.getOriginalFilename());
                     flag = true;
